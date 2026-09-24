@@ -311,45 +311,58 @@ export const wedding = {
     eyebrow: 'Información',
     title: 'Datos de Interés',
     /**
-     * Un bloque por tema. `items` es la lista con filetes: cada entrada lleva
-     * un rótulo corto y su explicación. `note` es la línea de cierre.
-     * `icon` acepta 'bus', 'cama' o 'ropa'; vacío para no poner ninguno.
+     * Un bloque por tema, en el orden en que aparecen.
+     *
+     *  · `layout: 'lista'`    → lista con filetes: cada entrada con su rótulo
+     *                           corto arriba y la explicación debajo.
+     *  · `layout: 'parejas'`  → dos columnas compactas, sin filetes.
+     *  · `icon` del bloque o de cada entrada: 'bus', 'cama', 'traje' o
+     *    'vestido'. Cadena vacía para no poner ninguno.
      */
     blocks: [
       {
+        layout: 'parejas',
+        icon: '',
+        title: 'Dress Code',
+        body: 'Elegantes para celebrar.',
+        items: [
+          { icon: 'traje', label: 'Ellos', detail: 'Traje' },
+          { icon: 'vestido', label: 'Ellas', detail: 'Vestido o conjunto elegante' },
+        ],
+        note: 'Poneos guapos, que nosotros ponemos la fiesta.',
+      },
+      {
+        layout: 'lista',
+        icon: 'cama',
+        title: 'Recomendación de Hoteles',
+        // TODO: sustituir por los hoteles y condiciones cuando estén cerrados.
+        body: 'Estamos cerrando acuerdos con varios alojamientos de la zona. En cuanto lo tengamos os pasaremos los nombres, los precios y cómo reservar.',
+        items: [] as { icon?: string; label: string; detail: string }[],
+        note: '',
+      },
+      {
+        layout: 'lista',
         icon: 'bus',
         title: 'Autobuses',
         body: 'Habrá autobuses de ida y de vuelta desde Santander y Torrelavega, para que nadie tenga que preocuparse por el coche.',
         items: [
-          { label: 'Ida', detail: 'Horarios por confirmar. Os avisaremos en cuanto los tengamos.' },
+          {
+            label: 'Ida · 11:00',
+            // TODO: horario y paradas de ejemplo, a falta de los definitivos.
+            detail:
+              'Santander, Jardines de Pereda. A las 11:20 pasa por Torrelavega, en el Bulevar Demetrio Herrero.',
+          },
           { label: 'Vuelta · 21:30', detail: 'Para los veteranos.' },
           { label: 'Vuelta · 00:30', detail: 'Para los atrevidos. Fin de fiesta.' },
         ],
         note: 'En el formulario de confirmación podréis indicarnos si los necesitáis.',
       },
-      {
-        icon: 'cama',
-        title: 'Recomendación de Hoteles',
-        // TODO: sustituir por los hoteles y condiciones cuando estén cerrados.
-        body: 'Estamos cerrando acuerdos con varios alojamientos de la zona. En cuanto lo tengamos os pasaremos los nombres, los precios y cómo reservar.',
-        items: [] as { label: string; detail: string }[],
-        note: '',
-      },
-      {
-        icon: 'ropa',
-        title: 'Dress Code',
-        body: 'Elegantes para celebrar.',
-        items: [
-          { label: 'Ellos', detail: 'Traje' },
-          { label: 'Ellas', detail: 'Vestido o conjunto elegante' },
-        ],
-        note: 'Poneos guapos, que nosotros ponemos la fiesta.',
-      },
     ] as {
+      layout: string;
       icon: string;
       title: string;
       body: string;
-      items: { label: string; detail: string }[];
+      items: { icon?: string; label: string; detail: string }[];
       note: string;
     }[],
   },

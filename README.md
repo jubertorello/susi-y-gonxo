@@ -25,10 +25,19 @@ wedding.rsvp.bus.enabled // campos de autobús del formulario
 El orden de la página es: portada, lugar, cuenta atrás, carrete, itinerario,
 luna de miel, confirmación, música, datos de interés, dudas y pie.
 
-**Datos de Interés** se arma desde `info.blocks`: autobuses, hoteles y dress
-code. Cada bloque lleva un icono (`bus`, `cama` o `ropa`), un título, un
-texto, una lista de `items` con rótulo y explicación, y una línea de cierre.
-Con `items` vacío solo se enseña el texto, que es como está hoy hoteles.
+**Datos de Interés** se arma desde `info.blocks`: dress code, hoteles y
+autobuses, en ese orden. Cada bloque tiene título, texto, una lista de
+`items` y una línea de cierre, y elige cómo se dibuja la lista:
+
+| `layout` | Cómo queda |
+| --- | --- |
+| `lista` | Cada entrada con un filete encima, su rótulo corto y el detalle |
+| `parejas` | Dos columnas compactas, sin filetes, con icono propio |
+
+Los iconos se piden por nombre — `bus`, `cama`, `traje`, `vestido` — en el
+bloque o en cada entrada. El traje y el vestido están dibujados a mano en
+`app/page.tsx` porque lucide no los trae. Con `items` vacío solo se enseña
+el texto, que es como está hoy hoteles.
 
 Las **ilustraciones** se quitan poniendo la cadena vacía en su `image`
 (`locations.places[].image`, `itinerary.events[].image`, `gift.image`,

@@ -24,7 +24,6 @@ import {
   VolumeX,
   Bus,
   BedDouble,
-  Shirt,
   Camera,
   Menu,
 } from 'lucide-react';
@@ -44,11 +43,55 @@ const photos = wedding.photos;
  */
 const carrete = photos.length > 0 ? [...photos, ...photos] : [];
 const huecos = photos.length === 0 ? wedding.gallery.placeholders : 0;
-/** Iconos que puede pedir cada bloque de Datos de Interés desde la config. */
-const ICONOS_INFO: Record<string, typeof Bus | undefined> = {
+/**
+ * Lucide no trae ni traje ni vestido, así que van dibujados aquí con el mismo
+ * trazo que los suyos: rejilla de 24, sin relleno y grosor 1.5.
+ */
+type PropsIcono = { size?: number; className?: string; strokeWidth?: number };
+
+const base = (p: PropsIcono) => ({
+  width: p.size ?? 24,
+  height: p.size ?? 24,
+  viewBox: '0 0 24 24',
+  fill: 'none',
+  stroke: 'currentColor',
+  strokeWidth: p.strokeWidth ?? 1.5,
+  strokeLinecap: 'round' as const,
+  strokeLinejoin: 'round' as const,
+  className: p.className,
+  'aria-hidden': true,
+});
+
+function Traje(p: PropsIcono) {
+  return (
+    <svg {...base(p)}>
+      <path d="M8.5 3 4 5.6V21h16V5.6L15.5 3" />
+      <path d="M8.5 3 12 9.6 15.5 3" />
+      <path d="m12 9.6-1.4 1.8L12 16l1.4-4.6z" />
+    </svg>
+  );
+}
+
+function Vestido(p: PropsIcono) {
+  return (
+    <svg {...base(p)}>
+      <path d="M9 3 12 6l3-3" />
+      <path d="M9 3 8.2 9.4 5.5 21h13l-2.7-11.6L15 3" />
+      <path d="M8.2 9.4h7.6" />
+    </svg>
+  );
+}
+
+/**
+ * Iconos que puede pedir la configuración, por nombre. Los de lucide son
+ * componentes con ref y los de aquí funciones sueltas, así que el tipo tiene
+ * que ser el común a ambos.
+ */
+const ICONOS_INFO: Record<string, React.ComponentType<PropsIcono> | undefined> = {
   bus: Bus,
   cama: BedDouble,
-  ropa: Shirt,
+  traje: Traje,
+  vestido: Vestido,
 };
 
 /** Todos los párrafos de la luna de miel comparten cuerpo, color y ancho. */
@@ -1225,20 +1268,41 @@ export default function Home() {
 
                     <p className="mt-4 text-[18px] text-white/90 leading-relaxed">{bloque.body}</p>
 
-                    {bloque.items.length > 0 && (
-                      <ul className="mt-8 space-y-4 text-left max-w-md mx-auto">
-                        {bloque.items.map((item) => (
-                          <li key={item.label} className="border-t border-white/20 pt-4">
-                            <span className="font-sans text-[14px] uppercase tracking-[0.2em] text-white block">
-                              {item.label}
-                            </span>
-                            <span className="text-[18px] text-white/85 leading-relaxed block mt-1">
-                              {item.detail}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                    {bloque.items.length > 0 &&
+                      (bloque.layout === 'parejas' ? (
+                        /* Compacto y sin filetes: cada entrada con su icono. */
+                        <ul className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-16">
+                          {bloque.items.map((item) => {
+                            const IconoItem = item.icon ? ICONOS_INFO[item.icon] : undefined;
+                            return (
+                              <li key={item.label} className="flex flex-col items-center">
+                                {IconoItem && (
+                                  <IconoItem size={30} className="mb-3 text-white/75" strokeWidth={1.3} />
+                                )}
+                                <span className="font-sans text-[14px] uppercase tracking-[0.25em] text-white/70">
+                                  {item.label}
+                                </span>
+                                <span className="font-display text-[20px] text-white mt-1 leading-tight">
+                                  {item.detail}
+                                </span>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      ) : (
+                        <ul className="mt-8 space-y-4 text-left max-w-md mx-auto">
+                          {bloque.items.map((item) => (
+                            <li key={item.label} className="border-t border-white/20 pt-4">
+                              <span className="font-sans text-[14px] uppercase tracking-[0.2em] text-white block">
+                                {item.label}
+                              </span>
+                              <span className="text-[18px] text-white/85 leading-relaxed block mt-1">
+                                {item.detail}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      ))}
 
                     {bloque.note && (
                       <p className="mt-8 text-[18px] text-white/80 leading-relaxed">{bloque.note}</p>
