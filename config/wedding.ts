@@ -267,7 +267,7 @@ export const wedding = {
     /** Línea de cierre bajo el botón. Cadena vacía para no ponerla. */
     closing:
       'Gracias por acompañarnos, de una forma u otra, en todo lo que está por venir.',
-    image: '/luna-de-miel.webp',
+    image: '/safari.webp',
     ctaHint: '¿Quieres hacernos un regalo? Haz click aquí:',
     ctaLabel: 'Ver datos regalo',
     modal: {
@@ -442,7 +442,7 @@ export const backgrounds = {
     locations: { mobileTop: '', mobileBottom: '', desktop: '' },
     photos: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
     itinerary: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
-    music: { mobileTop: '', mobileBottom: '', desktop: '' },
+    music: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
     rsvp: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
     info: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
     contact: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
