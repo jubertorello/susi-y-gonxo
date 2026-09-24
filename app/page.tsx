@@ -860,7 +860,10 @@ export default function Home() {
                         }`}
                       >
                         {evento.image && (
-                          <div className="relative w-24 h-24 md:w-32 md:h-32 mb-1">
+                          /* Apaisado y fluido: las acuarelas del itinerario
+                             son más anchas que altas, y con un ancho fijo se
+                             comían el margen de la página en móvil. */
+                          <div className="relative w-full max-w-[7rem] md:max-w-[11rem] aspect-[16/10] mb-1">
                             <Image
                               src={evento.image}
                               alt={evento.title}

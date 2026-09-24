@@ -200,7 +200,7 @@ export const wedding = {
     title: 'Itinerario',
     subtitle: 'Hemos preparado todo para un día inolvidable',
     events: [
-      { time: '12:15 H', title: 'La Ceremonia', image: '' },
+      { time: '12:15 H', title: 'La Ceremonia', image: '/itinerario/ceremonia.webp' },
       { time: '13:45 H', title: 'El Cóctel', image: '' },
       { time: '16:00 H', title: 'El Banquete', image: '' },
       { time: '18:00 H', title: 'El Baile & Fiesta', image: '' },
