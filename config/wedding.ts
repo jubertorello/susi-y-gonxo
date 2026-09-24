@@ -200,10 +200,10 @@ export const wedding = {
     title: 'Itinerario',
     subtitle: 'Hemos preparado todo para un día inolvidable',
     events: [
-      { time: '12:15 H', title: 'La Ceremonia', image: '/itinerario/ceremonia.webp' },
-      { time: '13:45 H', title: 'El Cóctel', image: '/itinerario/coctel.webp' },
-      { time: '16:00 H', title: 'El Banquete', image: '' },
-      { time: '18:00 H', title: 'El Baile & Fiesta', image: '' },
+      { time: '12:15 H', title: 'La Ceremonia', image: '/itinerario/ceremonia-v2.webp' },
+      { time: '13:45 H', title: 'El Cóctel', image: '/itinerario/coctel-v2.webp' },
+      { time: '16:00 H', title: 'El Banquete', image: '/itinerario/banquete-v2.webp' },
+      { time: '18:00 H', title: 'El Baile & Fiesta', image: '/itinerario/baile-v2.webp' },
     ],
   },
 
@@ -316,18 +316,17 @@ export const wedding = {
      *  · `layout: 'lista'`    → lista con filetes: cada entrada con su rótulo
      *                           corto arriba y la explicación debajo.
      *  · `layout: 'parejas'`  → dos columnas compactas, sin filetes.
-     *  · `icon` del bloque o de cada entrada: 'bus', 'cama', 'traje' o
-     *    'vestido'. Cadena vacía para no poner ninguno.
+     *  · `icon`: 'lazo', 'cama' o 'bus'. Cadena vacía para no poner ninguno.
      */
     blocks: [
       {
         layout: 'parejas',
-        icon: '',
+        icon: 'lazo',
         title: 'Dress Code',
         body: 'Elegantes para celebrar.',
         items: [
-          { icon: 'traje', label: 'Ellos', detail: 'Traje' },
-          { icon: 'vestido', label: 'Ellas', detail: 'Vestido o conjunto elegante' },
+          { label: 'Ellos', detail: 'Traje' },
+          { label: 'Ellas', detail: 'Vestido o conjunto elegante' },
         ],
         note: 'Poneos guapos, que nosotros ponemos la fiesta.',
       },

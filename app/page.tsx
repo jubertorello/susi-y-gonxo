@@ -44,8 +44,8 @@ const photos = wedding.photos;
 const carrete = photos.length > 0 ? [...photos, ...photos] : [];
 const huecos = photos.length === 0 ? wedding.gallery.placeholders : 0;
 /**
- * Lucide no trae ni traje ni vestido, así que van dibujados aquí con el mismo
- * trazo que los suyos: rejilla de 24, sin relleno y grosor 1.5.
+ * Lucide no trae ningún lazo, así que va dibujado aquí con el mismo trazo que
+ * los suyos: rejilla de 24, sin relleno y grosor 1.5.
  */
 type PropsIcono = { size?: number; className?: string; strokeWidth?: number };
 
@@ -62,22 +62,14 @@ const base = (p: PropsIcono) => ({
   'aria-hidden': true,
 });
 
-function Traje(p: PropsIcono) {
+function Lazo(p: PropsIcono) {
   return (
     <svg {...base(p)}>
-      <path d="M8.5 3 4 5.6V21h16V5.6L15.5 3" />
-      <path d="M8.5 3 12 9.6 15.5 3" />
-      <path d="m12 9.6-1.4 1.8L12 16l1.4-4.6z" />
-    </svg>
-  );
-}
-
-function Vestido(p: PropsIcono) {
-  return (
-    <svg {...base(p)}>
-      <path d="M9 3 12 6l3-3" />
-      <path d="M9 3 8.2 9.4 5.5 21h13l-2.7-11.6L15 3" />
-      <path d="M8.2 9.4h7.6" />
+      <path d="M11.2 12C8.5 9.2 4 9.4 4 12s4.5 2.8 7.2 0" />
+      <path d="M12.8 12c2.7-2.8 7.2-2.6 7.2 0s-4.5 2.8-7.2 0" />
+      <circle cx="12" cy="12" r="1.4" />
+      <path d="M10.9 13.3 9 20" />
+      <path d="M13.1 13.3 15 20" />
     </svg>
   );
 }
@@ -90,8 +82,7 @@ function Vestido(p: PropsIcono) {
 const ICONOS_INFO: Record<string, React.ComponentType<PropsIcono> | undefined> = {
   bus: Bus,
   cama: BedDouble,
-  traje: Traje,
-  vestido: Vestido,
+  lazo: Lazo,
 };
 
 /** Todos los párrafos de la luna de miel comparten cuerpo, color y ancho. */
@@ -971,10 +962,13 @@ export default function Home() {
                         }`}
                       >
                         {evento.image && (
-                          /* Apaisado y fluido: las acuarelas del itinerario
-                             son más anchas que altas, y con un ancho fijo se
-                             comían el margen de la página en móvil. */
-                          <div className="relative w-full max-w-[7rem] md:max-w-[11rem] aspect-[16/10] mb-1">
+                          /*
+                           * Todas las láminas vienen sobre un lienzo común de
+                           * 10:9 y con la misma área de dibujo, así que aquí
+                           * basta una caja de esa proporción para que las
+                           * cuatro se vean del mismo tamaño.
+                           */
+                          <div className="relative w-full max-w-[7.5rem] md:max-w-[11.5rem] aspect-[10/9] mb-1">
                             <Image
                               src={evento.image}
                               alt={evento.title}
@@ -1231,36 +1225,43 @@ export default function Home() {
 
 
         {/* ================= 9. DATOS DE INTERÉS ================= */}
-        <section id="informacion" className="py-16 bg-moss text-white relative">
+        <section id="informacion" className="py-16 relative bg-cream">
+          <SectionBackground bg={backgrounds.sections.info} />
+          <Eucalipto />
+
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
             variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.12 } } }}
-            className="max-w-2xl mx-auto px-6 text-center"
+            className="max-w-2xl mx-auto px-6 relative z-10"
           >
             <motion.div
               variants={{
                 hidden: { opacity: 0, y: 30 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
               }}
-              className="mb-14"
+              className="text-center mb-12"
             >
-              <SectionHeading eyebrow={wedding.info.eyebrow} title={wedding.info.title} light />
+              <SectionHeading eyebrow={wedding.info.eyebrow} title={wedding.info.title} />
             </motion.div>
 
-            <div className="space-y-16">
+            {/* Una tarjeta por tema, anchas y en columna: así cabe dentro la
+                lista con sus filetes sin quedar apretada. */}
+            <div className="space-y-8">
               {wedding.info.blocks.map((bloque) => {
                 const Icono = ICONOS_INFO[bloque.icon];
                 return (
                   <motion.div
                     key={bloque.title}
                     variants={{
-                      hidden: { opacity: 0, y: 24 },
-                      visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } },
+                      hidden: { opacity: 0, y: 30 },
+                      visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 80, damping: 15 } },
                     }}
+                    whileHover={{ y: -4 }}
+                    className="bg-moss text-white border border-white/10 rounded shadow-sm px-6 py-10 sm:px-10 text-center"
                   >
-                    {Icono && <Icono size={26} className="mx-auto mb-4 text-white/80" strokeWidth={1.5} />}
+                    {Icono && <Icono size={28} className="mx-auto mb-4 text-white/80" strokeWidth={1.4} />}
 
                     <h3 className="font-display text-[24px] md:text-[28px] text-white leading-tight">
                       {bloque.title}
@@ -1270,27 +1271,20 @@ export default function Home() {
 
                     {bloque.items.length > 0 &&
                       (bloque.layout === 'parejas' ? (
-                        /* Compacto y sin filetes: cada entrada con su icono. */
-                        <ul className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-16">
-                          {bloque.items.map((item) => {
-                            const IconoItem = item.icon ? ICONOS_INFO[item.icon] : undefined;
-                            return (
-                              <li key={item.label} className="flex flex-col items-center">
-                                {IconoItem && (
-                                  <IconoItem size={30} className="mb-3 text-white/75" strokeWidth={1.3} />
-                                )}
-                                <span className="font-sans text-[14px] uppercase tracking-[0.25em] text-white/70">
-                                  {item.label}
-                                </span>
-                                <span className="font-display text-[20px] text-white mt-1 leading-tight">
-                                  {item.detail}
-                                </span>
-                              </li>
-                            );
-                          })}
+                        <ul className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-16">
+                          {bloque.items.map((item) => (
+                            <li key={item.label} className="flex flex-col items-center">
+                              <span className="font-sans text-[14px] uppercase tracking-[0.25em] text-white/70">
+                                {item.label}
+                              </span>
+                              <span className="font-display text-[20px] text-white mt-1 leading-tight">
+                                {item.detail}
+                              </span>
+                            </li>
+                          ))}
                         </ul>
                       ) : (
-                        <ul className="mt-8 space-y-4 text-left max-w-md mx-auto">
+                        <ul className="mt-8 space-y-4 text-left">
                           {bloque.items.map((item) => (
                             <li key={item.label} className="border-t border-white/20 pt-4">
                               <span className="font-sans text-[14px] uppercase tracking-[0.2em] text-white block">
@@ -1305,7 +1299,7 @@ export default function Home() {
                       ))}
 
                     {bloque.note && (
-                      <p className="mt-8 text-[18px] text-white/80 leading-relaxed">{bloque.note}</p>
+                      <p className="mt-8 text-[18px] text-white/75 leading-relaxed">{bloque.note}</p>
                     )}
                   </motion.div>
                 );
