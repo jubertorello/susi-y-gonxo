@@ -56,7 +56,9 @@ El reparto de papeles está en `app/layout.tsx`: `--font-display`,
 `--font-script`, `--font-ui` y `--font-body`. Los componentes no saben qué
 versión está activa.
 
-Dos reglas, comprobables en el DOM con estilos calculados:
+Tres reglas, comprobables en el DOM con estilos calculados:
+
+- **Ningún texto baja de 14px**, en ninguna versión ni en ninguna anchura.
 
 - La **cursiva** y la **script** nunca bajan de 28px. El texto corrido va
   redondo.
