@@ -42,6 +42,9 @@ const photos = wedding.photos;
  */
 const carrete = photos.length > 0 ? [...photos, ...photos] : [];
 const huecos = photos.length === 0 ? wedding.gallery.placeholders : 0;
+/** Todos los párrafos de la luna de miel comparten cuerpo, color y ancho. */
+const PARRAFO_REGALO = 'text-[18px] text-white/90 leading-relaxed max-w-xl mx-auto';
+
 /** Sin pista de fondo no se monta el reproductor ni los botones de sonido. */
 const hasAudio = Boolean(wedding.music.backgroundAudio);
 
@@ -1081,16 +1084,17 @@ export default function Home() {
                 <SectionHeading eyebrow={wedding.gift.eyebrow} title={wedding.gift.title} light />
               </motion.div>
 
+              {/* Los tres párrafos van con el mismo cuerpo, color y ancho. */}
               <motion.p
                 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8 } } }}
-                className="text-[18px] text-white/90 leading-relaxed max-w-xl mx-auto mb-5"
+                className={PARRAFO_REGALO + ' mb-5'}
               >
                 {wedding.gift.description}
               </motion.p>
 
               <motion.p
                 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8 } } }}
-                className="text-[18px] text-white leading-relaxed max-w-lg mx-auto mb-8"
+                className={PARRAFO_REGALO + ' mb-8'}
               >
                 {wedding.gift.invitation}
               </motion.p>
@@ -1127,7 +1131,9 @@ export default function Home() {
                 }}
                 className="flex flex-col items-center gap-3"
               >
-                <p className="text-white/75 text-[16px]">{wedding.gift.ctaHint}</p>
+                {wedding.gift.ctaHint && (
+                  <p className={PARRAFO_REGALO}>{wedding.gift.ctaHint}</p>
+                )}
                 <button
                   onClick={() => setShowIbanModal(true)}
                   className="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-ink hover:bg-white/90 font-sans text-[14px] uppercase tracking-[0.22em] rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 font-semibold"
@@ -1140,7 +1146,7 @@ export default function Home() {
               {wedding.gift.closing && (
                 <motion.p
                   variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8 } } }}
-                  className="mt-8 text-[16px] text-white/80 leading-relaxed max-w-lg mx-auto"
+                  className={PARRAFO_REGALO + ' mt-8'}
                 >
                   {wedding.gift.closing}
                 </motion.p>

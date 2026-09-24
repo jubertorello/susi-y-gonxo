@@ -267,8 +267,9 @@ export const wedding = {
     /** Línea de cierre bajo el botón. Cadena vacía para no ponerla. */
     closing:
       'Gracias por acompañarnos, de una forma u otra, en todo lo que está por venir.',
-    image: '/safari.webp',
-    ctaHint: '¿Quieres hacernos un regalo? Haz click aquí:',
+    image: '/safari-africa.webp',
+    /** Línea sobre el botón. Cadena vacía: no se pone ninguna. */
+    ctaHint: '',
     ctaLabel: 'Ver datos regalo',
     modal: {
       title: 'Luna de Miel · Regalo',
