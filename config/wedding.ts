@@ -207,7 +207,7 @@ export const wedding = {
     title: 'Itinerario',
     subtitle: 'Hemos preparado todo para un día inolvidable',
     events: [
-      { time: '12:15 H', title: 'La Ceremonia', image: '/itinerario/ceremonia-v2.webp' },
+      { time: '12:15 H', title: 'La Ceremonia', image: '/itinerario/ceremonia-v4.webp' },
       { time: '13:45 H', title: 'El Cóctel', image: '/itinerario/coctel-v3.webp' },
       { time: '16:00 H', title: 'El Banquete', image: '/itinerario/banquete-v2.webp' },
       { time: '18:00 H', title: 'El Baile & Fiesta', image: '/itinerario/baile-v2.webp' },
@@ -410,18 +410,22 @@ export const wedding = {
   // ---------------------------------------------------------------------------
   nav: {
     ctaLabel: 'Confirma tu asistencia',
-    /** `mobileOnly: true` → el enlace solo aparece en el menú desplegable. */
+    /**
+     * `mobileOnly` → solo en el desplegable; `desktopOnly` → solo en la barra.
+     * En la barra no caben siete enlaces, así que Datos de Interés va entero
+     * en uno («Información») y en el desplegable se abre en sus tres bloques,
+     * que es donde sí hay sitio para enseñarlos.
+     */
     links: [
       { id: 'lugar', label: 'Lugar' },
       { id: 'itinerario', label: 'Itinerario' },
       { id: 'viaje', label: 'Luna de Miel · Regalo' },
-      /* Los tres de dentro de Datos de Interés: no son secciones, pero así
-         se sabe que están. Sustituyen al enlace genérico de «Información». */
+      { id: 'informacion', label: 'Información', desktopOnly: true },
       { id: 'dress-code', label: 'Dress Code', mobileOnly: true },
       { id: 'hoteles', label: 'Hoteles', mobileOnly: true },
       { id: 'autobuses', label: 'Autobuses', mobileOnly: true },
-      { id: 'musica', label: 'Música', mobileOnly: true },
-    ] as { id: string; label: string; mobileOnly?: boolean }[],
+      { id: 'musica', label: 'Música' },
+    ] as { id: string; label: string; mobileOnly?: boolean; desktopOnly?: boolean }[],
   },
 };
 

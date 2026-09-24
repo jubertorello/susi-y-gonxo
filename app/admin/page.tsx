@@ -411,10 +411,10 @@ export default function AdminDashboard() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-cream flex items-center justify-center p-6 font-sans">
+      <div className="min-h-screen bg-cream flex items-center justify-center p-6 font-[family-name:var(--font-inter)] font-medium">
         <div className="bg-white p-8 rounded-lg shadow-sm border border-primary/10 max-w-sm w-full text-center">
           <h1 className="font-serif text-2xl text-primary mb-2 italic">Acceso Maestro</h1>
-          <p className="text-xs text-secondary mb-8">Panel de control de invitaciones</p>
+          <p className="text-[14px] text-secondary mb-8">Panel de control de invitaciones</p>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <input
@@ -422,7 +422,7 @@ export default function AdminDashboard() {
               placeholder="Usuario"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-sand/30 border border-primary/20 rounded p-3 text-primary focus:outline-none focus:border-primary text-sm"
+              className="w-full bg-sand/30 border border-primary/20 rounded p-3 text-primary focus:outline-none focus:border-primary text-[16px]"
               autoCapitalize="none"
               autoComplete="username"
             />
@@ -432,7 +432,7 @@ export default function AdminDashboard() {
                 placeholder="Contraseña"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-sand/30 border border-primary/20 rounded p-3 pr-10 text-primary focus:outline-none focus:border-primary text-sm"
+                className="w-full bg-sand/30 border border-primary/20 rounded p-3 pr-10 text-primary focus:outline-none focus:border-primary text-[16px]"
                 autoComplete="current-password"
               />
               <button
@@ -446,7 +446,7 @@ export default function AdminDashboard() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-primary text-white uppercase tracking-widest text-[10px] rounded hover:bg-primary/90 transition-colors disabled:opacity-50"
+              className="w-full py-3 bg-primary text-white uppercase tracking-widest text-[14px] rounded hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
               {loading ? 'Entrando...' : 'Entrar'}
             </button>
@@ -563,16 +563,16 @@ export default function AdminDashboard() {
   const isMasterAll = userSession?.role === 'master' && selectedClientId === 'all';
 
   return (
-    <div className="min-h-screen bg-cream text-primary font-sans">
+    <div className="min-h-screen bg-cream text-primary font-[family-name:var(--font-inter)] font-medium">
       {/* Header */}
       <header className="bg-white border-b border-primary/10 sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <h1 className="font-serif text-xl italic font-light">
+          <h1 className="font-serif text-xl italic font-normal">
             {userSession?.role === 'master' ? 'Panel Maestro' : 'Panel de Control'}
           </h1>
           <button
             onClick={handleLogout}
-            className="flex items-center space-x-2 text-xs uppercase tracking-wider text-secondary hover:text-primary transition-colors"
+            className="flex items-center space-x-2 text-[14px] uppercase tracking-wider text-secondary hover:text-primary transition-colors"
           >
             <span>Salir</span>
             <LogOut size={14} />
@@ -589,7 +589,7 @@ export default function AdminDashboard() {
                 ? (selectedClientId === 'all' ? 'Todos los Eventos' : clientsList.find(c => c.client_id === selectedClientId)?.display_name || selectedClientId)
                 : userSession?.displayName}
             </h2>
-            <p className="text-sm text-secondary">
+            <p className="text-[16px] text-secondary">
               {userSession?.role === 'master' ? 'Consolidación de invitaciones' : 'Panel de control de confirmaciones'}
             </p>
           </div>
@@ -597,11 +597,11 @@ export default function AdminDashboard() {
           <div className="flex flex-wrap items-center gap-4 mt-4 md:mt-0">
             {userSession?.role === 'master' && (
               <div className="flex items-center space-x-2 bg-white px-3 py-1 rounded-lg border border-primary/10">
-                <span className="text-xs text-secondary uppercase tracking-wider">Cliente:</span>
+                <span className="text-[14px] text-secondary uppercase tracking-wider">Cliente:</span>
                 <select
                   value={selectedClientId}
                   onChange={(e) => handleClientFilterChange(e.target.value)}
-                  className="bg-transparent text-primary focus:outline-none text-xs font-sans cursor-pointer py-1"
+                  className="bg-transparent text-primary focus:outline-none text-[14px] font-[family-name:var(--font-inter)] cursor-pointer py-1"
                 >
                   <option value="all">Todos los eventos</option>
                   {clientsList.map((c) => (
@@ -616,13 +616,13 @@ export default function AdminDashboard() {
             <div className="flex space-x-2 bg-white p-1 rounded-lg border border-primary/10">
               <button
                 onClick={() => setActiveTab('rsvps')}
-                className={`px-3 md:px-6 py-2 rounded-md text-xs uppercase tracking-wider transition-colors ${activeTab === 'rsvps' ? 'bg-primary text-white' : 'text-secondary hover:bg-sand'}`}
+                className={`px-3 md:px-6 py-2 rounded-md text-[14px] uppercase tracking-wider transition-colors ${activeTab === 'rsvps' ? 'bg-primary text-white' : 'text-secondary hover:bg-sand'}`}
               >
                 Confirmaciones
               </button>
               <button
                 onClick={() => setActiveTab('songs')}
-                className={`px-3 md:px-6 py-2 rounded-md text-xs uppercase tracking-wider transition-colors ${activeTab === 'songs' ? 'bg-primary text-white' : 'text-secondary hover:bg-sand'}`}
+                className={`px-3 md:px-6 py-2 rounded-md text-[14px] uppercase tracking-wider transition-colors ${activeTab === 'songs' ? 'bg-primary text-white' : 'text-secondary hover:bg-sand'}`}
               >
                 Música
               </button>
@@ -641,52 +641,52 @@ export default function AdminDashboard() {
                   <div className="bg-white p-5 rounded-lg border border-primary/10 shadow-sm">
                     <div className="flex items-center space-x-3 text-secondary mb-2">
                       <Users size={16} />
-                      <span className="text-xs uppercase tracking-wider">Total Asistentes</span>
+                      <span className="text-[14px] uppercase tracking-wider font-semibold">Total Asistentes</span>
                     </div>
-                    <p className="text-3xl font-serif">{totalGuests}</p>
-                    <p className="text-[10px] text-secondary mt-1">{attendingRsvps.length} invitados · {totalCompanions} acomp.</p>
+                    <p className="text-3xl font-serif font-bold">{totalGuests}</p>
+                    <p className="text-[14px] text-secondary mt-1">{attendingRsvps.length} invitados · {totalCompanions} acomp.</p>
                   </div>
                   <div className="bg-white p-5 rounded-lg border border-primary/10 shadow-sm">
                     <div className="flex items-center space-x-3 text-secondary mb-2">
                       <Check size={16} />
-                      <span className="text-xs uppercase tracking-wider">No Asisten</span>
+                      <span className="text-[14px] uppercase tracking-wider font-semibold">No Asisten</span>
                     </div>
-                    <p className="text-3xl font-serif">{notAttendingCount}</p>
-                    <p className="text-[10px] text-secondary mt-1">{rsvps.length} formularios total</p>
+                    <p className="text-3xl font-serif font-bold">{notAttendingCount}</p>
+                    <p className="text-[14px] text-secondary mt-1">{rsvps.length} formularios total</p>
                   </div>
                   <div className="bg-white p-5 rounded-lg border border-primary/10 shadow-sm">
                     <div className="flex items-center space-x-3 text-secondary mb-2">
                       <Bus size={16} />
-                      <span className="text-xs uppercase tracking-wider">Bus Ida</span>
+                      <span className="text-[14px] uppercase tracking-wider font-semibold">Bus Ida</span>
                     </div>
-                    <p className="text-3xl font-serif">{busIdaCount}</p>
-                    <p className="text-[10px] text-secondary mt-1">personas en total</p>
+                    <p className="text-3xl font-serif font-bold">{busIdaCount}</p>
+                    <p className="text-[14px] text-secondary mt-1">personas en total</p>
                   </div>
                   <div className="bg-white p-5 rounded-lg border border-primary/10 shadow-sm">
                     <div className="flex items-center space-x-3 text-secondary mb-2">
                       <Bus size={16} />
-                      <span className="text-xs uppercase tracking-wider">Bus Vuelta</span>
+                      <span className="text-[14px] uppercase tracking-wider font-semibold">Bus Vuelta</span>
                     </div>
-                    <p className="text-3xl font-serif">{busVueltaCount}</p>
-                    <p className="text-[10px] text-secondary mt-1">personas en total</p>
+                    <p className="text-3xl font-serif font-bold">{busVueltaCount}</p>
+                    <p className="text-[14px] text-secondary mt-1">personas en total</p>
                   </div>
                 </div>
 
                 {/* Export header */}
                 <div className="flex flex-wrap items-center justify-between gap-3 bg-white px-6 py-4 rounded-lg border border-primary/10 shadow-sm">
-                  <h3 className="font-serif text-lg text-primary">Confirmaciones</h3>
+                  <h3 className="font-serif text-lg text-primary font-bold">Confirmaciones</h3>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => fetchData()}
                       disabled={loading}
-                      className="flex items-center space-x-2 text-xs uppercase tracking-wider font-semibold border border-primary/30 text-primary px-4 py-2 rounded-md hover:bg-sand transition-colors cursor-pointer disabled:opacity-40"
+                      className="flex items-center space-x-2 text-[14px] uppercase tracking-wider font-semibold border border-primary/30 text-primary px-4 py-2 rounded-md hover:bg-sand transition-colors cursor-pointer disabled:opacity-40"
                     >
                       <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />
                       <span>Actualizar</span>
                     </button>
                     <button
                       onClick={exportRsvps}
-                      className="flex items-center space-x-2 text-xs uppercase tracking-wider font-semibold bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors shadow-sm cursor-pointer"
+                      className="flex items-center space-x-2 text-[14px] uppercase tracking-wider font-semibold bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors shadow-sm cursor-pointer"
                     >
                       <Download size={14} />
                       <span>Descargar Excel</span>
@@ -704,12 +704,12 @@ export default function AdminDashboard() {
                         placeholder="Buscar por nombre..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-sand/20 border border-primary/20 rounded p-2.5 pl-3 text-primary focus:outline-none focus:border-primary text-xs font-sans placeholder-secondary/50"
+                        className="w-full bg-sand/20 border border-primary/20 rounded p-2.5 pl-3 text-primary focus:outline-none focus:border-primary text-[14px] font-[family-name:var(--font-inter)] placeholder-secondary/50"
                       />
                       {searchTerm && (
                         <button
                           onClick={() => setSearchTerm('')}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary hover:text-primary text-xs"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary hover:text-primary text-[14px]"
                         >
                           ✕
                         </button>
@@ -721,7 +721,7 @@ export default function AdminDashboard() {
                       <select
                         value={attendanceFilter}
                         onChange={(e) => setAttendanceFilter(e.target.value as any)}
-                        className="w-full bg-sand/20 border border-primary/20 rounded p-2.5 text-primary focus:outline-none focus:border-primary text-xs font-sans cursor-pointer"
+                        className="w-full bg-sand/20 border border-primary/20 rounded p-2.5 text-primary focus:outline-none focus:border-primary text-[14px] font-[family-name:var(--font-inter)] cursor-pointer"
                       >
                         <option value="all">Asistencia: Todos</option>
                         <option value="yes">Sí asisten</option>
@@ -734,7 +734,7 @@ export default function AdminDashboard() {
                       <select
                         value={busFilter}
                         onChange={(e) => setBusFilter(e.target.value as any)}
-                        className="w-full bg-sand/20 border border-primary/20 rounded p-2.5 text-primary focus:outline-none focus:border-primary text-xs font-sans cursor-pointer"
+                        className="w-full bg-sand/20 border border-primary/20 rounded p-2.5 text-primary focus:outline-none focus:border-primary text-[14px] font-[family-name:var(--font-inter)] cursor-pointer"
                       >
                         <option value="all">Autobús: Todos</option>
                         <option value="ida">Bus Ida</option>
@@ -749,7 +749,7 @@ export default function AdminDashboard() {
                       <select
                         value={dietaryFilter}
                         onChange={(e) => setDietaryFilter(e.target.value as any)}
-                        className="w-full bg-sand/20 border border-primary/20 rounded p-2.5 text-primary focus:outline-none focus:border-primary text-xs font-sans cursor-pointer"
+                        className="w-full bg-sand/20 border border-primary/20 rounded p-2.5 text-primary focus:outline-none focus:border-primary text-[14px] font-[family-name:var(--font-inter)] cursor-pointer"
                       >
                         <option value="all">Dietas: Todos</option>
                         <option value="intolerance">Con intolerancia</option>
@@ -761,7 +761,7 @@ export default function AdminDashboard() {
                       <select
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value as any)}
-                        className="w-full bg-sand/20 border border-primary/20 rounded p-2.5 text-primary focus:outline-none focus:border-primary text-xs font-sans cursor-pointer"
+                        className="w-full bg-sand/20 border border-primary/20 rounded p-2.5 text-primary focus:outline-none focus:border-primary text-[14px] font-[family-name:var(--font-inter)] cursor-pointer"
                       >
                         <option value="date_desc">Fecha (Novedades primero)</option>
                         <option value="date_asc">Fecha (Antiguos primero)</option>
@@ -773,7 +773,7 @@ export default function AdminDashboard() {
 
                   {/* Active filters summary */}
                   {(searchTerm || attendanceFilter !== 'all' || busFilter !== 'all' || dietaryFilter !== 'all') && (
-                    <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-primary/5 text-xs text-secondary">
+                    <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-primary/5 text-[14px] text-secondary">
                       <div>
                         Mostrando <span className="font-semibold text-primary">{displayedMainRsvps.length}</span> de <span className="font-semibold text-primary">{mainRsvps.length}</span> confirmaciones principales.
                       </div>
@@ -784,7 +784,7 @@ export default function AdminDashboard() {
                           setBusFilter('all');
                           setDietaryFilter('all');
                         }}
-                        className="text-primary hover:underline font-medium"
+                        className="text-primary hover:underline font-semibold"
                       >
                         Restablecer filtros
                       </button>
@@ -809,17 +809,17 @@ export default function AdminDashboard() {
                       return (
                         <div key={rsvp.id} className="bg-white rounded-lg border border-primary/10 shadow-sm p-4">
                           {isMasterAll && (
-                            <span className="text-[9px] uppercase tracking-wider font-bold text-secondary/60 block mb-1">{rsvp.client_id}</span>
+                            <span className="text-[14px] uppercase tracking-wider font-bold text-secondary/60 block mb-1">{rsvp.client_id}</span>
                           )}
                           <div className="flex items-start justify-between mb-3">
                             <div>
-                              <p className="font-medium text-primary">
+                              <p className="font-semibold text-primary">
                                 {rsvp.guest_name || '-'}
                                 {companions.length > 0 && (
-                                  <span className="ml-1.5 text-[10px] text-secondary bg-sand px-1.5 py-0.5 rounded-full">+{companions.length}</span>
+                                  <span className="ml-1.5 text-[14px] text-secondary bg-sand px-1.5 py-0.5 rounded-full">+{companions.length}</span>
                                 )}
                               </p>
-                              <p className="text-[10px] text-secondary mt-0.5">
+                              <p className="text-[14px] text-secondary mt-0.5">
                                 {new Date(rsvp.created_at).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                               </p>
                             </div>
@@ -833,28 +833,28 @@ export default function AdminDashboard() {
                               <button onClick={() => handleDeleteRsvp(rsvp.id)} className="p-1.5 rounded-full hover:bg-red-50 text-red-500 transition-colors" title="Eliminar confirmación">
                                 <Trash2 size={14} />
                               </button>
-                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-sans font-semibold uppercase tracking-wide ${isAttending ? 'bg-primary/10 text-primary' : 'bg-red-50 text-red-500'}`}>
+                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[14px] font-[family-name:var(--font-inter)] font-semibold uppercase tracking-wide ${isAttending ? 'bg-primary/10 text-primary' : 'bg-red-50 text-red-500'}`}>
                                 {isAttending ? 'Sí' : 'No'}
                               </span>
                             </div>
                           </div>
                           {isAttending && (
-                            <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs border-t border-primary/5 pt-3">
+                            <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[14px] border-t border-primary/5 pt-3">
                               <div><span className="text-secondary">Intolerancia: </span><span className="text-primary">{rsvp.dietary_restrictions || '—'}</span></div>
                               <div><span className="text-secondary">Bus ida: </span><span className="text-primary">{rsvp.bus_ida ? 'Sí' : 'No'}</span></div>
                               <div><span className="text-secondary">Bus vuelta: </span><span className="text-primary">{rsvp.bus_vuelta ? 'Sí' : 'No'}</span></div>
                             </div>
                           )}
                           {rsvp.message && (
-                            <p className="text-xs text-secondary mt-2 pt-2 border-t border-primary/5">&laquo;{rsvp.message}&raquo;</p>
+                            <p className="text-[14px] text-secondary mt-2 pt-2 border-t border-primary/5">&laquo;{rsvp.message}&raquo;</p>
                           )}
                           {companions.map((c: any, ci: number) => (
                             <div key={c.id} className="mt-2 pl-3 border-l-2 border-primary/10 pt-1">
-                              <p className="text-xs text-primary font-medium">
-                                <span className="text-[9px] uppercase tracking-wider text-secondary/60 mr-1">Acomp. {ci + 1}</span>
+                              <p className="text-[14px] text-primary font-semibold">
+                                <span className="text-[14px] uppercase tracking-wider text-secondary/60 mr-1">Acomp. {ci + 1}</span>
                                 {c.guest_name || '-'}
                               </p>
-                              <div className="text-[10px] text-secondary mt-0.5 flex gap-3">
+                              <div className="text-[14px] text-secondary mt-0.5 flex gap-3">
                                 {c.dietary_restrictions && <span>Intol.: {c.dietary_restrictions}</span>}
                                 <span>Bus: {[c.bus_ida && 'Ida', c.bus_vuelta && 'Vuelta'].filter(Boolean).join(' + ') || 'No'}</span>
                               </div>
@@ -871,19 +871,19 @@ export default function AdminDashboard() {
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                       <thead>
-                        <tr className="bg-sand/30 border-b border-primary/10 text-xs uppercase tracking-wider text-secondary">
-                          {isMasterAll && <th className="p-4 font-medium">Evento</th>}
-                          <th className="p-4 font-medium">Asiste</th>
-                          <th className="p-4 font-medium">Nombre</th>
-                          <th className="p-4 font-medium">Intolerancia</th>
-                          <th className="p-4 font-medium">Bus Ida</th>
-                          <th className="p-4 font-medium">Bus Vuelta</th>
-                          <th className="p-4 font-medium">Mensaje</th>
-                          <th className="p-4 font-medium text-right">Fecha</th>
+                        <tr className="bg-sand/30 border-b border-primary/10 text-[14px] uppercase tracking-wider text-secondary">
+                          {isMasterAll && <th className="p-4 font-semibold">Evento</th>}
+                          <th className="p-4 font-semibold">Asiste</th>
+                          <th className="p-4 font-semibold">Nombre</th>
+                          <th className="p-4 font-semibold">Intolerancia</th>
+                          <th className="p-4 font-semibold">Bus Ida</th>
+                          <th className="p-4 font-semibold">Bus Vuelta</th>
+                          <th className="p-4 font-semibold">Mensaje</th>
+                          <th className="p-4 font-semibold text-right">Fecha</th>
                           <th className="p-4 w-20" />
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-primary/5 text-sm">
+                      <tbody className="divide-y divide-primary/5 text-[16px]">
                         {rsvps.length === 0 ? (
                           <tr>
                             <td colSpan={isMasterAll ? 9 : 8} className="p-8 text-center text-secondary">
@@ -904,26 +904,26 @@ export default function AdminDashboard() {
                               <React.Fragment key={rsvp.id}>
                                 <tr className="hover:bg-cream/50 transition-colors">
                                   {isMasterAll && (
-                                    <td className="p-4 font-bold text-xs uppercase tracking-wide text-secondary bg-sand/10">
+                                    <td className="p-4 font-bold text-[14px] uppercase tracking-wide text-secondary bg-sand/10">
                                       {rsvp.client_id}
                                     </td>
                                   )}
                                   <td className="p-4">
-                                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-sans font-semibold uppercase tracking-wide ${isAttending ? 'bg-primary/10 text-primary' : 'bg-red-50 text-red-500'}`}>
+                                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[14px] font-[family-name:var(--font-inter)] font-semibold uppercase tracking-wide ${isAttending ? 'bg-primary/10 text-primary' : 'bg-red-50 text-red-500'}`}>
                                       {isAttending ? 'Sí' : 'No'}
                                     </span>
                                   </td>
-                                  <td className="p-4 font-medium text-primary">
+                                  <td className="p-4 font-semibold text-primary">
                                     {rsvp.guest_name || '-'}
                                     {companions.length > 0 && (
-                                      <span className="ml-2 text-[10px] text-secondary bg-sand px-1.5 py-0.5 rounded-full">+{companions.length}</span>
+                                      <span className="ml-2 text-[14px] text-secondary bg-sand px-1.5 py-0.5 rounded-full">+{companions.length}</span>
                                     )}
                                   </td>
                                   <td className="p-4 text-secondary">{isAttending ? (rsvp.dietary_restrictions || '-') : '—'}</td>
                                   <td className="p-4 text-secondary">{isAttending && rsvp.bus_ida ? 'SI' : 'NO'}</td>
                                   <td className="p-4 text-secondary">{isAttending && rsvp.bus_vuelta ? 'SI' : 'NO'}</td>
                                   <td className="p-4 text-secondary max-w-xs truncate" title={rsvp.message}>{rsvp.message || '-'}</td>
-                                  <td className="p-4 text-right text-secondary text-xs">
+                                  <td className="p-4 text-right text-secondary text-[14px]">
                                     {new Date(rsvp.created_at).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                                   </td>
                                   <td className="p-4">
@@ -944,13 +944,13 @@ export default function AdminDashboard() {
                                   <tr key={c.id} className="bg-cream/60">
                                     {isMasterAll && <td className="pl-4 py-2" />}
                                     <td className="pl-4 py-2" />
-                                    <td className="py-2 pl-8 pr-4 text-xs text-secondary border-l-2 border-primary/10">
-                                      <span className="text-[9px] uppercase tracking-wider text-secondary/60 mr-1">Acomp. {ci + 1}</span>
+                                    <td className="py-2 pl-8 pr-4 text-[14px] text-secondary border-l-2 border-primary/10">
+                                      <span className="text-[14px] uppercase tracking-wider text-secondary/60 mr-1">Acomp. {ci + 1}</span>
                                       {c.guest_name || '-'}
                                     </td>
-                                    <td className="py-2 px-4 text-xs text-secondary">{c.dietary_restrictions || '-'}</td>
-                                    <td className="py-2 px-4 text-xs text-secondary">{c.bus_ida ? 'SI' : 'NO'}</td>
-                                    <td className="py-2 px-4 text-xs text-secondary">{c.bus_vuelta ? 'SI' : 'NO'}</td>
+                                    <td className="py-2 px-4 text-[14px] text-secondary">{c.dietary_restrictions || '-'}</td>
+                                    <td className="py-2 px-4 text-[14px] text-secondary">{c.bus_ida ? 'SI' : 'NO'}</td>
+                                    <td className="py-2 px-4 text-[14px] text-secondary">{c.bus_vuelta ? 'SI' : 'NO'}</td>
                                     <td className="py-2 px-4" />
                                     <td className="py-2 px-4" />
                                     <td className="py-2 px-4" />
@@ -970,10 +970,10 @@ export default function AdminDashboard() {
             {activeTab === 'songs' && (
               <div className="space-y-6 max-w-4xl mx-auto">
                 <div className="flex flex-wrap items-center justify-between gap-3 bg-white px-6 py-4 rounded-lg border border-primary/10 shadow-sm">
-                  <h3 className="font-serif text-lg text-primary">Sugerencias de Música</h3>
+                  <h3 className="font-serif text-lg text-primary font-bold">Sugerencias de Música</h3>
                   <button
                     onClick={exportSongs}
-                    className="flex items-center space-x-2 text-xs uppercase tracking-wider font-semibold bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors shadow-sm cursor-pointer"
+                    className="flex items-center space-x-2 text-[14px] uppercase tracking-wider font-semibold bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors shadow-sm cursor-pointer"
                   >
                     <Download size={14} />
                     <span>Descargar Excel</span>
@@ -990,15 +990,15 @@ export default function AdminDashboard() {
                     songs.map((song, index) => (
                       <div key={song.id} className="bg-white rounded-lg border border-primary/10 shadow-sm p-4 flex items-center justify-between">
                         <div className="flex items-center gap-3 min-w-0">
-                          <span className="text-xs font-bold text-primary/40 w-5 shrink-0 text-right">#{index + 1}</span>
+                          <span className="text-[14px] font-bold text-primary/40 w-5 shrink-0 text-right">#{index + 1}</span>
                           <div className="min-w-0">
-                            {isMasterAll && <span className="text-[9px] uppercase tracking-wider font-bold text-secondary/60 block">{song.client_id}</span>}
-                            <p className="font-medium text-primary text-sm truncate">{song.title}</p>
-                            <p className="text-xs text-secondary truncate">{song.artist}</p>
+                            {isMasterAll && <span className="text-[14px] uppercase tracking-wider font-bold text-secondary/60 block">{song.client_id}</span>}
+                            <p className="font-semibold text-primary text-[16px] truncate">{song.title}</p>
+                            <p className="text-[14px] text-secondary truncate">{song.artist}</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-2 shrink-0 ml-3">
-                          <div className="inline-flex items-center space-x-1 bg-sand px-2 py-1 rounded text-primary font-medium text-xs">
+                          <div className="inline-flex items-center space-x-1 bg-sand px-2 py-1 rounded text-primary font-semibold text-[14px]">
                             <Heart size={11} className="fill-primary/20" />
                             <span>{song.votes}</span>
                           </div>
@@ -1020,15 +1020,15 @@ export default function AdminDashboard() {
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                       <thead>
-                        <tr className="bg-sand/30 border-b border-primary/10 text-xs uppercase tracking-wider text-secondary">
-                          {isMasterAll && <th className="p-4 font-medium">Evento</th>}
-                          <th className="p-4 font-medium w-16 text-center">Votos</th>
-                          <th className="p-4 font-medium">Título de la Canción</th>
-                          <th className="p-4 font-medium">Artista</th>
+                        <tr className="bg-sand/30 border-b border-primary/10 text-[14px] uppercase tracking-wider text-secondary">
+                          {isMasterAll && <th className="p-4 font-semibold">Evento</th>}
+                          <th className="p-4 font-semibold w-16 text-center">Votos</th>
+                          <th className="p-4 font-semibold">Título de la Canción</th>
+                          <th className="p-4 font-semibold">Artista</th>
                           <th className="p-4 w-12 text-center">Acciones</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-primary/5 text-sm">
+                      <tbody className="divide-y divide-primary/5 text-[16px]">
                         {songs.length === 0 ? (
                           <tr>
                             <td colSpan={isMasterAll ? 5 : 4} className="p-8 text-center text-secondary">
@@ -1039,17 +1039,17 @@ export default function AdminDashboard() {
                           songs.map((song) => (
                             <tr key={song.id} className="hover:bg-cream/50 transition-colors">
                               {isMasterAll && (
-                                <td className="p-4 font-bold text-xs uppercase tracking-wide text-secondary bg-sand/10">
+                                <td className="p-4 font-bold text-[14px] uppercase tracking-wide text-secondary bg-sand/10">
                                   {song.client_id}
                                 </td>
                               )}
                               <td className="p-4 text-center">
-                                <div className="inline-flex items-center space-x-1 bg-sand px-2 py-1 rounded text-primary font-medium">
+                                <div className="inline-flex items-center space-x-1 bg-sand px-2 py-1 rounded text-primary font-semibold">
                                   <Heart size={12} className="fill-primary/20" />
                                   <span>{song.votes}</span>
                                 </div>
                               </td>
-                              <td className="p-4 font-medium text-primary">{song.title}</td>
+                              <td className="p-4 font-semibold text-primary">{song.title}</td>
                               <td className="p-4 text-secondary">{song.artist}</td>
                               <td className="p-4 text-center">
                                 <button
@@ -1091,24 +1091,24 @@ export default function AdminDashboard() {
             {!isEditingRsvp && (
               <>
                 <div className="mb-5">
-                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide mb-2 ${selectedRsvp.rsvp.attending !== false ? 'bg-primary/10 text-primary' : 'bg-red-50 text-red-500'}`}>
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[14px] font-semibold uppercase tracking-wide mb-2 ${selectedRsvp.rsvp.attending !== false ? 'bg-primary/10 text-primary' : 'bg-red-50 text-red-500'}`}>
                     {selectedRsvp.rsvp.attending !== false ? 'Asiste' : 'No asiste'}
                   </span>
                   <h3 className="font-serif text-xl text-ink">{selectedRsvp.rsvp.guest_name || '-'}</h3>
-                  <p className="text-[11px] text-secondary mt-1">
+                  <p className="text-[14px] text-secondary mt-1">
                     {new Date(selectedRsvp.rsvp.created_at).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                   </p>
                 </div>
 
                 {selectedRsvp.rsvp.attending !== false && (
-                  <div className="space-y-3 text-sm">
+                  <div className="space-y-3 text-[16px]">
                     <div className="grid grid-cols-2 gap-3">
                       <div className="bg-cream rounded-lg p-3">
-                        <p className="text-[10px] uppercase tracking-wider text-secondary mb-1">Intolerancia</p>
+                        <p className="text-[14px] uppercase tracking-wider text-secondary mb-1">Intolerancia</p>
                         <p className="text-primary">{selectedRsvp.rsvp.dietary_restrictions || 'Ninguna'}</p>
                       </div>
                       <div className="bg-cream rounded-lg p-3">
-                        <p className="text-[10px] uppercase tracking-wider text-secondary mb-1">Autobús</p>
+                        <p className="text-[14px] uppercase tracking-wider text-secondary mb-1">Autobús</p>
                         <p className="text-primary">
                           {[selectedRsvp.rsvp.bus_ida && 'Ida', selectedRsvp.rsvp.bus_vuelta && 'Vuelta'].filter(Boolean).join(' + ') || 'No'}
                         </p>
@@ -1117,12 +1117,12 @@ export default function AdminDashboard() {
 
                     {selectedRsvp.companions.length > 0 && (
                       <div>
-                        <p className="text-[10px] uppercase tracking-wider text-secondary mb-2">Acompañantes ({selectedRsvp.companions.length})</p>
+                        <p className="text-[14px] uppercase tracking-wider text-secondary mb-2">Acompañantes ({selectedRsvp.companions.length})</p>
                         <div className="space-y-2">
                           {selectedRsvp.companions.map((c: any) => (
                             <div key={c.id} className="bg-cream rounded-lg p-3 border-l-2 border-primary/20">
-                              <p className="font-medium text-primary">{c.guest_name || '-'}</p>
-                              <p className="text-[11px] text-secondary mt-0.5">
+                              <p className="font-semibold text-primary">{c.guest_name || '-'}</p>
+                              <p className="text-[14px] text-secondary mt-0.5">
                                 Intol.: {c.dietary_restrictions || 'Ninguna'} · Bus: {[c.bus_ida && 'Ida', c.bus_vuelta && 'Vuelta'].filter(Boolean).join(' + ') || 'No'}
                               </p>
                             </div>
@@ -1133,7 +1133,7 @@ export default function AdminDashboard() {
 
                     {selectedRsvp.rsvp.message && (
                       <div className="bg-cream rounded-lg p-3">
-                        <p className="text-[10px] uppercase tracking-wider text-secondary mb-1">Mensaje</p>
+                        <p className="text-[14px] uppercase tracking-wider text-secondary mb-1">Mensaje</p>
                         <p className="text-primary italic">&ldquo;{selectedRsvp.rsvp.message}&rdquo;</p>
                       </div>
                     )}
@@ -1141,8 +1141,8 @@ export default function AdminDashboard() {
                 )}
 
                 {selectedRsvp.rsvp.attending === false && selectedRsvp.rsvp.message && (
-                  <div className="bg-cream rounded-lg p-3 text-sm">
-                    <p className="text-[10px] uppercase tracking-wider text-secondary mb-1">Mensaje</p>
+                  <div className="bg-cream rounded-lg p-3 text-[16px]">
+                    <p className="text-[14px] uppercase tracking-wider text-secondary mb-1">Mensaje</p>
                     <p className="text-primary italic">&ldquo;{selectedRsvp.rsvp.message}&rdquo;</p>
                   </div>
                 )}
@@ -1150,14 +1150,14 @@ export default function AdminDashboard() {
                 <div className="mt-6 pt-4 border-t border-primary/10 flex items-center justify-between gap-2">
                   <button
                     onClick={() => handleEditRsvp(selectedRsvp.rsvp, selectedRsvp.companions)}
-                    className="flex items-center space-x-2 text-xs uppercase tracking-wider font-semibold border border-primary/30 text-primary px-4 py-2 rounded-md hover:bg-sand transition-colors cursor-pointer"
+                    className="flex items-center space-x-2 text-[14px] uppercase tracking-wider font-semibold border border-primary/30 text-primary px-4 py-2 rounded-md hover:bg-sand transition-colors cursor-pointer"
                   >
                     <Pencil size={13} />
                     <span>Editar</span>
                   </button>
                   <button
                     onClick={() => handleDeleteRsvp(selectedRsvp.rsvp.id)}
-                    className="flex items-center space-x-2 text-xs uppercase tracking-wider font-semibold bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors shadow-sm cursor-pointer"
+                    className="flex items-center space-x-2 text-[14px] uppercase tracking-wider font-semibold bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors shadow-sm cursor-pointer"
                   >
                     <Trash2 size={14} />
                     <span>Eliminar</span>
@@ -1171,25 +1171,25 @@ export default function AdminDashboard() {
               <>
                 <h3 className="font-serif text-xl text-ink mb-5">Editar confirmación</h3>
 
-                <div className="space-y-4 text-sm">
+                <div className="space-y-4 text-[16px]">
                   {/* Nombre */}
                   <div>
-                    <label className="block text-[10px] uppercase tracking-wider text-secondary mb-1">Nombre del invitado</label>
+                    <label className="block text-[14px] uppercase tracking-wider text-secondary mb-1">Nombre del invitado</label>
                     <input
                       type="text"
                       value={editForm.guest_name}
                       onChange={(e) => setEditForm({ ...editForm, guest_name: e.target.value })}
-                      className="w-full bg-cream border border-primary/20 rounded-lg p-2.5 text-primary focus:outline-none focus:border-primary text-sm"
+                      className="w-full bg-cream border border-primary/20 rounded-lg p-2.5 text-primary focus:outline-none focus:border-primary text-[16px]"
                     />
                   </div>
 
                   {/* Asistencia */}
                   <div>
-                    <label className="block text-[10px] uppercase tracking-wider text-secondary mb-1">Asistencia</label>
+                    <label className="block text-[14px] uppercase tracking-wider text-secondary mb-1">Asistencia</label>
                     <select
                       value={editForm.attending ? 'yes' : 'no'}
                       onChange={(e) => setEditForm({ ...editForm, attending: e.target.value === 'yes' })}
-                      className="w-full bg-cream border border-primary/20 rounded-lg p-2.5 text-primary focus:outline-none focus:border-primary text-sm cursor-pointer"
+                      className="w-full bg-cream border border-primary/20 rounded-lg p-2.5 text-primary focus:outline-none focus:border-primary text-[16px] cursor-pointer"
                     >
                       <option value="yes">Sí asiste</option>
                       <option value="no">No asiste</option>
@@ -1200,13 +1200,13 @@ export default function AdminDashboard() {
                     <>
                       {/* Intolerancia */}
                       <div>
-                        <label className="block text-[10px] uppercase tracking-wider text-secondary mb-1">Intolerancia / Dieta</label>
+                        <label className="block text-[14px] uppercase tracking-wider text-secondary mb-1">Intolerancia / Dieta</label>
                         <input
                           type="text"
                           value={editForm.dietary_restrictions}
                           onChange={(e) => setEditForm({ ...editForm, dietary_restrictions: e.target.value })}
                           placeholder="Ninguna"
-                          className="w-full bg-cream border border-primary/20 rounded-lg p-2.5 text-primary focus:outline-none focus:border-primary text-sm"
+                          className="w-full bg-cream border border-primary/20 rounded-lg p-2.5 text-primary focus:outline-none focus:border-primary text-[16px]"
                         />
                       </div>
 
@@ -1220,7 +1220,7 @@ export default function AdminDashboard() {
                             onChange={(e) => setEditForm({ ...editForm, bus_ida: e.target.checked })}
                             className="accent-primary w-4 h-4 cursor-pointer"
                           />
-                          <label htmlFor="edit-bus-ida" className="text-xs text-primary cursor-pointer select-none">Bus Ida</label>
+                          <label htmlFor="edit-bus-ida" className="text-[14px] text-primary cursor-pointer select-none">Bus Ida</label>
                         </div>
                         <div className="flex items-center gap-2 bg-cream rounded-lg p-3">
                           <input
@@ -1230,7 +1230,7 @@ export default function AdminDashboard() {
                             onChange={(e) => setEditForm({ ...editForm, bus_vuelta: e.target.checked })}
                             className="accent-primary w-4 h-4 cursor-pointer"
                           />
-                          <label htmlFor="edit-bus-vuelta" className="text-xs text-primary cursor-pointer select-none">Bus Vuelta</label>
+                          <label htmlFor="edit-bus-vuelta" className="text-[14px] text-primary cursor-pointer select-none">Bus Vuelta</label>
                         </div>
                       </div>
                     </>
@@ -1238,13 +1238,13 @@ export default function AdminDashboard() {
 
                   {/* Mensaje */}
                   <div>
-                    <label className="block text-[10px] uppercase tracking-wider text-secondary mb-1">Mensaje</label>
+                    <label className="block text-[14px] uppercase tracking-wider text-secondary mb-1">Mensaje</label>
                     <textarea
                       value={editForm.message}
                       onChange={(e) => setEditForm({ ...editForm, message: e.target.value })}
                       rows={3}
                       placeholder="Sin mensaje"
-                      className="w-full bg-cream border border-primary/20 rounded-lg p-2.5 text-primary focus:outline-none focus:border-primary text-sm resize-none"
+                      className="w-full bg-cream border border-primary/20 rounded-lg p-2.5 text-primary focus:outline-none focus:border-primary text-[16px] resize-none"
                     />
                   </div>
 
@@ -1252,11 +1252,11 @@ export default function AdminDashboard() {
                   <div className="space-y-3">
                     {editForm.companions.length > 0 && (
                       <>
-                        <p className="text-[10px] uppercase tracking-wider text-secondary">Acompañantes ({editForm.companions.length})</p>
+                        <p className="text-[14px] uppercase tracking-wider text-secondary">Acompañantes ({editForm.companions.length})</p>
                         {editForm.companions.map((comp, idx) => (
                         <div key={comp.id} className="bg-cream rounded-lg p-3 border-l-2 border-primary/20 space-y-2">
                           <div className="flex items-center justify-between mb-1">
-                            <p className="text-[9px] uppercase tracking-wider text-secondary/60">Acomp. {idx + 1}</p>
+                            <p className="text-[14px] uppercase tracking-wider text-secondary/60">Acomp. {idx + 1}</p>
                             <button
                               type="button"
                               onClick={() => handleRemoveCompanion(comp.id)}
@@ -1274,7 +1274,7 @@ export default function AdminDashboard() {
                               setEditForm({ ...editForm, companions: updated });
                             }}
                             placeholder="Nombre"
-                            className="w-full bg-white border border-primary/20 rounded p-2 text-primary focus:outline-none focus:border-primary text-xs"
+                            className="w-full bg-white border border-primary/20 rounded p-2 text-primary focus:outline-none focus:border-primary text-[14px]"
                           />
                           <input
                             type="text"
@@ -1284,7 +1284,7 @@ export default function AdminDashboard() {
                               setEditForm({ ...editForm, companions: updated });
                             }}
                             placeholder="Intolerancia / Dieta"
-                            className="w-full bg-white border border-primary/20 rounded p-2 text-primary focus:outline-none focus:border-primary text-xs"
+                            className="w-full bg-white border border-primary/20 rounded p-2 text-primary focus:outline-none focus:border-primary text-[14px]"
                           />
                           <div className="flex items-center gap-4">
                             <div className="flex items-center gap-1.5">
@@ -1298,7 +1298,7 @@ export default function AdminDashboard() {
                                 }}
                                 className="accent-primary w-3.5 h-3.5 cursor-pointer"
                               />
-                              <label htmlFor={`edit-comp-bus-ida-${idx}`} className="text-[11px] text-primary cursor-pointer select-none">Bus Ida</label>
+                              <label htmlFor={`edit-comp-bus-ida-${idx}`} className="text-[14px] text-primary cursor-pointer select-none">Bus Ida</label>
                             </div>
                             <div className="flex items-center gap-1.5">
                               <input
@@ -1311,7 +1311,7 @@ export default function AdminDashboard() {
                                 }}
                                 className="accent-primary w-3.5 h-3.5 cursor-pointer"
                               />
-                              <label htmlFor={`edit-comp-bus-vuelta-${idx}`} className="text-[11px] text-primary cursor-pointer select-none">Bus Vuelta</label>
+                              <label htmlFor={`edit-comp-bus-vuelta-${idx}`} className="text-[14px] text-primary cursor-pointer select-none">Bus Vuelta</label>
                             </div>
                           </div>
                         </div>
@@ -1321,7 +1321,7 @@ export default function AdminDashboard() {
                     <button
                       type="button"
                       onClick={handleAddCompanion}
-                      className="w-full flex items-center justify-center gap-2 text-xs border border-dashed border-primary/30 text-secondary hover:text-primary hover:border-primary/60 hover:bg-sand/40 rounded-lg py-2.5 transition-colors cursor-pointer"
+                      className="w-full flex items-center justify-center gap-2 text-[14px] border border-dashed border-primary/30 text-secondary hover:text-primary hover:border-primary/60 hover:bg-sand/40 rounded-lg py-2.5 transition-colors cursor-pointer"
                     >
                       <UserPlus size={13} />
                       <span>Añadir acompañante</span>
@@ -1333,7 +1333,7 @@ export default function AdminDashboard() {
                   <button
                     onClick={handleCancelEdit}
                     disabled={savingRsvp}
-                    className="flex items-center space-x-2 text-xs uppercase tracking-wider font-semibold border border-primary/30 text-primary px-4 py-2 rounded-md hover:bg-sand transition-colors cursor-pointer disabled:opacity-40"
+                    className="flex items-center space-x-2 text-[14px] uppercase tracking-wider font-semibold border border-primary/30 text-primary px-4 py-2 rounded-md hover:bg-sand transition-colors cursor-pointer disabled:opacity-40"
                   >
                     <X size={13} />
                     <span>Cancelar</span>
@@ -1341,7 +1341,7 @@ export default function AdminDashboard() {
                   <button
                     onClick={handleSaveRsvp}
                     disabled={savingRsvp}
-                    className="flex items-center space-x-2 text-xs uppercase tracking-wider font-semibold bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors shadow-sm cursor-pointer disabled:opacity-50"
+                    className="flex items-center space-x-2 text-[14px] uppercase tracking-wider font-semibold bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors shadow-sm cursor-pointer disabled:opacity-50"
                   >
                     <Check size={13} />
                     <span>{savingRsvp ? 'Guardando...' : 'Guardar cambios'}</span>

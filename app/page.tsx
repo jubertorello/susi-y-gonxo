@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import EnvelopeIntro from '@/components/EnvelopeIntro';
-import RSVPForm from '@/components/RSVPForm';
-import type { RSVPState } from '@/components/RSVPForm';
-import { supabase } from '@/lib/supabase';
-import { wedding, backgrounds, whatsappUrl } from '@/config/wedding';
-import Image from 'next/image';
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import EnvelopeIntro from "@/components/EnvelopeIntro";
+import RSVPForm from "@/components/RSVPForm";
+import type { RSVPState } from "@/components/RSVPForm";
+import { supabase } from "@/lib/supabase";
+import { wedding, backgrounds, whatsappUrl } from "@/config/wedding";
+import Image from "next/image";
 import {
   Clock,
   Music,
@@ -26,7 +26,7 @@ import {
   BedDouble,
   Camera,
   Menu,
-} from 'lucide-react';
+} from "lucide-react";
 
 interface SuggestedSong {
   id: string;
@@ -64,10 +64,24 @@ function Reloj({ segundos, minutos }: { segundos: number; minutos: number }) {
       <circle cx="24" cy="24" r="19" />
       <circle cx="24" cy="24" r="21.5" strokeWidth={0.7} opacity={0.5} />
       {[0, 90, 180, 270].map((g) => (
-        <line key={g} x1="24" y1="7" x2="24" y2="10.5" transform={`rotate(${g} 24 24)`} />
+        <line
+          key={g}
+          x1="24"
+          y1="7"
+          x2="24"
+          y2="10.5"
+          transform={`rotate(${g} 24 24)`}
+        />
       ))}
       <line x1="24" y1="24" x2="24" y2="15" transform="rotate(110 24 24)" />
-      <line x1="24" y1="24" x2="24" y2="12" transform={`rotate(${minutos * 6} 24 24)`} strokeWidth={1.1} />
+      <line
+        x1="24"
+        y1="24"
+        x2="24"
+        y2="12"
+        transform={`rotate(${minutos * 6} 24 24)`}
+        strokeWidth={1.1}
+      />
       <line
         x1="24"
         y1="26.5"
@@ -91,14 +105,14 @@ type PropsIcono = { size?: number; className?: string; strokeWidth?: number };
 const base = (p: PropsIcono) => ({
   width: p.size ?? 24,
   height: p.size ?? 24,
-  viewBox: '0 0 24 24',
-  fill: 'none',
-  stroke: 'currentColor',
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
   strokeWidth: p.strokeWidth ?? 1.5,
-  strokeLinecap: 'round' as const,
-  strokeLinejoin: 'round' as const,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
   className: p.className,
-  'aria-hidden': true,
+  "aria-hidden": true,
 });
 
 function Lazo(p: PropsIcono) {
@@ -118,14 +132,16 @@ function Lazo(p: PropsIcono) {
  * componentes con ref y los de aquí funciones sueltas, así que el tipo tiene
  * que ser el común a ambos.
  */
-const ICONOS_INFO: Record<string, React.ComponentType<PropsIcono> | undefined> = {
-  bus: Bus,
-  cama: BedDouble,
-  lazo: Lazo,
-};
+const ICONOS_INFO: Record<string, React.ComponentType<PropsIcono> | undefined> =
+  {
+    bus: Bus,
+    cama: BedDouble,
+    lazo: Lazo,
+  };
 
 /** Todos los párrafos de la luna de miel comparten cuerpo, color y ancho. */
-const PARRAFO_REGALO = 'text-[18px] text-white/90 leading-relaxed max-w-xl mx-auto';
+const PARRAFO_REGALO =
+  "text-[18px] text-white/90 leading-relaxed max-w-xl mx-auto";
 
 /** Sin pista de fondo no se monta el reproductor ni los botones de sonido. */
 const hasAudio = Boolean(wedding.music.backgroundAudio);
@@ -135,22 +151,27 @@ const sectionEnabled: Record<string, boolean> = {
   musica: wedding.music.enabled,
   viaje: wedding.gift.enabled,
 };
-const navLinks = wedding.nav.links.filter((l) => sectionEnabled[l.id] !== false);
-
+const navLinks = wedding.nav.links.filter(
+  (l) => sectionEnabled[l.id] !== false,
+);
 
 /** Fondo de una sección: `mobileTop` abajo, `desktop` a partir de 768px. */
-function SectionBackground({ bg }: { bg: { mobileTop: string; mobileBottom: string; desktop: string } }) {
+function SectionBackground({
+  bg,
+}: {
+  bg: { mobileTop: string; mobileBottom: string; desktop: string };
+}) {
   return (
     <>
       {bg.mobileTop && (
         <div
           aria-hidden
-          className={`absolute inset-0 z-0 ${bg.desktop ? 'md:hidden' : ''}`}
+          className={`absolute inset-0 z-0 ${bg.desktop ? "md:hidden" : ""}`}
           style={{
             backgroundImage: `url("${bg.mobileTop}")`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'top center',
-            clipPath: bg.mobileBottom ? 'inset(0 0 50% 0)' : undefined,
+            backgroundSize: "cover",
+            backgroundPosition: "top center",
+            clipPath: bg.mobileBottom ? "inset(0 0 50% 0)" : undefined,
           }}
         />
       )}
@@ -160,9 +181,9 @@ function SectionBackground({ bg }: { bg: { mobileTop: string; mobileBottom: stri
           className="absolute inset-0 md:hidden z-0"
           style={{
             backgroundImage: `url("${bg.mobileBottom}")`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'bottom center',
-            clipPath: 'inset(50% 0 0 0)',
+            backgroundSize: "cover",
+            backgroundPosition: "bottom center",
+            clipPath: "inset(50% 0 0 0)",
           }}
         />
       )}
@@ -172,8 +193,8 @@ function SectionBackground({ bg }: { bg: { mobileTop: string; mobileBottom: stri
           className="absolute inset-0 hidden md:block z-0"
           style={{
             backgroundImage: `url("${bg.desktop}")`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundSize: "cover",
+            backgroundPosition: "center",
           }}
         />
       )}
@@ -188,32 +209,32 @@ function SectionBackground({ bg }: { bg: { mobileTop: string; mobileBottom: stri
  * Sin láminas en la configuración, no se dibuja nada.
  */
 const desvanecido =
-  'linear-gradient(to bottom, transparent 0, #000 80px, #000 calc(100% - 80px), transparent 100%)';
+  "linear-gradient(to bottom, transparent 0, #000 80px, #000 calc(100% - 80px), transparent 100%)";
 
 function Eucalipto() {
   const e = backgrounds.eucalyptus;
   if (!e.left && !e.right) return null;
   return (
     <>
-      {(['left', 'right'] as const).map((lado) =>
+      {(["left", "right"] as const).map((lado) =>
         e[lado] ? (
           <span
             key={lado}
             aria-hidden
-            className={`absolute inset-y-0 ${lado === 'left' ? 'left-0' : 'right-0'} z-0 pointer-events-none`}
+            className={`absolute inset-y-0 ${lado === "left" ? "left-0" : "right-0"} z-0 pointer-events-none`}
             style={{
               width: e.width,
               maxWidth: e.maxWidth,
               opacity: e.opacity,
               backgroundImage: `url("${e[lado]}")`,
-              backgroundSize: '100% auto',
-              backgroundRepeat: 'repeat-y',
+              backgroundSize: "100% auto",
+              backgroundRepeat: "repeat-y",
               backgroundPosition: `${lado} top`,
               maskImage: desvanecido,
               WebkitMaskImage: desvanecido,
             }}
           />
-        ) : null
+        ) : null,
       )}
     </>
   );
@@ -223,9 +244,19 @@ function Eucalipto() {
  * Separador entre bloques: la ramita de eucalipto si la hay, y si no el
  * filete de 1px de siempre.
  */
-function Filete({ className = '', claro = false }: { className?: string; claro?: boolean }) {
+function Filete({
+  className = "",
+  claro = false,
+}: {
+  className?: string;
+  claro?: boolean;
+}) {
   if (!backgrounds.divider) {
-    return <div className={`h-px w-10 mx-auto ${claro ? 'bg-white/40' : 'bg-primary/20'} ${className}`} />;
+    return (
+      <div
+        className={`h-px w-10 mx-auto ${claro ? "bg-white/40" : "bg-primary/20"} ${className}`}
+      />
+    );
   }
   return (
     <div className={`relative h-6 w-28 mx-auto ${className}`}>
@@ -243,11 +274,11 @@ function Esquinas() {
   const e = backgrounds.corners;
   if (!e.topLeft && !e.bottomRight) return null;
   const comun = {
-    '--esquina': e.width,
-    '--esquina-md': e.widthDesktop,
+    "--esquina": e.width,
+    "--esquina-md": e.widthDesktop,
     opacity: e.opacity,
-    backgroundSize: 'contain',
-    backgroundRepeat: 'no-repeat',
+    backgroundSize: "contain",
+    backgroundRepeat: "no-repeat",
   } as React.CSSProperties;
   return (
     <>
@@ -255,14 +286,22 @@ function Esquinas() {
         <span
           aria-hidden
           className="pointer-events-none absolute top-0 left-0 z-0 w-[var(--esquina)] md:w-[var(--esquina-md)] aspect-[4/3]"
-          style={{ ...comun, backgroundImage: `url("${e.topLeft}")`, backgroundPosition: 'left top' }}
+          style={{
+            ...comun,
+            backgroundImage: `url("${e.topLeft}")`,
+            backgroundPosition: "left top",
+          }}
         />
       )}
       {e.bottomRight && (
         <span
           aria-hidden
           className="pointer-events-none absolute bottom-0 right-0 z-0 w-[var(--esquina)] md:w-[var(--esquina-md)] aspect-[4/3]"
-          style={{ ...comun, backgroundImage: `url("${e.bottomRight}")`, backgroundPosition: 'right bottom' }}
+          style={{
+            ...comun,
+            backgroundImage: `url("${e.bottomRight}")`,
+            backgroundPosition: "right bottom",
+          }}
         />
       )}
     </>
@@ -286,7 +325,7 @@ function SectionHeading({
       {eyebrow && (
         <span
           className={`font-sans text-[14px] uppercase tracking-[0.3em] mb-2 block font-medium ${
-            light ? 'text-white/85' : 'text-ink'
+            light ? "text-white/85" : "text-ink"
           }`}
         >
           {eyebrow}
@@ -295,12 +334,16 @@ function SectionHeading({
       {/* text-3xl = 30px y md:text-4xl = 36px: la cursiva se queda por encima
           del mínimo de 28px en las dos anchuras. */}
       <h2
-        className={`font-display italic text-3xl md:text-4xl ${light ? 'text-white' : 'text-ink'}`}
+        className={`font-display italic text-3xl md:text-4xl ${light ? "text-white" : "text-ink"}`}
       >
         {title}
       </h2>
       {subtitle && (
-        <p className={`mt-2 text-[16px] ${light ? 'text-white/90' : 'text-ink'}`}>{subtitle}</p>
+        <p
+          className={`mt-2 text-[16px] ${light ? "text-white/90" : "text-ink"}`}
+        >
+          {subtitle}
+        </p>
       )}
       <Filete className="mt-4" claro={light} />
     </>
@@ -325,11 +368,11 @@ export default function Home() {
         })
         .catch(() => {});
     };
-    document.addEventListener('click', tryPlay);
-    document.addEventListener('touchstart', tryPlay);
+    document.addEventListener("click", tryPlay);
+    document.addEventListener("touchstart", tryPlay);
     return () => {
-      document.removeEventListener('click', tryPlay);
-      document.removeEventListener('touchstart', tryPlay);
+      document.removeEventListener("click", tryPlay);
+      document.removeEventListener("touchstart", tryPlay);
     };
   }, [audioStarted]);
 
@@ -339,7 +382,10 @@ export default function Home() {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => {});
     }
   };
 
@@ -352,8 +398,8 @@ export default function Home() {
   const [showAllSongsModal, setShowAllSongsModal] = useState(false);
   const [activePhoto, setActivePhoto] = useState<string | null>(null);
   const [musicList, setMusicList] = useState<SuggestedSong[]>([]);
-  const [newSongTitle, setNewSongTitle] = useState('');
-  const [newSongArtist, setNewSongArtist] = useState('');
+  const [newSongTitle, setNewSongTitle] = useState("");
+  const [newSongArtist, setNewSongArtist] = useState("");
   const [showAddSongSuccess, setShowAddSongSuccess] = useState(false);
 
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -370,19 +416,22 @@ export default function Home() {
 
   useEffect(() => {
     const loadSavedData = async () => {
-      const storedRsvp = localStorage.getItem('wedding_rsvp_status');
+      const storedRsvp = localStorage.getItem("wedding_rsvp_status");
       if (storedRsvp) {
         try {
           const parsed = JSON.parse(storedRsvp);
           const normalized: RSVPState = {
             attending: parsed.attending !== undefined ? parsed.attending : true,
-            guestName: parsed.guestName || '',
-            hasIntolerance: parsed.hasIntolerance || !!parsed.dietaryRestrictions,
-            dietaryRestrictions: parsed.dietaryRestrictions || '',
+            guestName: parsed.guestName || "",
+            hasIntolerance:
+              parsed.hasIntolerance || !!parsed.dietaryRestrictions,
+            dietaryRestrictions: parsed.dietaryRestrictions || "",
             busIda: parsed.busIda === true,
             busVuelta: parsed.busVuelta === true,
-            companions: Array.isArray(parsed.companions) ? parsed.companions : [],
-            message: parsed.message || '',
+            companions: Array.isArray(parsed.companions)
+              ? parsed.companions
+              : [],
+            message: parsed.message || "",
             submittedAt: parsed.submittedAt,
           };
           setRsvpData(normalized);
@@ -396,10 +445,10 @@ export default function Home() {
 
       if (!wedding.music.enabled) return;
       const { data: songsData, error: songsError } = await supabase
-        .from('songs')
-        .select('*')
-        .eq('client_id', wedding.clientId)
-        .order('votes', { ascending: false });
+        .from("songs")
+        .select("*")
+        .eq("client_id", wedding.clientId)
+        .order("votes", { ascending: false });
 
       if (songsData && !songsError) setMusicList(songsData);
     };
@@ -413,7 +462,13 @@ export default function Home() {
     const updateTimer = () => {
       const difference = weddingDate - Date.now();
       if (difference <= 0) {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, completed: true });
+        setTimeLeft({
+          days: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0,
+          completed: true,
+        });
         return;
       }
       setTimeLeft({
@@ -444,7 +499,10 @@ export default function Home() {
    * mismo. La barra va fija, así que cerrar el menú no mueve el documento y la
    * medida vale igual.
    */
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    id: string,
+  ) => {
     e.preventDefault();
     const destino = document.getElementById(id);
     setShowMobileMenu(false);
@@ -452,7 +510,7 @@ export default function Home() {
 
     const margen = parseFloat(getComputedStyle(destino).scrollMarginTop) || 0;
     const top = destino.getBoundingClientRect().top + window.scrollY - margen;
-    window.scrollTo({ top, behavior: 'smooth' });
+    window.scrollTo({ top, behavior: "smooth" });
   };
 
   const handleAddSong = async (e: React.FormEvent) => {
@@ -460,7 +518,7 @@ export default function Home() {
     if (!newSongTitle.trim() || !newSongArtist.trim()) return;
 
     const { data, error } = await supabase
-      .from('songs')
+      .from("songs")
       .insert([
         {
           client_id: wedding.clientId,
@@ -478,8 +536,8 @@ export default function Home() {
       setTimeout(() => setShowAddSongSuccess(false), 3000);
     }
 
-    setNewSongTitle('');
-    setNewSongArtist('');
+    setNewSongTitle("");
+    setNewSongArtist("");
   };
 
   const handleVoteSong = async (id: string) => {
@@ -487,9 +545,11 @@ export default function Home() {
     if (!song) return;
     const newVotes = song.votes + 1;
     setMusicList(
-      musicList.map((s) => (s.id === id ? { ...s, votes: newVotes } : s)).sort((a, b) => b.votes - a.votes)
+      musicList
+        .map((s) => (s.id === id ? { ...s, votes: newVotes } : s))
+        .sort((a, b) => b.votes - a.votes),
     );
-    await supabase.from('songs').update({ votes: newVotes }).eq('id', id);
+    await supabase.from("songs").update({ votes: newVotes }).eq("id", id);
   };
 
   const handleRsvpSubmitted = (data: RSVPState) => {
@@ -501,7 +561,7 @@ export default function Home() {
     setFormSubmitted(false);
     setRsvpData(null);
     setFormKey((k) => k + 1);
-    localStorage.removeItem('wedding_rsvp_status');
+    localStorage.removeItem("wedding_rsvp_status");
   };
 
   if (!mounted) return null;
@@ -512,7 +572,7 @@ export default function Home() {
   return (
     <main
       className={`min-h-screen relative overflow-x-hidden selection:bg-primary/20 select-none md:select-text ${
-        !showMain ? 'h-screen overflow-hidden' : ''
+        !showMain ? "h-screen overflow-hidden" : ""
       }`}
     >
       {hasAudio && (
@@ -527,7 +587,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.5 }}
           onClick={togglePlay}
-          aria-label={isPlaying ? 'Silenciar música' : 'Activar música'}
+          aria-label={isPlaying ? "Silenciar música" : "Activar música"}
           className="fixed bottom-6 right-6 z-[70] flex items-center gap-2 px-4 py-2 rounded-full bg-black/20 backdrop-blur-sm text-white/80 hover:bg-black/30 hover:text-white transition-all duration-200"
         >
           {isPlaying ? <VolumeX size={14} /> : <Volume2 size={14} />}
@@ -540,18 +600,24 @@ export default function Home() {
         transition={{ duration: 0.8 }}
         className="relative text-ink"
       >
-        {/* ================= BARRA DE NAVEGACIÓN ================= */}
+        {/*
+          ================= BARRA DE NAVEGACIÓN =================
+          La barra con los enlaces sueltos aparece en `lg` (1024px), no en `md`:
+          con cinco enlaces y el botón de confirmar, a 768px pedía 822px y
+          «Luna de Miel · Regalo» se partía en cuatro líneas. Por debajo de eso
+          manda el desplegable, que es donde caben los siete.
+        */}
         <nav className="fixed top-0 inset-x-0 bg-primary text-cream border-b border-white/10 z-40 shadow-md">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
             <a
               href="#inicio"
-              onClick={(e) => handleNavClick(e, 'inicio')}
+              onClick={(e) => handleNavClick(e, "inicio")}
               className="font-display text-xl sm:text-2xl md:text-3xl tracking-[0.2em] uppercase text-cream hover:opacity-80 transition-opacity shrink-0"
             >
-              {wedding.couple.initials.split('&').join(' & ')}
+              {wedding.couple.initials.split("&").join(" & ")}
             </a>
 
-            <div className="hidden md:flex items-center space-x-6 lg:space-x-8 text-[14px] uppercase tracking-[0.25em] font-sans text-soft font-medium">
+            <div className="hidden lg:flex items-center space-x-8 text-[14px] uppercase tracking-[0.25em] font-sans text-soft font-medium">
               {navLinks
                 .filter((l) => !l.mobileOnly)
                 .map((link) => (
@@ -571,23 +637,31 @@ export default function Home() {
                 <button
                   onClick={togglePlay}
                   className="p-2 text-cream/90 hover:text-white hover:bg-white/10 rounded-full transition-all duration-200"
-                  aria-label={isPlaying ? 'Pausar música de fondo' : 'Reproducir música de fondo'}
+                  aria-label={
+                    isPlaying
+                      ? "Pausar música de fondo"
+                      : "Reproducir música de fondo"
+                  }
                 >
-                  {isPlaying ? <Volume2 size={18} /> : <VolumeX size={18} className="opacity-60" />}
+                  {isPlaying ? (
+                    <Volume2 size={18} />
+                  ) : (
+                    <VolumeX size={18} className="opacity-60" />
+                  )}
                 </button>
               )}
 
               <a
                 href="#confirmacion"
-                onClick={(e) => handleNavClick(e, 'confirmacion')}
-                className="hidden md:inline-block px-4 py-1.5 border border-white/30 text-cream hover:bg-cream hover:text-ink transition-all duration-300 rounded-full text-[14px] uppercase font-sans tracking-[0.2em]"
+                onClick={(e) => handleNavClick(e, "confirmacion")}
+                className="hidden lg:inline-block px-4 py-1.5 border border-white/30 text-cream hover:bg-cream hover:text-ink transition-all duration-300 rounded-full text-[14px] uppercase font-sans tracking-[0.2em]"
               >
                 {wedding.nav.ctaLabel}
               </a>
 
               <button
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
-                className="md:hidden flex items-center gap-1 px-3 py-1.5 border border-white/35 text-cream hover:bg-white/10 transition-all rounded-full text-[14px] uppercase font-sans tracking-[0.15em]"
+                className="lg:hidden flex items-center gap-1 px-3 py-1.5 border border-white/35 text-cream hover:bg-white/10 transition-all rounded-full text-[14px] uppercase font-sans tracking-[0.15em]"
                 aria-label="Menú de secciones"
                 aria-expanded={showMobileMenu}
               >
@@ -612,13 +686,17 @@ export default function Home() {
             tabulador y del lector de pantalla mientras está cerrado.
           */}
           <div
-            className={`md:hidden grid bg-primary transition-[grid-template-rows] duration-300 ease-in-out ${
-              showMobileMenu ? 'grid-rows-[1fr] border-t border-white/10' : 'grid-rows-[0fr]'
+            className={`lg:hidden grid bg-primary transition-[grid-template-rows] duration-300 ease-in-out ${
+              showMobileMenu
+                ? "grid-rows-[1fr] border-t border-white/10"
+                : "grid-rows-[0fr]"
             }`}
           >
             <div className="overflow-hidden" inert={!showMobileMenu}>
-                <div className="px-6 py-4 flex flex-col space-y-4 text-center text-[14px] uppercase tracking-[0.2em] font-sans text-soft font-medium">
-                  {navLinks.map((link) => (
+              <div className="px-6 py-4 flex flex-col space-y-4 text-center text-[14px] uppercase tracking-[0.2em] font-sans text-soft font-medium">
+                {navLinks
+                  .filter((l) => !l.desktopOnly)
+                  .map((link) => (
                     <a
                       key={link.id}
                       href={`#${link.id}`}
@@ -628,16 +706,16 @@ export default function Home() {
                       {link.label}
                     </a>
                   ))}
-                  <div className="pt-2">
-                    <a
-                      href="#confirmacion"
-                      onClick={(e) => handleNavClick(e, 'confirmacion')}
-                      className="inline-block w-full py-2.5 bg-cream text-ink hover:bg-sand transition-colors rounded-full text-[14px] tracking-[0.2em] font-bold"
-                    >
-                      {wedding.nav.ctaLabel}
-                    </a>
-                  </div>
+                <div className="pt-2">
+                  <a
+                    href="#confirmacion"
+                    onClick={(e) => handleNavClick(e, "confirmacion")}
+                    className="inline-block w-full py-2.5 bg-cream text-ink hover:bg-sand transition-colors rounded-full text-[14px] tracking-[0.2em] font-bold"
+                  >
+                    {wedding.nav.ctaLabel}
+                  </a>
                 </div>
+              </div>
             </div>
           </div>
         </nav>
@@ -652,10 +730,13 @@ export default function Home() {
 
           <motion.div
             initial="hidden"
-            animate={showMain ? 'visible' : 'hidden'}
+            animate={showMain ? "visible" : "hidden"}
             variants={{
               hidden: { opacity: 0 },
-              visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.3 } },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.2, delayChildren: 0.3 },
+              },
             }}
             className="max-w-4xl mx-auto px-6 w-full flex flex-col items-center relative z-10"
           >
@@ -664,7 +745,11 @@ export default function Home() {
                 key={i}
                 variants={{
                   hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: 'easeOut' } },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 1.2, ease: "easeOut" },
+                  },
                 }}
                 className="text-ink text-[18px] md:text-[20px] leading-relaxed max-w-sm mx-auto mb-5 text-center"
               >
@@ -675,7 +760,11 @@ export default function Home() {
             <motion.h2
               variants={{
                 hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: 'easeOut' } },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 1.2, ease: "easeOut" },
+                },
               }}
               className="font-display tracking-[0.12em] sm:tracking-[0.2em] uppercase text-[30px] leading-tight text-ink mt-5 mb-8 text-center"
             >
@@ -685,7 +774,11 @@ export default function Home() {
             <motion.p
               variants={{
                 hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: 'easeOut' } },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 1.2, ease: "easeOut" },
+                },
               }}
               className="text-ink text-[18px] md:text-[20px] leading-relaxed max-w-sm mx-auto mb-10 text-center"
             >
@@ -695,10 +788,13 @@ export default function Home() {
 
           <motion.div
             initial="hidden"
-            animate={showMain ? 'visible' : 'hidden'}
+            animate={showMain ? "visible" : "hidden"}
             variants={{
               hidden: { opacity: 0 },
-              visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.3 } },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.2, delayChildren: 0.3 },
+              },
             }}
             className="max-w-4xl mx-auto px-6 w-full flex flex-col items-center relative z-10"
           >
@@ -706,13 +802,21 @@ export default function Home() {
             <motion.div
               variants={{
                 hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0, transition: { duration: 1.4, ease: 'easeOut' } },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 1.4, ease: "easeOut" },
+                },
               }}
               className="my-10 md:my-14 mb-12 flex flex-col items-center select-text"
             >
-              {(['partnerA', 'partnerB'] as const).map((quien, i) => (
+              {(["partnerA", "partnerB"] as const).map((quien, i) => (
                 <React.Fragment key={quien}>
-                  {i === 1 && <div className="font-display text-2xl md:text-3xl my-4 text-ink">&</div>}
+                  {i === 1 && (
+                    <div className="font-display text-2xl md:text-3xl my-4 text-ink">
+                      &
+                    </div>
+                  )}
                   <div className="flex flex-col items-center">
                     <h1 className="font-display tracking-[0.06em] sm:tracking-[0.1em] text-[30px] leading-tight text-ink uppercase">
                       {wedding.couple[quien].firstName}
@@ -729,7 +833,11 @@ export default function Home() {
               <motion.p
                 variants={{
                   hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: 'easeOut' } },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 1.2, ease: "easeOut" },
+                  },
                 }}
                 className="text-ink text-[18px] md:text-[20px] leading-relaxed max-w-sm mx-auto mb-5 text-center"
               >
@@ -741,7 +849,11 @@ export default function Home() {
             <motion.div
               variants={{
                 hidden: { opacity: 0, y: 25 },
-                visible: { opacity: 1, y: 0, transition: { duration: 1.4, ease: 'easeOut' } },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 1.4, ease: "easeOut" },
+                },
               }}
               className="flex flex-col items-center mt-4 select-none w-full"
             >
@@ -780,23 +892,35 @@ export default function Home() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.15 } } }}
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
+            }}
             className="max-w-5xl mx-auto px-6 relative z-10"
           >
             <motion.div
               variants={{
                 hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.8, ease: "easeOut" },
+                },
               }}
               className="text-center mb-16"
             >
-              <SectionHeading eyebrow={wedding.locations.eyebrow} title={wedding.locations.title} />
+              <SectionHeading
+                eyebrow={wedding.locations.eyebrow}
+                title={wedding.locations.title}
+              />
             </motion.div>
 
             <div
               className={`grid gap-12 lg:gap-16 items-stretch ${
-                wedding.locations.places.length > 1 ? 'md:grid-cols-2' : 'max-w-lg mx-auto'
+                wedding.locations.places.length > 1
+                  ? "md:grid-cols-2"
+                  : "max-w-lg mx-auto"
               }`}
             >
               {wedding.locations.places.map((place) => (
@@ -804,7 +928,15 @@ export default function Home() {
                   key={place.name}
                   variants={{
                     hidden: { opacity: 0, y: 40 },
-                    visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 80, damping: 14 } },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                      transition: {
+                        type: "spring",
+                        stiffness: 80,
+                        damping: 14,
+                      },
+                    },
                   }}
                   whileHover={{ y: -4 }}
                   className="flex flex-col justify-between relative px-2 md:px-6"
@@ -838,7 +970,9 @@ export default function Home() {
 
                     <div className="flex items-center justify-center gap-1.5 mb-8 text-ink">
                       <Clock size={13} className="opacity-85" />
-                      <span className="font-sans text-[14px] uppercase tracking-[0.12em]">{place.time}</span>
+                      <span className="font-sans text-[14px] uppercase tracking-[0.12em]">
+                        {place.time}
+                      </span>
                     </div>
                   </div>
 
@@ -872,22 +1006,32 @@ export default function Home() {
         </section>
 
         {/* ================= 3. CUENTA ATRÁS ================= */}
-        <section id="cuenta-atras" className="py-16 md:py-20 relative overflow-hidden">
+        <section
+          id="cuenta-atras"
+          className="py-16 md:py-20 relative overflow-hidden"
+        >
           {/* La misma tela del pie, sin velo: el texto va oscuro encima. */}
           <SectionBackground bg={backgrounds.sections.countdown} />
 
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-60px' }}
-            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } }}
+            viewport={{ once: true, margin: "-60px" }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+            }}
             className="max-w-3xl mx-auto px-6 relative z-10 flex flex-col items-center"
           >
             {wedding.countdown.clock && (
               <motion.div
                 variants={{
                   hidden: { opacity: 0, scale: 0.85 },
-                  visible: { opacity: 1, scale: 1, transition: { duration: 0.6 } },
+                  visible: {
+                    opacity: 1,
+                    scale: 1,
+                    transition: { duration: 0.6 },
+                  },
                 }}
                 className="text-ink/70 mb-4"
               >
@@ -897,17 +1041,25 @@ export default function Home() {
 
             {wedding.countdown.lead && (
               <motion.h2
-                variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
+                variants={{
+                  hidden: { opacity: 0, y: 24 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.7 } },
+                }}
                 className="font-display italic text-3xl md:text-4xl text-ink text-center"
               >
-                {timeLeft.completed ? wedding.countdown.today : wedding.countdown.lead}
+                {timeLeft.completed
+                  ? wedding.countdown.today
+                  : wedding.countdown.lead}
               </motion.h2>
             )}
 
             <motion.div
               variants={{
                 hidden: { opacity: 0 },
-                visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
+                visible: {
+                  opacity: 1,
+                  transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+                },
               }}
               className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 w-full max-w-[19rem] sm:max-w-md"
             >
@@ -923,7 +1075,15 @@ export default function Home() {
                   key={etiqueta}
                   variants={{
                     hidden: { opacity: 0, y: 20 },
-                    visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 110, damping: 15 } },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                      transition: {
+                        type: "spring",
+                        stiffness: 110,
+                        damping: 15,
+                      },
+                    },
                   }}
                   className="bg-cream/92 border border-ink/10 rounded-sm shadow-sm py-4 px-1 text-center"
                 >
@@ -935,7 +1095,7 @@ export default function Home() {
                     key={valor}
                     initial={{ opacity: 0, y: i === 3 ? -8 : 0 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.28, ease: 'easeOut' }}
+                    transition={{ duration: 0.28, ease: "easeOut" }}
                     className="font-display text-[30px] sm:text-[38px] text-ink leading-none block tabular-nums"
                   >
                     {valor}
@@ -949,7 +1109,10 @@ export default function Home() {
 
             {wedding.countdown.tagline && (
               <motion.p
-                variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
+                variants={{
+                  hidden: { opacity: 0, y: 16 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.7 } },
+                }}
                 className="mt-8 text-[18px] text-ink text-center"
               >
                 {wedding.countdown.tagline}
@@ -966,7 +1129,12 @@ export default function Home() {
             <div className="relative z-10">
               {wedding.gallery.image && (
                 <div className="relative w-24 h-24 md:w-28 md:h-28 mx-auto mb-2">
-                  <Image src={wedding.gallery.image} alt="" fill className="object-contain" />
+                  <Image
+                    src={wedding.gallery.image}
+                    alt=""
+                    fill
+                    className="object-contain"
+                  />
                 </div>
               )}
 
@@ -984,7 +1152,11 @@ export default function Home() {
               <div className="relative w-full overflow-hidden group">
                 <div
                   className="flex gap-3 md:gap-5 w-max motion-safe:animate-[carrete_var(--carrete)_linear_infinite] group-hover:[animation-play-state:paused]"
-                  style={{ '--carrete': `${wedding.gallery.speed}s` } as React.CSSProperties}
+                  style={
+                    {
+                      "--carrete": `${wedding.gallery.speed}s`,
+                    } as React.CSSProperties
+                  }
                 >
                   {carrete.map((foto, i) => (
                     <button
@@ -1014,7 +1186,11 @@ export default function Home() {
                       className="shrink-0 h-[220px] w-[160px] md:h-[300px] md:w-[220px] bg-cream/70 p-2 shadow-[0_6px_20px_rgba(0,0,0,0.10)]"
                     >
                       <span className="flex w-full h-full items-center justify-center border border-dashed border-primary/25">
-                        <Camera size={26} className="text-ink/25" strokeWidth={1.5} />
+                        <Camera
+                          size={26}
+                          className="text-ink/25"
+                          strokeWidth={1.5}
+                        />
                       </span>
                     </div>
                   ))}
@@ -1032,14 +1208,21 @@ export default function Home() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-60px' }}
-            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } }}
+            viewport={{ once: true, margin: "-60px" }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+            }}
             className="max-w-4xl mx-auto px-6 relative z-10"
           >
             <motion.div
               variants={{
                 hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.8, ease: "easeOut" },
+                },
               }}
               className="text-center mb-8"
             >
@@ -1062,9 +1245,13 @@ export default function Home() {
                       key={evento.title}
                       initial={{ opacity: 0, y: 24, scale: 0.96 }}
                       whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                      viewport={{ once: true, margin: '-40px' }}
-                      transition={{ type: 'spring', stiffness: 90, damping: 14 }}
-                      className={`relative flex items-center ${izquierda ? '' : 'flex-row-reverse'}`}
+                      viewport={{ once: true, margin: "-40px" }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 90,
+                        damping: 14,
+                      }}
+                      className={`relative flex items-center ${izquierda ? "" : "flex-row-reverse"}`}
                     >
                       {/* Punto sobre el raíl */}
                       <span
@@ -1077,19 +1264,28 @@ export default function Home() {
                         raíl y la hora con el nombre al otro. Así la lámina se
                         lleva media página y el bloque no crece a lo alto.
                       */}
-                      <div className={`w-1/2 ${izquierda ? 'pr-5 sm:pr-10' : 'pl-5 sm:pl-10'}`}>
+                      <div
+                        className={`w-1/2 ${izquierda ? "pr-5 sm:pr-10" : "pl-5 sm:pl-10"}`}
+                      >
                         {evento.image && (
                           <div
                             className={`relative w-full max-w-[9rem] sm:max-w-[13rem] md:max-w-[16rem] aspect-[10/9] ${
-                              izquierda ? 'ml-auto' : ''
+                              izquierda ? "ml-auto" : ""
                             }`}
                           >
-                            <Image src={evento.image} alt={evento.title} fill className="object-contain" />
+                            <Image
+                              src={evento.image}
+                              alt={evento.title}
+                              fill
+                              className="object-contain"
+                            />
                           </div>
                         )}
                       </div>
 
-                      <div className={`w-1/2 ${izquierda ? 'pl-5 sm:pl-10 text-left' : 'pr-5 sm:pr-10 text-right'}`}>
+                      <div
+                        className={`w-1/2 ${izquierda ? "pl-5 sm:pl-10 text-left" : "pr-5 sm:pr-10 text-right"}`}
+                      >
                         <div className="inline-block whitespace-nowrap px-2.5 py-0.5 bg-primary/5 border border-primary/15 rounded-full text-primary font-sans font-medium text-[14px] mb-1">
                           {evento.time}
                         </div>
@@ -1107,32 +1303,51 @@ export default function Home() {
 
         {/* ================= 6. LUNA DE MIEL / REGALO ================= */}
         {wedding.gift.enabled && (
-          <section id="viaje" className="py-16 md:py-20 bg-moss relative text-white">
+          <section
+            id="viaje"
+            className="py-16 md:py-20 bg-moss relative text-white"
+          >
             <motion.div
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: '-100px' }}
-              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.12 } } }}
+              viewport={{ once: true, margin: "-100px" }}
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
+              }}
               className="max-w-3xl mx-auto px-6 text-center"
             >
               <motion.div
-                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.7 } },
+                }}
                 className="mb-6"
               >
-                <SectionHeading eyebrow={wedding.gift.eyebrow} title={wedding.gift.title} light />
+                <SectionHeading
+                  eyebrow={wedding.gift.eyebrow}
+                  title={wedding.gift.title}
+                  light
+                />
               </motion.div>
 
               {/* Los tres párrafos van con el mismo cuerpo, color y ancho. */}
               <motion.p
-                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8 } } }}
-                className={PARRAFO_REGALO + ' mb-5'}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+                }}
+                className={PARRAFO_REGALO + " mb-5"}
               >
                 {wedding.gift.description}
               </motion.p>
 
               <motion.p
-                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8 } } }}
-                className={PARRAFO_REGALO + ' mb-8'}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+                }}
+                className={PARRAFO_REGALO + " mb-8"}
               >
                 {wedding.gift.invitation}
               </motion.p>
@@ -1146,7 +1361,11 @@ export default function Home() {
                         opacity: 1,
                         scale: 1,
                         rotate: 0,
-                        transition: { type: 'spring', stiffness: 60, damping: 15 },
+                        transition: {
+                          type: "spring",
+                          stiffness: 60,
+                          damping: 15,
+                        },
                       },
                     }}
                     className="relative w-full max-w-[20rem] md:max-w-[30rem] aspect-[7/3] mb-6"
@@ -1165,7 +1384,11 @@ export default function Home() {
               <motion.div
                 variants={{
                   hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 90, damping: 14 } },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { type: "spring", stiffness: 90, damping: 14 },
+                  },
                 }}
                 className="flex flex-col items-center gap-3"
               >
@@ -1183,8 +1406,15 @@ export default function Home() {
 
               {wedding.gift.closing && (
                 <motion.p
-                  variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8 } } }}
-                  className={PARRAFO_REGALO + ' mt-8'}
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                      transition: { duration: 0.8 },
+                    },
+                  }}
+                  className={PARRAFO_REGALO + " mt-8"}
                 >
                   {wedding.gift.closing}
                 </motion.p>
@@ -1194,36 +1424,53 @@ export default function Home() {
         )}
 
         {/* ================= 7. CONFIRMACIÓN ================= */}
-        <section id="confirmacion" className="w-full py-16 md:py-20 relative overflow-hidden">
+        <section
+          id="confirmacion"
+          className="w-full py-16 md:py-20 relative overflow-hidden"
+        >
           <SectionBackground bg={backgrounds.sections.rsvp} />
           <Esquinas />
 
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.15 } } }}
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
+            }}
             className="max-w-4xl mx-auto px-6 relative z-10"
           >
             <div className="text-center mb-6">
               <motion.div
-                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8 } } }}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+                }}
               >
                 <SectionHeading title={wedding.rsvp.title} />
               </motion.div>
 
               <motion.p
-                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8 } } }}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+                }}
                 className="text-[16px] text-ink leading-relaxed max-w-md mx-auto mt-6"
               >
-                Para poder organizar con cariño y detalle este día, agradeceríamos que rellenarais este
-                formulario{' '}
+                Para poder organizar con cariño y detalle este día,
+                agradeceríamos que rellenarais este formulario{" "}
                 {wedding.rsvp.deadline ? (
                   <>
-                    antes del <strong className="text-ink font-semibold">{wedding.rsvp.deadline}</strong>
+                    antes del{" "}
+                    <strong className="text-ink font-semibold">
+                      {wedding.rsvp.deadline}
+                    </strong>
                   </>
                 ) : (
-                  <strong className="text-ink font-semibold">lo antes posible</strong>
+                  <strong className="text-ink font-semibold">
+                    lo antes posible
+                  </strong>
                 )}
                 , gracias.
               </motion.p>
@@ -1232,7 +1479,11 @@ export default function Home() {
             <motion.div
               variants={{
                 hidden: { opacity: 0, y: 35 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.8, ease: "easeOut" },
+                },
               }}
               className="bg-cream border border-primary/10 rounded-sm p-6 sm:p-8 md:p-12 shadow-sm max-w-2xl mx-auto"
             >
@@ -1255,18 +1506,28 @@ export default function Home() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-80px' }}
-            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.12 } } }}
+            viewport={{ once: true, margin: "-80px" }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
+            }}
             className="max-w-2xl mx-auto px-6 relative z-10"
           >
             <motion.div
               variants={{
                 hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.8, ease: "easeOut" },
+                },
               }}
               className="text-center mb-12"
             >
-              <SectionHeading eyebrow={wedding.info.eyebrow} title={wedding.info.title} />
+              <SectionHeading
+                eyebrow={wedding.info.eyebrow}
+                title={wedding.info.title}
+              />
             </motion.div>
 
             {/* Una tarjeta por tema, anchas y en columna: así cabe dentro la
@@ -1279,25 +1540,44 @@ export default function Home() {
                     key={bloque.title}
                     variants={{
                       hidden: { opacity: 0, y: 30 },
-                      visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 80, damping: 15 } },
+                      visible: {
+                        opacity: 1,
+                        y: 0,
+                        transition: {
+                          type: "spring",
+                          stiffness: 80,
+                          damping: 15,
+                        },
+                      },
                     }}
                     whileHover={{ y: -4 }}
                     id={bloque.id}
                     className="bg-moss text-white border border-white/10 rounded shadow-sm px-6 py-10 sm:px-10 text-center scroll-mt-24"
                   >
-                    {Icono && <Icono size={28} className="mx-auto mb-4 text-white/80" strokeWidth={1.4} />}
+                    {Icono && (
+                      <Icono
+                        size={28}
+                        className="mx-auto mb-4 text-white/80"
+                        strokeWidth={1.4}
+                      />
+                    )}
 
                     <h3 className="font-display text-[24px] md:text-[28px] text-white leading-tight">
                       {bloque.title}
                     </h3>
 
-                    <p className="mt-4 text-[18px] text-white/90 leading-relaxed">{bloque.body}</p>
+                    <p className="mt-4 text-[18px] text-white/90 leading-relaxed">
+                      {bloque.body}
+                    </p>
 
                     {bloque.items.length > 0 &&
-                      (bloque.layout === 'parejas' ? (
+                      (bloque.layout === "parejas" ? (
                         <ul className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-16">
                           {bloque.items.map((item) => (
-                            <li key={item.label} className="flex flex-col items-center">
+                            <li
+                              key={item.label}
+                              className="flex flex-col items-center"
+                            >
                               <span className="font-sans text-[14px] uppercase tracking-[0.25em] text-white">
                                 {item.label}
                               </span>
@@ -1310,12 +1590,17 @@ export default function Home() {
                       ) : (
                         <ul className="mt-8 space-y-4 text-left">
                           {bloque.items.map((item) => (
-                            <li key={item.label} className="border-t border-white/20 pt-4">
+                            <li
+                              key={item.label}
+                              className="border-t border-white/20 pt-4"
+                            >
                               <span className="font-sans text-[14px] uppercase tracking-[0.2em] text-white block">
                                 {item.label}
                               </span>
                               {/* Una línea con `detail`, o varias con `lines`. */}
-                              {(item.lines ?? (item.detail ? [item.detail] : [])).map((linea) => (
+                              {(
+                                item.lines ?? (item.detail ? [item.detail] : [])
+                              ).map((linea) => (
                                 <span
                                   key={linea}
                                   className="text-[18px] text-white/90 leading-relaxed block mt-1"
@@ -1329,7 +1614,9 @@ export default function Home() {
                       ))}
 
                     {bloque.note && (
-                      <p className="mt-8 text-[18px] text-white/85 leading-relaxed">{bloque.note}</p>
+                      <p className="mt-8 text-[18px] text-white/85 leading-relaxed">
+                        {bloque.note}
+                      </p>
                     )}
                   </motion.div>
                 );
@@ -1344,17 +1631,25 @@ export default function Home() {
            * Una cinta, no una sección: ilustración, título y botón en una
            * fila. Todo lo demás ya está en la ventana que abre el botón.
            */
-          <section id="musica" className="w-full bg-cream border-y border-primary/10 text-ink py-6">
+          <section
+            id="musica"
+            className="w-full bg-cream border-y border-primary/10 text-ink py-6"
+          >
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
               className="max-w-4xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-center sm:text-left"
             >
               {wedding.music.image && (
                 <div className="relative w-32 h-[3.3rem] sm:w-40 sm:h-[4.1rem] shrink-0">
-                  <Image src={wedding.music.image} alt="" fill className="object-contain" />
+                  <Image
+                    src={wedding.music.image}
+                    alt=""
+                    fill
+                    className="object-contain"
+                  />
                 </div>
               )}
 
@@ -1381,14 +1676,21 @@ export default function Home() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } }}
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+            }}
             className="max-w-4xl mx-auto px-6 text-center relative z-10"
           >
             <motion.div
               variants={{
                 hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.8, ease: "easeOut" },
+                },
               }}
               className="mb-6"
             >
@@ -1405,7 +1707,11 @@ export default function Home() {
             <motion.p
               variants={{
                 hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.8, ease: "easeOut" },
+                },
               }}
               className="text-[16px] text-ink leading-relaxed mb-10 max-w-md mx-auto"
             >
@@ -1415,11 +1721,15 @@ export default function Home() {
             <motion.div
               variants={{
                 hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.8, ease: "easeOut" },
+                },
               }}
               className="flex flex-col sm:flex-row justify-center items-center gap-4 max-w-md mx-auto"
             >
-              {(['partnerA', 'partnerB'] as const).map((quien) => (
+              {(["partnerA", "partnerB"] as const).map((quien) => (
                 <a
                   key={quien}
                   href={whatsappUrl(quien)}
@@ -1445,9 +1755,9 @@ export default function Home() {
               className="absolute inset-0 z-0"
               style={{
                 backgroundImage: `url("${backgrounds.sections.footer.mobileTop}")`,
-                backgroundSize: 'auto 100%',
-                backgroundRepeat: 'repeat',
-                backgroundPosition: 'center',
+                backgroundSize: "auto 100%",
+                backgroundRepeat: "repeat",
+                backgroundPosition: "center",
               }}
             />
           )}
@@ -1467,7 +1777,7 @@ export default function Home() {
 
           <div className="absolute bottom-0 left-0 right-0 py-3 bg-cream/55 border-t border-ink/10 z-10">
             <p className="font-sans font-bold text-[14px] text-ink/80 tracking-widest">
-              By{' '}
+              By{" "}
               <a
                 href="https://wa.me/34660104026"
                 target="_blank"
@@ -1513,7 +1823,9 @@ export default function Home() {
                   <Plane size={32} />
                 </div>
 
-                <h3 className="font-display text-2xl text-ink mb-3">{wedding.gift.modal.title}</h3>
+                <h3 className="font-display text-2xl text-ink mb-3">
+                  {wedding.gift.modal.title}
+                </h3>
 
                 <p className="font-sans text-[14px] text-ink leading-relaxed mb-6">
                   {wedding.gift.modal.description}
@@ -1528,7 +1840,9 @@ export default function Home() {
                       {wedding.gift.modal.iban}
                     </span>
                     <button
-                      onClick={() => copyToClipboard(wedding.gift.modal.iban, setCopied)}
+                      onClick={() =>
+                        copyToClipboard(wedding.gift.modal.iban, setCopied)
+                      }
                       className="p-2 bg-primary/5 hover:bg-primary/10 text-ink rounded transition-all active:scale-95 shrink-0"
                       title="Copiar IBAN"
                     >
@@ -1550,7 +1864,12 @@ export default function Home() {
                       {wedding.gift.modal.swift}
                     </span>
                     <button
-                      onClick={() => copyToClipboard(wedding.gift.modal.swift, setCopiedSwift)}
+                      onClick={() =>
+                        copyToClipboard(
+                          wedding.gift.modal.swift,
+                          setCopiedSwift,
+                        )
+                      }
                       className="p-2 bg-primary/5 hover:bg-primary/10 text-ink rounded transition-all active:scale-95 shrink-0"
                       title="Copiar Swift/BIC"
                     >
@@ -1574,7 +1893,9 @@ export default function Home() {
                   </span>
                 </div>
 
-                <p className="font-sans text-[14px] text-ink">{wedding.gift.modal.thanks}</p>
+                <p className="font-sans text-[14px] text-ink">
+                  {wedding.gift.modal.thanks}
+                </p>
               </motion.div>
             </div>
           )}
@@ -1608,15 +1929,19 @@ export default function Home() {
 
                 <div className="text-center mb-6">
                   <Music size={24} className="text-ink mx-auto mb-2" />
-                  <h3 className="font-display text-xl text-ink">{wedding.music.modal.title}</h3>
-                  <p className="font-sans text-[14px] text-ink mt-1">{wedding.music.modal.subtitle}</p>
+                  <h3 className="font-display text-xl text-ink">
+                    {wedding.music.modal.title}
+                  </h3>
+                  <p className="font-sans text-[14px] text-ink mt-1">
+                    {wedding.music.modal.subtitle}
+                  </p>
                 </div>
 
                 <AnimatePresence>
                   {showAddSongSuccess && (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
+                      animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       className="bg-primary/10 border border-primary/25 rounded text-ink p-3 text-center mb-4 font-sans text-[14px] font-semibold flex items-center justify-center gap-1.5 overflow-hidden"
                     >
@@ -1693,7 +2018,9 @@ export default function Home() {
                 </button>
                 <div className="text-center mb-6">
                   <Music size={24} className="text-ink mx-auto mb-2" />
-                  <h3 className="font-display text-xl text-ink">{wedding.music.allLabel}</h3>
+                  <h3 className="font-display text-xl text-ink">
+                    {wedding.music.allLabel}
+                  </h3>
                   <p className="font-sans text-[14px] text-ink mt-1">
                     {musicList.length} canciones sugeridas
                   </p>
@@ -1705,9 +2032,13 @@ export default function Home() {
                       className="flex items-center justify-between bg-sand/30 p-2.5 rounded font-sans text-[14px] border border-primary/5"
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <span className="text-[14px] font-bold text-ink/40 w-4 shrink-0">#{index + 1}</span>
+                        <span className="text-[14px] font-bold text-ink/40 w-4 shrink-0">
+                          #{index + 1}
+                        </span>
                         <div className="min-w-0 truncate">
-                          <span className="font-bold text-ink">{song.title}</span>
+                          <span className="font-bold text-ink">
+                            {song.title}
+                          </span>
                           <span className="text-ink"> — {song.artist}</span>
                         </div>
                       </div>
@@ -1744,7 +2075,7 @@ export default function Home() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
                 onClick={(e) => e.stopPropagation()}
                 className="relative max-w-4xl w-full h-[70vh] md:h-[80vh] z-50 flex items-center justify-center"
               >
@@ -1773,7 +2104,10 @@ export default function Home() {
 
       <AnimatePresence>
         {!showMain && (
-          <EnvelopeIntro onStartExit={() => setShowMain(true)} onComplete={() => setShowMain(true)} />
+          <EnvelopeIntro
+            onStartExit={() => setShowMain(true)}
+            onComplete={() => setShowMain(true)}
+          />
         )}
       </AnimatePresence>
     </main>

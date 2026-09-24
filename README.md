@@ -142,6 +142,14 @@ falló porque ese bloque no se dibuja.
 Si algún día se vuelve a animar con Motion cualquier alto automático dentro de
 la barra, los enlaces del menú volverán a parecer muertos.
 
+### El panel de administración
+
+`/admin` NO hereda la tipografía de la invitación. Va en **Inter**, que trae
+500, 600 y 700 de verdad; `font-sans` apunta a Instrument Serif, que solo tiene
+un grosor, así que pedirle negrita la engordaba por software y encima una regla
+de `globals.css` se la anulaba. Nada baja de 14px y los cuerpos son pares, igual
+que en la invitación.
+
 ## Local
 
 ```bash
