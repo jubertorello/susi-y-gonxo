@@ -55,7 +55,7 @@ function YesNoToggle({ value, onChange }: { value: boolean; onChange: (v: boolea
           onClick={() => onChange(v)}
           className={`flex-1 py-2.5 rounded font-sans text-[14px] uppercase tracking-[0.15em] transition-all duration-200 border ${
             value === v
-              ? 'bg-primary text-white border-primary'
+              ? 'bg-moss text-white border-moss'
               : 'bg-white text-ink border-primary/20 hover:border-primary/50'
           }`}
         >
@@ -368,7 +368,7 @@ export default function RSVPForm({ onSubmitted, onEdit, rsvpData, formSubmitted 
 
   const totalSteps = attending === false ? 2 : 4;
   const botonPrimario =
-    'w-full py-3.5 bg-primary hover:bg-primary/90 text-white tracking-[0.2em] font-sans text-[14px] uppercase rounded-full transition-all duration-300 shadow hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed';
+    'w-full py-3.5 bg-moss hover:bg-moss/90 text-white tracking-[0.2em] font-sans text-[14px] uppercase rounded-full transition-all duration-300 shadow hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed';
 
   return (
     <div className="space-y-5" ref={topRef}>
@@ -389,7 +389,7 @@ export default function RSVPForm({ onSubmitted, onEdit, rsvpData, formSubmitted 
                   key={i}
                   className={`block rounded-full transition-all duration-300 ${
                     i + 1 === step
-                      ? 'w-4 h-1.5 bg-primary'
+                      ? 'w-4 h-1.5 bg-moss'
                       : i + 1 < step
                         ? 'w-1.5 h-1.5 bg-primary/40'
                         : 'w-1.5 h-1.5 bg-primary/15'
@@ -420,7 +420,7 @@ export default function RSVPForm({ onSubmitted, onEdit, rsvpData, formSubmitted 
               <button
                 type="button"
                 onClick={() => handleAttendance(true)}
-                className="flex-1 py-4 bg-primary hover:bg-primary/90 text-white font-sans text-[14px] uppercase tracking-[0.2em] rounded-full transition-all duration-300 shadow hover:shadow-md"
+                className="flex-1 py-4 bg-moss hover:bg-moss/90 text-white font-sans text-[14px] uppercase tracking-[0.2em] rounded-full transition-all duration-300 shadow hover:shadow-md"
               >
                 Sí, asistiré
               </button>

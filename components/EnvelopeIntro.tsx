@@ -355,7 +355,7 @@ export default function EnvelopeIntro({ onComplete, onStartExit }: EnvelopeIntro
           <button
             type="button"
             onClick={() => setShowPre(false)}
-            className="px-8 py-3 rounded-full bg-primary text-cream font-sans text-[14px] uppercase tracking-[0.25em] shadow-lg hover:bg-primary/90 transition-colors font-medium"
+            className="px-8 py-3 rounded-full bg-moss text-cream font-sans text-[14px] uppercase tracking-[0.25em] shadow-lg hover:bg-moss/90 transition-colors font-medium"
           >
             {wedding.envelope.preButton}
           </button>
@@ -423,7 +423,7 @@ export default function EnvelopeIntro({ onComplete, onStartExit }: EnvelopeIntro
               type="button"
               onClick={salir}
               disabled={!opened}
-              className="px-6 py-2 bg-primary text-cream font-sans tracking-[0.2em] text-[14px] uppercase rounded-full shadow-lg transition-all duration-700 hover:scale-105 active:scale-95 disabled:opacity-0 disabled:translate-y-1 whitespace-nowrap"
+              className="px-6 py-2 bg-moss text-cream font-sans tracking-[0.2em] text-[14px] uppercase rounded-full shadow-lg transition-all duration-700 hover:scale-105 active:scale-95 disabled:opacity-0 disabled:translate-y-1 whitespace-nowrap"
             >
               {wedding.envelope.cardButton}
             </button>

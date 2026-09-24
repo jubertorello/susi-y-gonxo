@@ -151,7 +151,7 @@ export const wedding = {
     /** Texto sobre los números. Cadena vacía para no poner ninguno. */
     lead: '¡Empieza la cuenta atrás!',
     /** Línea bajo los números. Cadena vacía para no ponerla. */
-    tagline: 'Lo que nos queda para veros a todos allí.',
+    tagline: '',
     /** `true` dibuja el relojito con la aguja en marcha sobre el título. */
     clock: true,
     labels: {
