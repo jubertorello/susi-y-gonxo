@@ -656,7 +656,7 @@ export default function Home() {
                 onClick={(e) => handleNavClick(e, "confirmacion")}
                 className="hidden lg:inline-block px-4 py-1.5 border border-white/30 text-cream hover:bg-cream hover:text-ink transition-all duration-300 rounded-full text-[14px] uppercase font-sans tracking-[0.2em]"
               >
-                {wedding.nav.ctaLabel}
+                {wedding.nav.ctaLabelBarra}
               </a>
 
               <button

@@ -410,6 +410,8 @@ export const wedding = {
   // ---------------------------------------------------------------------------
   nav: {
     ctaLabel: 'Confirma tu asistencia',
+    /** El mismo botón en la barra de escritorio, donde el sitio es oro. */
+    ctaLabelBarra: 'Confirmar',
     /**
      * `mobileOnly` → solo en el desplegable; `desktopOnly` → solo en la barra.
      * En la barra no caben siete enlaces, así que Datos de Interés va entero
