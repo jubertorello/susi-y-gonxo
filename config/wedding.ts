@@ -24,7 +24,7 @@ export const wedding = {
    *       firma del pie, Cormorant en el texto corrido.
    * El reparto vive en `app/layout.tsx`.
    */
-  fontVersion: 1 as 1 | 2,
+  fontVersion: 2 as 1 | 2,
 
   // ---------------------------------------------------------------------------
   // LA PAREJA
