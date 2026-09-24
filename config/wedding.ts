@@ -17,6 +17,15 @@ export const wedding = {
   /** Identificador de la pareja en Supabase (client_id). Único por boda. */
   clientId: 'susi-y-gonxo',
 
+  /**
+   * VERSIÓN TIPOGRÁFICA. Se cambia solo este número.
+   *   1 · Cormorant Garamond en todo.
+   *   2 · Instrument Serif en los títulos, Pinyon Script en el sobre y la
+   *       firma del pie, Cormorant en el texto corrido.
+   * El reparto vive en `app/layout.tsx`.
+   */
+  fontVersion: 1 as 1 | 2,
+
   // ---------------------------------------------------------------------------
   // LA PAREJA
   // ---------------------------------------------------------------------------
@@ -167,7 +176,7 @@ export const wedding = {
   gallery: {
     /** Pon `false` para ocultar el carrete entero. */
     enabled: true,
-    title: 'Nuestro carrete',
+    title: '',
     /** Ilustración sobre el carrete. Cadena vacía para no poner ninguna. */
     image: '',
     /** Segundos que tarda el carrete en dar una vuelta completa. */
@@ -327,7 +336,7 @@ export const wedding = {
         ],
       },
       {
-        title: 'Dónde alojarse',
+        title: 'Recomendación de Hoteles',
         // TODO: sustituir por los hoteles y condiciones cuando estén cerrados.
         body: 'Estamos cerrando acuerdos con varios alojamientos de la zona. En cuanto lo tengamos os pasaremos los nombres, los precios y cómo reservar.',
         bullets: [] as string[],

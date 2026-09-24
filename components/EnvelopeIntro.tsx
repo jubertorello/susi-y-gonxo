@@ -348,7 +348,7 @@ export default function EnvelopeIntro({ onComplete, onStartExit }: EnvelopeIntro
             className="relative mb-8 w-[180px] md:w-[220px] aspect-[4/3] motion-safe:animate-[flotar_3s_ease-in-out_infinite]"
             style={{ backgroundImage: `url("${assets.front}")`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }}
           />
-          <p className="font-display italic text-3xl md:text-4xl text-primary mb-2">{wedding.envelope.preTitle}</p>
+          <p className="font-script text-3xl md:text-4xl text-primary mb-2 leading-[1.35]">{wedding.envelope.preTitle}</p>
           <p className="font-sans text-secondary text-[10px] md:text-[11px] uppercase tracking-[0.35em] mb-10 font-medium">
             {wedding.envelope.preSubtitle}
           </p>

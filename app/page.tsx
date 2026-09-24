@@ -1285,7 +1285,7 @@ export default function Home() {
           <div className="max-w-2xl mx-auto px-6 relative z-10">
             {/* La tela va sin velo, así que el texto es oscuro: `ink` sobre la
                 raya da 5.36:1, y 6.34:1 sobre sus rayas blancas. */}
-            <span className="font-display text-4xl md:text-5xl block mb-6 text-ink">
+            <span className="font-script text-4xl md:text-5xl block mb-6 text-ink leading-[1.3]">
               {wedding.footer.headline}
             </span>
             <p className="font-sans text-[11px] md:text-xs uppercase tracking-[0.3em] text-ink mb-2 font-semibold">

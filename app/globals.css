@@ -4,16 +4,16 @@
   /* -------------------------------------------------------------------------
      PALETA. Cambiar una boda de color es cambiar estos valores: de aquí salen
      las clases text-primary, bg-sage, border-ink… que usa toda la invitación.
-     Familia oliva, la de mariu-y-nacho. Los tonos de texto están ajustados
-     para que el cuerpo pase 4.5:1 sobre el papel: `secondary` sobre `cream`
-     da 4.69:1, y `primary` 6.72:1.
+     Familia oliva construida alrededor de `primary`. Todos los tonos de
+     texto pasan 4.5:1 sobre el papel: primary 4.7:1, secondary 5.2:1,
+     ink 10.24:1. Blanco sobre `moss`, 6.54:1.
      ------------------------------------------------------------------------- */
-  --color-primary: #5a5a40;   /* oliva: títulos, botones y barra superior */
-  --color-secondary: #727255; /* el mismo, más claro, para el texto corrido */
+  --color-primary: #6b7361;   /* oliva: títulos, botones y barra superior */
+  --color-secondary: #646c5a; /* texto corrido */
   --color-cream: #fbf9f4;     /* papel */
   --color-sage: #afb5a6;      /* salvia del sobre: fondos claros de color */
-  --color-moss: #63634a;      /* oliva oscuro: fondos con texto en blanco */
-  --color-ink: #3a3a28;       /* el más oscuro: fechas y nombres */
+  --color-moss: #59604f;      /* oliva oscuro: fondos con texto en blanco */
+  --color-ink: #39402f;       /* el más oscuro: fechas y nombres */
   --color-sand: #efeae0;      /* fondos suaves de tarjetas y campos */
   --color-soft: #e8e4da;      /* bordes y separadores */
   --color-gold: #c9a77a;      /* lacre: acentos finos */
@@ -67,14 +67,23 @@
 @layer utilities {
   /* -------------------------------------------------------------------------
      REGLAS TIPOGRÁFICAS
-     · `.font-display` es la voz de los títulos: siempre semibold, y no se usa
-       nunca por debajo de 14px.
+     · `.font-display` es la voz de los títulos: nunca por debajo de 14px, y
+       en semibold salvo en la versión 2, donde Instrument Serif solo tiene
+       un grosor y forzarlo saldría en negrita falsa.
      · La cursiva solo se pone a partir de 28px. Por debajo de ese cuerpo
        Cormorant en itálica se emborrona, así que el texto corrido va redondo.
      ------------------------------------------------------------------------- */
   .font-display {
-    font-family: var(--font-serif);
-    font-weight: 600;
+    font-family: var(--font-display);
+    font-weight: var(--peso-display);
+  }
+
+  /* La voz caligráfica: solo para los dos momentos grandes, y nunca por
+     debajo de 28px, porque siempre va en cursiva o en script. */
+  .font-script {
+    font-family: var(--font-script);
+    font-weight: var(--peso-script);
+    font-style: var(--estilo-script);
   }
 
   .preserve-3d {

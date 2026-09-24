@@ -41,10 +41,27 @@ láminas hay que ajustar también `backgrounds.envelopeLayers`.
 
 ### Tipografía
 
+Hay **dos versiones**, y se cambia de una a otra con un número:
+
+```ts
+wedding.fontVersion = 1   // o 2
+```
+
+| | Títulos | Momentos grandes | Texto corrido |
+| --- | --- | --- | --- |
+| **1** | Cormorant Garamond semibold | Cormorant cursiva | Cormorant Garamond |
+| **2** | Instrument Serif | Pinyon Script | Cormorant Garamond |
+
+En las dos, los rótulos pequeños en mayúsculas van en Inter: un serif a 10px
+con mucho tracking no se lee. El reparto de papeles está en `app/layout.tsx`.
+
 Dos reglas, comprobables en el DOM con estilos calculados:
 
-- La **cursiva** nunca baja de 28px. El texto corrido va redondo.
-- La clase `.font-display` es siempre semibold y nunca por debajo de 14px.
+- La **cursiva** y la **script** nunca bajan de 28px. El texto corrido va
+  redondo.
+- `.font-display` nunca baja de 14px, y va en semibold **salvo en la versión
+  2**: Instrument Serif solo tiene un grosor y forzarlo saldría en negrita
+  falsa, así que ahí el peso esperado es 400.
 
 ## Local
 
