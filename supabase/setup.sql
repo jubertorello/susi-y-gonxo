@@ -29,7 +29,7 @@ where proname = 'verify_client_password';
 --  1a) Si `verify_client_password` usa crypt() → contraseña cifrada (lo suyo):
 insert into clients (client_id, display_name, username, password_hash, role)
 values (
-  'novia-y-novio',
+  'susi-y-gonxo',
   'Susi & Gonxo',
   'susi',
   crypt('TU-CONTRASENA', gen_salt('bf')),
@@ -45,7 +45,7 @@ on conflict (client_id) do update
 --      Descomenta esta y comenta la de arriba.
 --
 -- insert into clients (client_id, display_name, username, password, role)
--- values ('novia-y-novio', 'Susi & Gonxo', 'susi', 'TU-CONTRASENA', 'client')
+-- values ('susi-y-gonxo', 'Susi & Gonxo', 'susi', 'TU-CONTRASENA', 'client')
 -- on conflict (client_id) do update
 --   set display_name = excluded.display_name,
 --       username     = excluded.username,

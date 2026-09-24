@@ -15,7 +15,7 @@
 
 export const wedding = {
   /** Identificador de la pareja en Supabase (client_id). Único por boda. */
-  clientId: 'novia-y-novio',
+  clientId: 'susi-y-gonxo',
 
   // ---------------------------------------------------------------------------
   // LA PAREJA
