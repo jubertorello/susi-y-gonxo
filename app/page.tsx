@@ -968,7 +968,7 @@ export default function Home() {
                         }`}
                       >
                         {evento.image && (
-                          <div className="relative shrink-0 w-[4.5rem] h-16 sm:w-28 sm:h-[6.3rem] md:w-36 md:h-32">
+                          <div className="relative shrink-0 w-24 h-[5.4rem] sm:w-36 sm:h-32 md:w-48 md:h-44">
                             <Image src={evento.image} alt={evento.title} fill className="object-contain" />
                           </div>
                         )}
@@ -1145,56 +1145,35 @@ export default function Home() {
 
         {/* ================= 8. MÚSICA ================= */}
         {wedding.music.enabled && (
-          <section id="musica" className="w-full py-14 relative">
-            <SectionBackground bg={backgrounds.sections.music} />
-
+          /*
+           * Una cinta, no una sección: ilustración, título y botón en una
+           * fila. Todo lo demás ya está en la ventana que abre el botón.
+           */
+          <section id="musica" className="w-full bg-moss text-white py-6">
             <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-80px' }}
-              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.12 } } }}
-              className="max-w-2xl mx-auto px-6 relative z-10"
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+              className="max-w-4xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-center sm:text-left"
             >
-              {/* Misma tarjeta que Datos de Interés, para que no desentone. */}
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, y: 30 },
-                  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 80, damping: 15 } },
-                }}
-                whileHover={{ y: -4 }}
-                className="bg-moss text-white border border-white/10 rounded shadow-sm px-6 py-10 sm:px-10 text-center"
+              {wedding.music.image && (
+                <div className="relative w-32 h-[3.3rem] sm:w-40 sm:h-[4.1rem] shrink-0">
+                  <Image src={wedding.music.image} alt="" fill className="object-contain" />
+                </div>
+              )}
+
+              <h2 className="font-display text-[24px] md:text-[28px] text-white leading-tight">
+                {wedding.music.title}
+              </h2>
+
+              <button
+                onClick={() => setShowMusicModal(true)}
+                className="shrink-0 inline-flex items-center gap-2 px-7 py-2.5 bg-white text-ink hover:bg-white/90 font-sans text-[14px] uppercase tracking-[0.2em] rounded-full transition-all duration-300 shadow hover:scale-105 active:scale-95 font-semibold"
               >
-                {wedding.music.image && (
-                  <div className="relative w-24 h-24 mx-auto mb-4">
-                    <Image src={wedding.music.image} alt="" fill className="object-contain" />
-                  </div>
-                )}
-
-                <Music size={28} className="mx-auto mb-4 text-white/80" strokeWidth={1.4} />
-
-                <h3 className="font-display text-[24px] md:text-[28px] text-white leading-tight">
-                  {wedding.music.title}
-                </h3>
-
-                <p className="mt-4 text-[18px] text-white/90 leading-relaxed">{wedding.music.description}</p>
-
-                <button
-                  onClick={() => setShowMusicModal(true)}
-                  className="mt-8 inline-flex items-center gap-2 px-8 py-3 bg-white text-ink hover:bg-white/90 font-sans text-[14px] uppercase tracking-[0.2em] rounded-full transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 font-semibold"
-                >
-                  <Music size={14} />
-                  <span>{wedding.music.ctaLabel}</span>
-                </button>
-
-                {musicList.length > 0 && (
-                  <button
-                    onClick={() => setShowAllSongsModal(true)}
-                    className="mt-5 block mx-auto font-sans text-[14px] uppercase tracking-[0.18em] text-white/75 hover:text-white transition-colors underline underline-offset-4"
-                  >
-                    {wedding.music.allLabel} ({musicList.length})
-                  </button>
-                )}
-              </motion.div>
+                <Music size={14} />
+                <span>{wedding.music.ctaLabel}</span>
+              </button>
             </motion.div>
           </section>
         )}

@@ -216,11 +216,12 @@ export const wedding = {
     /** `true` la dibuja discreta, en una franja estrecha en vez de una tarjeta. */
     compact: true,
     title: 'Ayúdanos con la música',
+    /** En la cinta no se usa; queda por si vuelve a ser una sección grande. */
     description: '¿Qué canciones no pueden faltar en la fiesta? Añádelas a la playlist.',
-    ctaLabel: 'Sugerir Canciones',
+    ctaLabel: 'Sugerir',
     topLabel: 'Top canciones sugeridas:',
     allLabel: 'Playlist de los invitados',
-    image: '',
+    image: '/dj.webp',
     /** `true` arranca la canción de fondo en cuanto el invitado toca la pantalla. */
     autoplay: false,
     /** Cadena vacía: no hay música de fondo y el botón de sonido no aparece. */
