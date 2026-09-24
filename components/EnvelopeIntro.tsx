@@ -359,7 +359,7 @@ export default function EnvelopeIntro({ onComplete, onStartExit }: EnvelopeIntro
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: rama.side === 'left' ? 'left center' : 'right center',
-            transform: `translateX(${rama.side === 'left' ? '-22%' : '22%'}) rotate(${rama.rotate}deg)${
+            transform: `translateX(${rama.side === 'left' ? '-32%' : '32%'}) rotate(${rama.rotate}deg)${
               rama.flip ? ' scaleX(-1)' : ''
             }`,
           }}
