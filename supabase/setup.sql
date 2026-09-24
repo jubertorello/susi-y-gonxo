@@ -3,6 +3,10 @@
 -- =============================================================================
 --  Se ejecuta en el SQL Editor, por pasos y mirando el resultado de cada uno.
 --  No pegues el archivo entero de golpe.
+--
+--  AQUÍ NO SE ESCRIBEN CONTRASEÑAS. Este archivo va en un repositorio público,
+--  así que donde pone TU-CONTRASENA se pega la buena EN EL EDITOR, nunca en el
+--  archivo: lo que entra en el historial de git ya no se borra del todo.
 -- -----------------------------------------------------------------------------
 
 
@@ -87,7 +91,7 @@ values (
   'susi-y-gonxo',
   'Susi & Gonxo',
   'susi',
-  crypt('TU-CONTRASENA', gen_salt('bf')),
+  crypt('TU-CONTRASENA', gen_salt('bf')),   -- <- la de verdad, al pegarla aquí
   'client'
 );
 
