@@ -1107,7 +1107,7 @@ export default function Home() {
                         transition: { type: 'spring', stiffness: 60, damping: 15 },
                       },
                     }}
-                    className="relative w-72 h-48 md:w-[26rem] md:h-72"
+                    className="relative w-full max-w-[20rem] md:max-w-[30rem] aspect-[7/3]"
                   >
                     <Image
                       src={wedding.gift.image}

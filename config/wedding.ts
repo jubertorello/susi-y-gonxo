@@ -267,7 +267,7 @@ export const wedding = {
     /** Línea de cierre bajo el botón. Cadena vacía para no ponerla. */
     closing:
       'Gracias por acompañarnos, de una forma u otra, en todo lo que está por venir.',
-    image: '',
+    image: '/luna-de-miel.webp',
     ctaHint: '¿Quieres hacernos un regalo? Haz click aquí:',
     ctaLabel: 'Ver datos regalo',
     modal: {
@@ -294,11 +294,10 @@ export const wedding = {
     title: 'Confirma tu asistencia',
     /**
      * Fecha límite mostrada en el formulario y en la introducción.
-     * Cadena vacía mientras esté sin decidir: entonces se pide confirmar
-     * «lo antes posible» y no se enseña ninguna fecha.
+     * Cadena vacía: se pide confirmar «lo antes posible», sin fecha.
      */
-    // TODO: poner el plazo cuando esté decidido, p. ej. '31 de enero'.
-    deadline: '',
+    /** Tres semanas antes de la boda. */
+    deadline: '6 de marzo',
     bus: {
       /** Pon `false` si no hay servicio de autobuses (oculta los campos). */
       enabled: true,
