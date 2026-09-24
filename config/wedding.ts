@@ -78,6 +78,20 @@ export const wedding = {
     title: 'Susi & Gonxo · 27.03.2027',
     description:
       '¡Nos casamos! El 27 de marzo de 2027 lo celebramos en la Finca de San Juan y nos encantaría que nos acompañes.',
+    /**
+     * Lo que se ve al pegar el enlace en WhatsApp, Instagram o X: la tarjeta
+     * de 1200 × 630 la dibuja `scripts/tarjeta-compartir.py`. El título y el
+     * texto de la vista previa son los de arriba.
+     */
+    image: '/compartir.jpg',
+    imageAlt: 'Susi & Gonxo · 27 de marzo de 2027 · Finca de San Juan',
+    /**
+     * Dominio de producción, para que las redes puedan pedir la imagen: la
+     * quieren con la dirección entera, no con `/compartir.webp` a secas. En
+     * Vercel sale solo del entorno; esto es el respaldo.
+     * TODO: poner el dominio definitivo cuando lo haya.
+     */
+    url: 'https://susi-y-gonxo.vercel.app',
   },
 
   // ---------------------------------------------------------------------------

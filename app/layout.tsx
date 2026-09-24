@@ -43,7 +43,23 @@ const instrument = Instrument_Serif({
   variable: '--font-instrument',
 });
 
+/**
+ * Las redes piden la imagen con la dirección entera, no con `/compartir.webp`.
+ * `metadataBase` es quien la completa. En Vercel el dominio sale del entorno;
+ * en local y como respaldo, del `seo.url` de la configuración.
+ */
+const dominio = process.env.NEXT_PUBLIC_SITE_URL
+  ? process.env.NEXT_PUBLIC_SITE_URL
+  : process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : wedding.seo.url;
+
+const tarjeta = [
+  { url: wedding.seo.image, width: 1200, height: 630, alt: wedding.seo.imageAlt },
+];
+
 export const metadata: Metadata = {
+  metadataBase: new URL(dominio),
   title: wedding.seo.title,
   description: wedding.seo.description,
   openGraph: {
@@ -51,11 +67,15 @@ export const metadata: Metadata = {
     description: wedding.seo.description,
     type: 'website',
     locale: 'es_ES',
+    siteName: wedding.couple.shortNames,
+    url: '/',
+    images: tarjeta,
   },
   twitter: {
     card: 'summary_large_image',
     title: wedding.seo.title,
     description: wedding.seo.description,
+    images: tarjeta,
   },
 };
 

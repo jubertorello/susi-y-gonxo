@@ -96,6 +96,31 @@ altas y estrechas con fondo transparente** (PNG o WebP), no una composición
 cuadrada. Van en `public/eucalipto/`. El ancho y la opacidad se ajustan desde
 la propia configuración, sin tocar código.
 
+### El icono y la tarjeta de compartir
+
+| Qué | Dónde |
+| --- | --- |
+| Icono de la pestaña | `app/icon.svg` — las iniciales y el oliva, a mano |
+| Tarjeta al compartir | `public/compartir.jpg`, 1200 × 630 |
+| Título y texto de la vista previa | `wedding.seo.title` y `.description` |
+| Dominio | `wedding.seo.url`, o `NEXT_PUBLIC_SITE_URL` |
+
+La tarjeta la dibuja `scripts/tarjeta-compartir.py`, que reutiliza el papel y
+las ramas de olivo de `public/`. Para otra boda se cambian los textos y colores
+de la cabecera del script y se relanza:
+
+```bash
+python3 scripts/tarjeta-compartir.py
+```
+
+Va en **JPG**, no en WebP como el resto: los robots que leen la vista previa
+—WhatsApp el primero— no siempre entienden WebP y se quedan sin enseñar nada.
+
+Las redes piden la imagen con la dirección entera, así que `metadataBase` en
+`app/layout.tsx` la completa: en Vercel sale del entorno y, si no, de
+`wedding.seo.url`. Si eso apunta a un dominio equivocado, la vista previa sale
+en blanco aunque la imagen exista.
+
 ### Tipografía
 
 Hay **dos versiones**, y se cambia de una a otra con un número:
