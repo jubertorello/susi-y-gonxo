@@ -7,30 +7,45 @@
 
 
 -- =============================================================================
---  LO QUE HAY HOY EN LA BASE (diagnóstico del 24/09/2026)
+--  LO QUE HAY HOY EN LA BASE (comprobado contra el proyecto, 24/09/2026)
 -- =============================================================================
 --  Conviven dos sistemas de login, uno encima del otro:
 --
---  · `client_credentials` — el bueno. Tiene `username` y `password_hash`, y la
---    función que lo usa compara con crypt(), o sea bcrypt. Es también el que
---    mira `get_clients_list` para el acceso maestro.
+--  · `client_credentials` — el bueno, y el que se usa de verdad. Tiene
+--    `username` y `password_hash`, y compara con crypt() (bcrypt). Es también
+--    el que mira `get_clients_list` para el acceso maestro.
 --
---  · `clients` — el viejo. Guarda la contraseña en claro (columna `password`,
---    sin hashear) y NO tiene columna `username`.
+--  · `clients` — el viejo. Contraseña en claro (columna `password`) y sin
+--    columna `username`.
 --
---  Y hay DOS funciones `verify_client_password`, una por sistema. La vieja es:
+--  Hay DOS funciones `verify_client_password`, una por sistema, y se
+--  distinguen por sus argumentos:
+--
+--      verify_client_password(input_username, input_password)  → client_credentials
+--      verify_client_password(input_password)                  → clients
+--
+--  POR QUÉ FUNCIONA UNA BODA QUE SOLO ESTÁ EN `client_credentials`:
+--  el código llama con los dos argumentos con nombre, y PostgREST elige la
+--  función cuyos nombres de parámetro encajan exactamente. Con dos nombres
+--  siempre cae en la de `client_credentials`. La vieja nunca entra por ahí:
+--  necesita que la llamen con `input_password` a secas.
+--
+--  Por eso dar de alta en `client_credentials` es lo correcto, y por eso las
+--  parejas que solo están ahí entran sin problema.
+--
+--  LO QUE SÍ CHIRRÍA de la función vieja, que es esta entera:
 --
 --      SELECT c.client_id, c.display_name, c.role
 --      FROM clients c
 --      WHERE c.password = input_password;
 --
---  Fíjate en que el WHERE no mira el usuario: le basta la contraseña. Quien
---  acierte la contraseña de cualquier pareja entra como esa pareja, escriba lo
---  que escriba en el campo de usuario. Y como están en claro, quien pueda leer
---  `clients` las tiene todas.
---
---  Damos de alta a Susi y Gonxo en `client_credentials`, que es el sistema
---  bueno. El PASO 3 se ocupa de la función vieja.
+--  El WHERE no mira el usuario: le basta la contraseña. Y se puede llamar
+--  desde fuera con la clave `anon` (comprobado: devuelve 200, no 404).
+--  El daño está acotado porque las dos tablas de credenciales SÍ están
+--  protegidas: una lectura con la clave `anon` devuelve 0 filas en las dos,
+--  así que las contraseñas en claro no se pueden sacar desde fuera. Aun así
+--  es una puerta que no comprueba quién llama y que no usa nadie: mejor
+--  cerrarla (PASO 3).
 
 
 -- PASO 0 · Confirmar el terreno ---------------------------------------------
@@ -88,22 +103,26 @@ select * from verify_client_password('susi', 'contrasena-que-no-es');
 
 
 -- =============================================================================
---  PASO 3 · QUITAR LA FUNCIÓN VIEJA          ← hazlo antes de publicar
+--  PASO 3 · QUITAR LA FUNCIÓN VIEJA
 -- =============================================================================
---  Mientras siga existiendo la versión que entra solo con la contraseña, el
---  panel tiene dos puertas y una no comprueba el usuario.
+--  Confirma antes el tipo del argumento con el PASO 0b (debería ser `text`)
+--  y comprueba que el oid que borras es el de la versión de una sola entrada.
+
+drop function if exists public.verify_client_password(input_password text);
+
+--  Repite el PASO 2 después: tiene que seguir funcionando igual, porque el
+--  código llama a la de dos argumentos.
 --
---  Con los argumentos que te dio el PASO 0b, borra la que lee de `clients`.
---  Va con la firma completa porque hay dos funciones con el mismo nombre y
---  Postgres necesita saber cuál:
+--  Y esta comprobación, desde fuera, debe pasar a devolver 404 en vez de 200:
 --
--- drop function public.verify_client_password(<argumentos que diga el paso 0b>);
+--    curl -X POST "$SUPABASE_URL/rest/v1/rpc/verify_client_password" \
+--      -H "apikey: $ANON_KEY" -H "Content-Type: application/json" \
+--      -d '{"input_password":"lo-que-sea"}'
 --
---  Repite el PASO 2 después de borrarla: tiene que seguir funcionando igual,
---  porque el código llama a la de `client_credentials`.
+--  Cuando ya no la use nadie, la tabla vieja tampoco pinta nada. Mira antes
+--  si queda alguna pareja que solo esté ahí:
 --
---  Cuando ya no la use nadie, la tabla vieja tampoco pinta nada:
---
+-- select client_id, display_name, role from clients;
 -- drop table if exists public.clients;
 
 
@@ -136,5 +155,5 @@ order by tablename, policyname;
 --   with check (true);
 --
 --  En `songs` la lectura pública sí hace falta: la invitación enseña la
---  playlist. Y comprueba que ni `clients` ni `client_credentials` sean
---  legibles por `anon`.
+--  playlist. `clients` y `client_credentials` ya están bien: comprobado que
+--  con la clave `anon` devuelven 0 filas.
