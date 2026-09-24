@@ -357,9 +357,19 @@ export const wedding = {
  *  Separadas del contenido porque cambian con el diseño, no con la boda.
  *  Viven en `public/`, así que se sirven desde el propio dominio.
  * ---------------------------------------------------------------------------*/
+const CLOUD = 'https://res.cloudinary.com/scihumn2';
+const img = (nombre: string) => `${CLOUD}/image/upload/${nombre}`;
+
+/**
+ * Textura del papel. La misma que usa mariu-y-nacho.
+ * En `public/papel.webp` queda la alternativa local, por si se quiere volver
+ * a servir desde el propio dominio en vez de desde Cloudinary.
+ */
+const PAPEL = img('texturapapel-limoncello-scaled_cgfzov.jpg');
+
 export const backgrounds = {
   /** Fondo del telón mientras se abre el sobre. */
-  intro: '/papel.webp',
+  intro: PAPEL,
 
   envelope: {
     /** Frente del sobre, cerrado y visto de cara. 840 × 600. */
@@ -378,7 +388,7 @@ export const backgrounds = {
     /** Sombra que proyecta la solapa al abrirse. Vacío: no se dibuja. 840 × 549. */
     flapShadow: '/sobre/solapa-sombra.png',
     /** Textura del papel de la tarjeta que sale del sobre. */
-    cardBg: '/papel.webp',
+    cardBg: PAPEL,
   },
 
   /**
@@ -398,14 +408,14 @@ export const backgrounds = {
    * la sección se queda con su color de fondo.
    */
   sections: {
-    hero: { mobileTop: '/papel.webp', mobileBottom: '', desktop: '/papel.webp' },
+    hero: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
     locations: { mobileTop: '', mobileBottom: '', desktop: '' },
-    photos: { mobileTop: '/papel.webp', mobileBottom: '', desktop: '/papel.webp' },
-    itinerary: { mobileTop: '/papel.webp', mobileBottom: '', desktop: '/papel.webp' },
+    photos: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
+    itinerary: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
     music: { mobileTop: '', mobileBottom: '', desktop: '' },
-    rsvp: { mobileTop: '/papel.webp', mobileBottom: '', desktop: '/papel.webp' },
-    info: { mobileTop: '/papel.webp', mobileBottom: '', desktop: '/papel.webp' },
-    contact: { mobileTop: '/papel.webp', mobileBottom: '', desktop: '/papel.webp' },
+    rsvp: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
+    info: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
+    contact: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
     footer: { mobileTop: '', mobileBottom: '', desktop: '' },
   },
 

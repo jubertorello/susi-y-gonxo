@@ -36,6 +36,22 @@
   }
 }
 
+@layer base {
+  /*
+   * El sobre de la pantalla previa flota con `animate-[flotar_...]`, pero
+   * los keyframes no estaban definidos en ningún sitio, así que la clase no
+   * existía y el sobre se quedaba quieto.
+   */
+  @keyframes flotar {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+}
+
 @layer utilities {
   /* -------------------------------------------------------------------------
      REGLAS TIPOGRÁFICAS
