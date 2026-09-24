@@ -618,7 +618,7 @@ export default function Home() {
                     <h1 className="font-display tracking-[0.06em] sm:tracking-[0.1em] text-[30px] leading-tight text-ink uppercase">
                       {wedding.couple[quien].firstName}
                     </h1>
-                    <span className="font-display tracking-[0.05em] text-[18px] sm:text-[20px] text-ink uppercase mt-1">
+                    <span className="font-display tracking-[0.05em] text-[26px] text-ink uppercase mt-1">
                       {wedding.couple[quien].lastName}
                     </span>
                   </div>
@@ -648,7 +648,7 @@ export default function Home() {
             >
               <div className="flex items-center justify-center gap-1.5 sm:gap-6 md:gap-8">
                 <div className="border-y border-ink/40 py-2 text-center px-2 sm:px-6 shrink-0">
-                  <span className="font-display tracking-[0.04em] sm:tracking-[0.14em] uppercase text-ink block text-[30px] leading-none">
+                  <span className="font-display tracking-[0.04em] sm:tracking-[0.14em] uppercase text-ink block text-[26px] leading-none">
                     {wedding.date.month}
                   </span>
                 </div>
@@ -658,7 +658,7 @@ export default function Home() {
                 </div>
 
                 <div className="border-y border-ink/40 py-2 text-center px-2 sm:px-6 shrink-0">
-                  <span className="font-display tracking-[0.04em] sm:tracking-[0.14em] text-ink block text-[30px] leading-none">
+                  <span className="font-display tracking-[0.04em] sm:tracking-[0.14em] text-ink block text-[26px] leading-none">
                     {wedding.date.year}
                   </span>
                 </div>
@@ -907,15 +907,15 @@ export default function Home() {
         )}
 
         {/* ================= 5. ITINERARIO ================= */}
-        <section id="itinerario" className="pt-16 pb-16 text-ink relative">
+        <section id="itinerario" className="pt-12 pb-14 text-ink relative">
           <SectionBackground bg={backgrounds.sections.itinerary} />
           <Eucalipto />
 
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.15 } } }}
+            viewport={{ once: true, margin: '-60px' }}
+            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } }}
             className="max-w-4xl mx-auto px-6 relative z-10"
           >
             <motion.div
@@ -923,7 +923,7 @@ export default function Home() {
                 hidden: { opacity: 0, y: 30 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
               }}
-              className="text-center mb-16"
+              className="text-center mb-8"
             >
               <SectionHeading
                 eyebrow={wedding.itinerary.eyebrow}
@@ -932,58 +932,55 @@ export default function Home() {
               />
             </motion.div>
 
-            <div className="relative mt-12">
+            <div className="relative">
               {/* Raíl central: el zigzag es el mismo en móvil y en escritorio */}
               <div className="absolute left-1/2 top-0 bottom-0 w-px bg-primary/20 -translate-x-1/2" />
 
-              <div className="space-y-10 md:space-y-16">
+              <div className="space-y-7 md:space-y-10">
                 {wedding.itinerary.events.map((evento, i) => {
                   const izquierda = i % 2 === 0;
                   return (
                     <motion.div
                       key={evento.title}
-                      initial={{ opacity: 0, y: 40, scale: 0.94 }}
+                      initial={{ opacity: 0, y: 24, scale: 0.96 }}
                       whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                      viewport={{ once: true, margin: '-60px' }}
-                      transition={{ type: 'spring', stiffness: 90, damping: 13 }}
+                      viewport={{ once: true, margin: '-40px' }}
+                      transition={{ type: 'spring', stiffness: 90, damping: 14 }}
                       className="relative flex"
                     >
                       {/* Punto sobre el raíl */}
                       <span
                         aria-hidden
-                        className="absolute left-1/2 top-3 -translate-x-1/2 w-[9px] h-[9px] rounded-full bg-primary/50"
+                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[9px] h-[9px] rounded-full bg-primary/50"
                       />
 
+                      {/*
+                        A partir de 640px la ilustración va AL LADO del texto:
+                        apiladas, las cuatro no cabían en una pantalla. Por
+                        debajo se apilan igualmente, porque media columna son
+                        unos 130px y al lado no queda sitio para el título.
+                      */}
                       <div
-                        className={`w-1/2 flex flex-col ${
+                        className={`w-1/2 flex flex-col sm:flex-row items-center gap-1 sm:gap-4 ${
                           izquierda
-                            ? 'pr-5 md:pr-12 items-end text-right'
-                            : 'ml-auto pl-5 md:pl-12 items-start text-left'
+                            ? 'sm:flex-row sm:justify-end items-end pr-3 sm:pr-8 text-right'
+                            : 'ml-auto sm:flex-row-reverse sm:justify-end items-start pl-3 sm:pl-8 text-left'
                         }`}
                       >
                         {evento.image && (
-                          /*
-                           * Todas las láminas vienen sobre un lienzo común de
-                           * 10:9 y con la misma área de dibujo, así que aquí
-                           * basta una caja de esa proporción para que las
-                           * cuatro se vean del mismo tamaño.
-                           */
-                          <div className="relative w-full max-w-[7.5rem] md:max-w-[11.5rem] aspect-[10/9] mb-1">
-                            <Image
-                              src={evento.image}
-                              alt={evento.title}
-                              fill
-                              className={`object-contain ${izquierda ? 'object-right' : 'object-left'}`}
-                            />
+                          <div className="relative shrink-0 w-[4.5rem] h-16 sm:w-28 sm:h-[6.3rem] md:w-36 md:h-32">
+                            <Image src={evento.image} alt={evento.title} fill className="object-contain" />
                           </div>
                         )}
 
-                        <div className="inline-block px-3 py-1 bg-primary/5 border border-primary/15 rounded-full text-ink font-sans font-medium text-[14px] mb-2">
-                          {evento.time}
+                        <div className="min-w-0">
+                          <div className="inline-block whitespace-nowrap px-2.5 py-0.5 bg-primary/5 border border-primary/15 rounded-full text-primary font-sans font-medium text-[14px] mb-1">
+                            {evento.time}
+                          </div>
+                          <h4 className="font-display text-[18px] sm:text-[20px] text-ink leading-tight">
+                            {evento.title}
+                          </h4>
                         </div>
-                        <h4 className="font-display text-lg sm:text-xl text-ink leading-tight">
-                          {evento.title}
-                        </h4>
                       </div>
                     </motion.div>
                   );
@@ -1037,7 +1034,7 @@ export default function Home() {
                         transition: { type: 'spring', stiffness: 60, damping: 15 },
                       },
                     }}
-                    className="relative w-full max-w-[20rem] md:max-w-[30rem] aspect-[7/3]"
+                    className="relative w-full max-w-[20rem] md:max-w-[30rem] aspect-[7/3] mb-6"
                   >
                     <Image
                       src={wedding.gift.image}
@@ -1148,7 +1145,7 @@ export default function Home() {
 
         {/* ================= 8. MÚSICA ================= */}
         {wedding.music.enabled && (
-          <section id="musica" className="w-full py-14 md:py-16 relative">
+          <section id="musica" className="w-full py-14 relative">
             <SectionBackground bg={backgrounds.sections.music} />
 
             <motion.div
@@ -1156,64 +1153,43 @@ export default function Home() {
               whileInView="visible"
               viewport={{ once: true, margin: '-80px' }}
               variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.12 } } }}
-              className={`mx-auto px-6 text-center relative z-10 ${
-                wedding.music.compact ? 'max-w-xl' : 'max-w-4xl'
-              }`}
+              className="max-w-2xl mx-auto px-6 relative z-10"
             >
+              {/* Misma tarjeta que Datos de Interés, para que no desentone. */}
               <motion.div
                 variants={{
                   hidden: { opacity: 0, y: 30 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+                  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 80, damping: 15 } },
                 }}
-                className={
-                  wedding.music.compact
-                    ? 'border-y border-primary/15 py-8'
-                    : 'bg-cream border border-primary/10 rounded-sm p-10 md:p-14 shadow-sm'
-                }
+                whileHover={{ y: -4 }}
+                className="bg-moss text-white border border-white/10 rounded shadow-sm px-6 py-10 sm:px-10 text-center"
               >
                 {wedding.music.image && (
-                  <div className="flex justify-center mb-6">
-                    <div className="relative w-28 h-28 md:w-36 md:h-36">
-                      <Image
-                        src={wedding.music.image}
-                        alt="Música"
-                        fill
-                        className="object-contain"
-                        referrerPolicy="no-referrer"
-                      />
-                    </div>
+                  <div className="relative w-24 h-24 mx-auto mb-4">
+                    <Image src={wedding.music.image} alt="" fill className="object-contain" />
                   </div>
                 )}
 
-                <Music size={18} className="mx-auto mb-3 text-ink" strokeWidth={1.5} />
+                <Music size={28} className="mx-auto mb-4 text-white/80" strokeWidth={1.4} />
 
-                {/* En compacto el título baja de 28px, así que va redondo. */}
-                <h2
-                  className={
-                    wedding.music.compact
-                      ? 'font-display text-[20px] text-ink'
-                      : 'font-display italic text-3xl md:text-4xl text-ink'
-                  }
-                >
+                <h3 className="font-display text-[24px] md:text-[28px] text-white leading-tight">
                   {wedding.music.title}
-                </h2>
+                </h3>
 
-                <p className="text-ink text-[16px] leading-relaxed max-w-md mx-auto mt-2 mb-6">
-                  {wedding.music.description}
-                </p>
+                <p className="mt-4 text-[18px] text-white/90 leading-relaxed">{wedding.music.description}</p>
 
                 <button
                   onClick={() => setShowMusicModal(true)}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 border border-primary/30 text-ink hover:bg-primary hover:text-white font-sans text-[14px] uppercase tracking-[0.2em] rounded-full transition-all duration-300"
+                  className="mt-8 inline-flex items-center gap-2 px-8 py-3 bg-white text-ink hover:bg-white/90 font-sans text-[14px] uppercase tracking-[0.2em] rounded-full transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 font-semibold"
                 >
-                  <Music size={12} />
+                  <Music size={14} />
                   <span>{wedding.music.ctaLabel}</span>
                 </button>
 
                 {musicList.length > 0 && (
                   <button
                     onClick={() => setShowAllSongsModal(true)}
-                    className="mt-4 block mx-auto font-sans text-[14px] uppercase tracking-[0.18em] text-ink hover:text-ink transition-colors underline underline-offset-4"
+                    className="mt-5 block mx-auto font-sans text-[14px] uppercase tracking-[0.18em] text-white/75 hover:text-white transition-colors underline underline-offset-4"
                   >
                     {wedding.music.allLabel} ({musicList.length})
                   </button>
@@ -1222,7 +1198,6 @@ export default function Home() {
             </motion.div>
           </section>
         )}
-
 
         {/* ================= 9. DATOS DE INTERÉS ================= */}
         <section id="informacion" className="py-16 relative">
@@ -1259,7 +1234,8 @@ export default function Home() {
                       visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 80, damping: 15 } },
                     }}
                     whileHover={{ y: -4 }}
-                    className="bg-moss text-white border border-white/10 rounded shadow-sm px-6 py-10 sm:px-10 text-center"
+                    id={bloque.id}
+                    className="bg-moss text-white border border-white/10 rounded shadow-sm px-6 py-10 sm:px-10 text-center scroll-mt-24"
                   >
                     {Icono && <Icono size={28} className="mx-auto mb-4 text-white/80" strokeWidth={1.4} />}
 

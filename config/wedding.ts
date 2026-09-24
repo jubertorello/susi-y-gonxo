@@ -141,7 +141,7 @@ export const wedding = {
       },
     ],
     /** Se muestra bajo las tarjetas. Cadena vacía para no poner ninguna. */
-    note: 'Todo sucede en el mismo sitio: la ceremonia, el cóctel, la comida y la fiesta.',
+    note: '',
   },
 
   // ---------------------------------------------------------------------------
@@ -201,7 +201,7 @@ export const wedding = {
     subtitle: 'Hemos preparado todo para un día inolvidable',
     events: [
       { time: '12:15 H', title: 'La Ceremonia', image: '/itinerario/ceremonia-v2.webp' },
-      { time: '13:45 H', title: 'El Cóctel', image: '/itinerario/coctel-v2.webp' },
+      { time: '13:45 H', title: 'El Cóctel', image: '/itinerario/coctel-v3.webp' },
       { time: '16:00 H', title: 'El Banquete', image: '/itinerario/banquete-v2.webp' },
       { time: '18:00 H', title: 'El Baile & Fiesta', image: '/itinerario/baile-v2.webp' },
     ],
@@ -252,7 +252,7 @@ export const wedding = {
     /** Línea de cierre bajo el botón. Cadena vacía para no ponerla. */
     closing:
       'Gracias por acompañarnos, de una forma u otra, en todo lo que está por venir.',
-    image: '/safari-africa.webp',
+    image: '/safari-jeep.webp',
     /** Línea sobre el botón. Cadena vacía: no se pone ninguna. */
     ctaHint: '',
     ctaLabel: 'Ver datos regalo',
@@ -311,7 +311,8 @@ export const wedding = {
     eyebrow: 'Información',
     title: 'Datos de Interés',
     /**
-     * Un bloque por tema, en el orden en que aparecen.
+     * Un bloque por tema, en el orden en que aparecen. El `id` es el ancla
+     * que usa el menú para saltar a cada uno.
      *
      *  · `layout: 'lista'`    → lista con filetes: cada entrada con su rótulo
      *                           corto arriba y, debajo, su `detail` de una
@@ -321,6 +322,7 @@ export const wedding = {
      */
     blocks: [
       {
+        id: 'dress-code',
         layout: 'parejas',
         icon: 'lazo',
         title: 'Dress Code',
@@ -332,6 +334,7 @@ export const wedding = {
         note: 'Poneos guapos, que nosotros ponemos la fiesta.',
       },
       {
+        id: 'hoteles',
         layout: 'lista',
         icon: 'cama',
         title: 'Recomendación de Hoteles',
@@ -341,6 +344,7 @@ export const wedding = {
         note: '',
       },
       {
+        id: 'autobuses',
         layout: 'lista',
         icon: 'bus',
         title: 'Autobuses',
@@ -362,6 +366,7 @@ export const wedding = {
         note: 'En el formulario de confirmación podréis indicarnos si los necesitáis.',
       },
     ] as {
+      id: string;
       layout: string;
       icon: string;
       title: string;
@@ -399,9 +404,13 @@ export const wedding = {
     links: [
       { id: 'lugar', label: 'Lugar' },
       { id: 'itinerario', label: 'Itinerario' },
-      { id: 'viaje', label: 'Viaje · Regalo' },
+      { id: 'viaje', label: 'Luna de Miel · Regalo' },
       { id: 'musica', label: 'Música', mobileOnly: true },
-      { id: 'informacion', label: 'Información' },
+      /* Los tres de dentro de Datos de Interés: no son secciones, pero así
+         se sabe que están. Sustituyen al enlace genérico de «Información». */
+      { id: 'dress-code', label: 'Dress Code', mobileOnly: true },
+      { id: 'hoteles', label: 'Hoteles', mobileOnly: true },
+      { id: 'autobuses', label: 'Autobuses', mobileOnly: true },
     ] as { id: string; label: string; mobileOnly?: boolean }[],
   },
 };

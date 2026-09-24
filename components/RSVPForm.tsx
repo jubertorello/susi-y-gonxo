@@ -413,12 +413,8 @@ export default function RSVPForm({ onSubmitted, onEdit, rsvpData, formSubmitted 
             className="space-y-6"
           >
             <div className="text-center">
-              <p className="font-display text-[20px] text-ink mb-1">¿Podrás acompañarnos?</p>
-              <p className="font-sans text-[14px] text-ink">
-                {wedding.rsvp.deadline
-                  ? `Por favor, confirma tu asistencia antes del ${wedding.rsvp.deadline}`
-                  : 'Por favor, confirma tu asistencia lo antes posible'}
-              </p>
+              {/* El plazo ya se dice justo encima del formulario. */}
+              <p className="font-display text-[20px] text-ink">¿Podrás acompañarnos?</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <button
