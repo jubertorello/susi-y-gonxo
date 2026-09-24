@@ -233,6 +233,41 @@ function Filete({ className = '', claro = false }: { className?: string; claro?:
   );
 }
 
+/**
+ * Esquinas de eucalipto que enmarcan una sección: una arriba a la izquierda y
+ * otra abajo a la derecha. Van detrás del contenido y no se pueden pulsar.
+ * Sin láminas en la configuración, no se dibuja nada.
+ */
+function Esquinas() {
+  const e = backgrounds.corners;
+  if (!e.topLeft && !e.bottomRight) return null;
+  const comun = {
+    '--esquina': e.width,
+    '--esquina-md': e.widthDesktop,
+    opacity: e.opacity,
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+  } as React.CSSProperties;
+  return (
+    <>
+      {e.topLeft && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute top-0 left-0 z-0 w-[var(--esquina)] md:w-[var(--esquina-md)] aspect-[4/3]"
+          style={{ ...comun, backgroundImage: `url("${e.topLeft}")`, backgroundPosition: 'left top' }}
+        />
+      )}
+      {e.bottomRight && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute bottom-0 right-0 z-0 w-[var(--esquina)] md:w-[var(--esquina-md)] aspect-[4/3]"
+          style={{ ...comun, backgroundImage: `url("${e.bottomRight}")`, backgroundPosition: 'right bottom' }}
+        />
+      )}
+    </>
+  );
+}
+
 /** Cabecera de sección: rótulo pequeño, título en cursiva grande y filete. */
 function SectionHeading({
   eyebrow,
@@ -1134,8 +1169,9 @@ export default function Home() {
         )}
 
         {/* ================= 7. CONFIRMACIÓN ================= */}
-        <section id="confirmacion" className="w-full py-16 md:py-20 relative">
+        <section id="confirmacion" className="w-full py-16 md:py-20 relative overflow-hidden">
           <SectionBackground bg={backgrounds.sections.rsvp} />
+          <Esquinas />
 
           <motion.div
             initial="hidden"
@@ -1145,18 +1181,6 @@ export default function Home() {
             className="max-w-4xl mx-auto px-6 relative z-10"
           >
             <div className="text-center mb-12">
-              <div className="flex justify-center mb-6">
-                <motion.div
-                  variants={{
-                    hidden: { opacity: 0, scale: 0.8 },
-                    visible: { opacity: 1, scale: 1, transition: { type: 'spring', stiffness: 70, damping: 15 } },
-                  }}
-                  className="flex items-center justify-center w-16 h-16 rounded-full bg-primary/10"
-                >
-                  <Check size={32} className="text-ink" />
-                </motion.div>
-              </div>
-
               <motion.div
                 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8 } } }}
               >

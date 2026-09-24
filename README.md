@@ -72,6 +72,12 @@ las cadenas vacías se ve el papel global.
 
 ### Adornos de eucalipto
 
+`backgrounds.corners` enmarca la sección de confirmar asistencia con dos
+esquinas: `topLeft` arriba a la izquierda y `bottomRight` abajo a la derecha.
+Van detrás del contenido y no se pueden pulsar. `width` y `widthDesktop`
+controlan cuánto ocupan; en móvil van más pequeñas para no rozar el título.
+
+
 `backgrounds.eucalyptus.left` y `.right` dibujan cenefas verticales a los
 lados de la portada, el lugar, el itinerario y las dudas. `backgrounds.divider`
 sustituye el filete de 1px por una ramita. Con las cadenas vacías no se dibuja

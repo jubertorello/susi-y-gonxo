@@ -505,6 +505,20 @@ export const backgrounds = {
   stripe: RAYA,
 
   /**
+   * ESQUINAS DE EUCALIPTO
+   * Enmarcan la sección de confirmar asistencia: una arriba a la izquierda y
+   * otra abajo a la derecha. Con las dos cadenas vacías no se dibuja nada.
+   * `width` es lo que ocupan de ancho en móvil y en escritorio.
+   */
+  corners: {
+    topLeft: '/olivo/esquina-sup-izq.webp',
+    bottomRight: '/olivo/esquina-inf-der.webp',
+    width: '7rem',
+    widthDesktop: '15rem',
+    opacity: 1,
+  },
+
+  /**
    * RAMAS DE EUCALIPTO
    * Cenefas verticales a los lados de algunas secciones, como en
    * mariu-y-nacho. Con las dos cadenas vacías no se dibuja nada.
