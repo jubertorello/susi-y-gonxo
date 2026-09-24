@@ -519,9 +519,9 @@ export const backgrounds = {
    */
   envelopeSprigs: [
     { src: '/olivo/guirnalda.webp', side: 'left', top: '6%', width: '34vw', maxWidth: '300px', aspect: '665 / 202', rotate: -10, flip: false },
-    { src: '/olivo/racimo.webp', side: 'left', top: '58%', width: '26vw', maxWidth: '240px', aspect: '369 / 318', rotate: 8, flip: false },
-    { src: '/olivo/hojas.webp', side: 'right', top: '10%', width: '24vw', maxWidth: '220px', aspect: '282 / 258', rotate: -8, flip: false },
-    { src: '/olivo/guirnalda.webp', side: 'right', top: '62%', width: '32vw', maxWidth: '280px', aspect: '665 / 202', rotate: 20, flip: true },
+    { src: '/olivo/racimo.webp', side: 'left', top: '74%', width: '26vw', maxWidth: '240px', aspect: '369 / 318', rotate: 8, flip: false },
+    { src: '/olivo/hojas.webp', side: 'right', top: '10%', width: '24vw', maxWidth: '220px', aspect: '282 / 258', rotate: 90, flip: false },
+    { src: '/olivo/guirnalda.webp', side: 'right', top: '76%', width: '32vw', maxWidth: '280px', aspect: '665 / 202', rotate: 20, flip: true },
   ] as {
     src: string;
     side: 'left' | 'right';
