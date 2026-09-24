@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(supabase --version)",
+      "Bash(find / -maxdepth 4 -iname \".supabase\")",
+      "Bash(env)"
+    ]
+  }
+}
