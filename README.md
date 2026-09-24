@@ -23,8 +23,12 @@ wedding.rsvp.bus.enabled // campos de autobús del formulario
 ```
 
 El orden de la página es: portada, lugar, cuenta atrás, carrete, itinerario,
-luna de miel, confirmación, música, autobuses, hoteles, datos de interés,
-dudas y pie. El dress code es una tarjeta más dentro de datos de interés.
+luna de miel, confirmación, música, datos de interés, dudas y pie.
+
+**Datos de Interés** se arma desde `info.blocks`: autobuses, hoteles y dress
+code. Cada bloque lleva un icono (`bus`, `cama` o `ropa`), un título, un
+texto, una lista de `items` con rótulo y explicación, y una línea de cierre.
+Con `items` vacío solo se enseña el texto, que es como está hoy hoteles.
 
 Las **ilustraciones** se quitan poniendo la cadena vacía en su `image`
 (`locations.places[].image`, `itinerary.events[].image`, `gift.image`,

@@ -24,6 +24,7 @@ import {
   VolumeX,
   Bus,
   BedDouble,
+  Shirt,
   Camera,
   Menu,
 } from 'lucide-react';
@@ -43,6 +44,13 @@ const photos = wedding.photos;
  */
 const carrete = photos.length > 0 ? [...photos, ...photos] : [];
 const huecos = photos.length === 0 ? wedding.gallery.placeholders : 0;
+/** Iconos que puede pedir cada bloque de Datos de Interés desde la config. */
+const ICONOS_INFO: Record<string, typeof Bus | undefined> = {
+  bus: Bus,
+  cama: BedDouble,
+  ropa: Shirt,
+};
+
 /** Todos los párrafos de la luna de miel comparten cuerpo, color y ancho. */
 const PARRAFO_REGALO = 'text-[18px] text-white/90 leading-relaxed max-w-xl mx-auto';
 
@@ -53,8 +61,6 @@ const hasAudio = Boolean(wedding.music.backgroundAudio);
 const sectionEnabled: Record<string, boolean> = {
   musica: wedding.music.enabled,
   viaje: wedding.gift.enabled,
-  autobuses: wedding.buses.enabled,
-  hoteles: wedding.hotels.enabled,
 };
 const navLinks = wedding.nav.links.filter((l) => sectionEnabled[l.id] !== false);
 
@@ -1181,174 +1187,70 @@ export default function Home() {
         )}
 
 
-        {/* ================= 9. AUTOBUSES ================= */}
-        {wedding.buses.enabled && (
-          <section id="autobuses" className="py-16 bg-moss text-white relative">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-80px' }}
-              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.12 } } }}
-              className="max-w-2xl mx-auto px-6 text-center"
-            >
-              <motion.div
-                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
-              >
-                <Bus size={26} className="mx-auto mb-4 text-white/80" strokeWidth={1.5} />
-                <SectionHeading eyebrow={wedding.buses.eyebrow} title={wedding.buses.title} light />
-              </motion.div>
-
-              <motion.p
-                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
-                className="mt-6 text-[18px] text-white/90 leading-relaxed"
-              >
-                {wedding.buses.description}
-              </motion.p>
-
-              <motion.ul
-                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
-                className="mt-8 space-y-4 text-left max-w-md mx-auto"
-              >
-                {wedding.buses.routes.map((ruta) => (
-                  <li key={ruta.label} className="border-t border-white/20 pt-4">
-                    <span className="font-sans text-[14px] uppercase tracking-[0.2em] text-white block">
-                      {ruta.label}
-                    </span>
-                    <span className="text-[18px] text-white/85 leading-relaxed block mt-1">{ruta.detail}</span>
-                  </li>
-                ))}
-              </motion.ul>
-
-              {wedding.buses.note && (
-                <motion.p
-                  variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
-                  className="mt-8 text-[18px] text-white/80 leading-relaxed"
-                >
-                  {wedding.buses.note}
-                </motion.p>
-              )}
-            </motion.div>
-          </section>
-        )}
-
-        {/* ================= 10. HOTELES ================= */}
-        {wedding.hotels.enabled && (
-          <section id="hoteles" className="py-16 relative bg-cream">
-            <SectionBackground bg={backgrounds.sections.info} />
-            <Eucalipto />
-
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-80px' }}
-              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.12 } } }}
-              className="max-w-2xl mx-auto px-6 text-center relative z-10"
-            >
-              <motion.div
-                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
-              >
-                <BedDouble size={26} className="mx-auto mb-4 text-secondary" strokeWidth={1.5} />
-                <SectionHeading eyebrow={wedding.hotels.eyebrow} title={wedding.hotels.title} />
-              </motion.div>
-
-              <motion.p
-                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
-                className="mt-6 text-[18px] text-ink leading-relaxed"
-              >
-                {wedding.hotels.description}
-              </motion.p>
-
-              {wedding.hotels.list.length > 0 && (
-                <motion.ul
-                  variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
-                  className="mt-8 space-y-4 text-left max-w-md mx-auto"
-                >
-                  {wedding.hotels.list.map((hotel) => (
-                    <li key={hotel.name} className="border-t border-primary/20 pt-4">
-                      {hotel.url ? (
-                        <a
-                          href={hotel.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-display text-[20px] text-ink underline underline-offset-4 hover:text-primary transition-colors"
-                        >
-                          {hotel.name}
-                        </a>
-                      ) : (
-                        <span className="font-display text-[20px] text-ink">{hotel.name}</span>
-                      )}
-                      <span className="text-[18px] text-secondary leading-relaxed block mt-1">{hotel.detail}</span>
-                    </li>
-                  ))}
-                </motion.ul>
-              )}
-            </motion.div>
-          </section>
-        )}
-
-        {/* ================= 11. DATOS DE INTERÉS ================= */}
-        <section id="informacion" className="py-16 relative bg-cream">
-          <SectionBackground bg={backgrounds.sections.info} />
-
+        {/* ================= 9. DATOS DE INTERÉS ================= */}
+        <section id="informacion" className="py-16 bg-moss text-white relative">
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.15 } } }}
-            className="max-w-4xl mx-auto px-6 relative z-10"
+            viewport={{ once: true, margin: '-80px' }}
+            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.12 } } }}
+            className="max-w-2xl mx-auto px-6 text-center"
           >
             <motion.div
               variants={{
                 hidden: { opacity: 0, y: 30 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
               }}
-              className="text-center mb-12"
+              className="mb-14"
             >
-              <SectionHeading eyebrow={wedding.info.eyebrow} title={wedding.info.title} />
+              <SectionHeading eyebrow={wedding.info.eyebrow} title={wedding.info.title} light />
             </motion.div>
 
-            <div
-              className={`grid gap-6 ${
-                wedding.info.cards.length >= 3
-                  ? 'md:grid-cols-3'
-                  : wedding.info.cards.length === 2
-                    ? 'md:grid-cols-2 max-w-3xl mx-auto'
-                    : 'max-w-md mx-auto'
-              }`}
-            >
-              {wedding.info.cards.map((card) => (
-                <motion.div
-                  key={card.title}
-                  variants={{
-                    hidden: { opacity: 0, y: 40 },
-                    visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 80, damping: 14 } },
-                  }}
-                  whileHover={{ y: -4 }}
-                  className="bg-moss p-8 border border-white/10 rounded shadow-sm text-left"
-                >
-                  <h4 className="font-display text-[18px] text-white mb-3">{card.title}</h4>
-                  <p className="font-sans text-[14px] text-white/85 leading-relaxed">{card.body}</p>
-                  {card.bullets.length > 0 && (
-                    <ul className="mt-3 space-y-1.5">
-                      {card.bullets.map((linea) => (
-                        <li key={linea} className="font-sans text-[14px] text-white leading-relaxed">
-                          {linea}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {card.note && (
-                    <p className="font-sans text-[14px] text-white/80 leading-relaxed mt-4 pt-3 border-t border-white/15">
-                      {card.note}
-                    </p>
-                  )}
-                </motion.div>
-              ))}
+            <div className="space-y-16">
+              {wedding.info.blocks.map((bloque) => {
+                const Icono = ICONOS_INFO[bloque.icon];
+                return (
+                  <motion.div
+                    key={bloque.title}
+                    variants={{
+                      hidden: { opacity: 0, y: 24 },
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } },
+                    }}
+                  >
+                    {Icono && <Icono size={26} className="mx-auto mb-4 text-white/80" strokeWidth={1.5} />}
+
+                    <h3 className="font-display text-[24px] md:text-[28px] text-white leading-tight">
+                      {bloque.title}
+                    </h3>
+
+                    <p className="mt-4 text-[18px] text-white/90 leading-relaxed">{bloque.body}</p>
+
+                    {bloque.items.length > 0 && (
+                      <ul className="mt-8 space-y-4 text-left max-w-md mx-auto">
+                        {bloque.items.map((item) => (
+                          <li key={item.label} className="border-t border-white/20 pt-4">
+                            <span className="font-sans text-[14px] uppercase tracking-[0.2em] text-white block">
+                              {item.label}
+                            </span>
+                            <span className="text-[18px] text-white/85 leading-relaxed block mt-1">
+                              {item.detail}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {bloque.note && (
+                      <p className="mt-8 text-[18px] text-white/80 leading-relaxed">{bloque.note}</p>
+                    )}
+                  </motion.div>
+                );
+              })}
             </div>
           </motion.div>
         </section>
 
-        {/* ================= 12. DUDAS ================= */}
+        {/* ================= 10. DUDAS ================= */}
         <section className="py-16 relative bg-cream">
           <SectionBackground bg={backgrounds.sections.contact} />
           <Eucalipto />
@@ -1403,7 +1305,7 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* ================= 13. PIE ================= */}
+        {/* ================= 11. PIE ================= */}
         <footer className="pt-24 pb-16 md:pt-28 md:pb-20 text-center relative overflow-hidden bg-moss">
           {/* La tela de rayas del forro del sobre, repetida. Se escala al alto
               del pie para que la raya conserve su grosor. */}
