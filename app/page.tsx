@@ -137,6 +137,7 @@ const sectionEnabled: Record<string, boolean> = {
 };
 const navLinks = wedding.nav.links.filter((l) => sectionEnabled[l.id] !== false);
 
+
 /** Fondo de una sección: `mobileTop` abajo, `desktop` a partir de 768px. */
 function SectionBackground({ bg }: { bg: { mobileTop: string; mobileBottom: string; desktop: string } }) {
   return (
@@ -434,10 +435,24 @@ export default function Home() {
     setTimeout(() => mark(false), 2000);
   };
 
+  /**
+   * Salto a una sección desde la barra.
+   *
+   * Va con `scrollTo` sobre una posición calculada, y no con `scrollIntoView`,
+   * para restar a mano el `scroll-margin-top` de la sección: así el destino no
+   * depende de la geometría que haya en ese instante y el salto es siempre el
+   * mismo. La barra va fija, así que cerrar el menú no mueve el documento y la
+   * medida vale igual.
+   */
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
+    const destino = document.getElementById(id);
     setShowMobileMenu(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (!destino) return;
+
+    const margen = parseFloat(getComputedStyle(destino).scrollMarginTop) || 0;
+    const top = destino.getBoundingClientRect().top + window.scrollY - margen;
+    window.scrollTo({ top, behavior: 'smooth' });
   };
 
   const handleAddSong = async (e: React.FormEvent) => {
@@ -582,15 +597,26 @@ export default function Home() {
             </div>
           </div>
 
-          <AnimatePresence>
-            {showMobileMenu && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.25, ease: 'easeInOut' }}
-                className="md:hidden overflow-hidden bg-primary border-t border-white/10"
-              >
+          {/*
+            El desplegable se abre con CSS, no con Framer Motion, y la razón es
+            de peso: para animar `height: 'auto'` Motion tiene que MEDIR el
+            elemento, y mientras mide se guarda y restaura la posición de la
+            página con `window.scrollTo(0, 0)`. Esa restauración caía justo
+            encima del salto suave del enlace recién pulsado y lo cancelaba: el
+            menú se cerraba y la página se quedaba donde estaba. En escritorio
+            no pasaba porque este bloque no existe.
+
+            El truco de las dos rejas — `grid-rows-[0fr]` a `grid-rows-[1fr]`
+            con el hijo en `overflow-hidden` — despliega la altura real sin que
+            nadie tenga que medir nada. `inert` mantiene los enlaces fuera del
+            tabulador y del lector de pantalla mientras está cerrado.
+          */}
+          <div
+            className={`md:hidden grid bg-primary transition-[grid-template-rows] duration-300 ease-in-out ${
+              showMobileMenu ? 'grid-rows-[1fr] border-t border-white/10' : 'grid-rows-[0fr]'
+            }`}
+          >
+            <div className="overflow-hidden" inert={!showMobileMenu}>
                 <div className="px-6 py-4 flex flex-col space-y-4 text-center text-[14px] uppercase tracking-[0.2em] font-sans text-soft font-medium">
                   {navLinks.map((link) => (
                     <a
@@ -612,9 +638,8 @@ export default function Home() {
                     </a>
                   </div>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+            </div>
+          </div>
         </nav>
 
         {/* ================= 1. CABECERA ================= */}

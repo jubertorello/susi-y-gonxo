@@ -129,6 +129,19 @@ Tres reglas, comprobables en el DOM con estilos calculados:
 Casi todo el texto sobre fondo claro va en `ink` (#39402f): 10.24:1 sobre el
 papel. El oliva `primary` se reserva para fondos, botones y bordes.
 
+### El menú de secciones
+
+El desplegable de móvil se abre con CSS (`grid-rows-[0fr]` a `grid-rows-[1fr]`
+con el hijo en `overflow-hidden`), no con Framer Motion, y no es capricho: para
+animar `height: 'auto'` Motion tiene que MEDIR el elemento, y mientras mide
+guarda y restaura la posición de la página con `window.scrollTo(0, 0)`. Esa
+restauración caía encima del salto suave del enlace recién pulsado y lo
+cancelaba — el menú se cerraba y la página no se movía. En escritorio nunca
+falló porque ese bloque no se dibuja.
+
+Si algún día se vuelve a animar con Motion cualquier alto automático dentro de
+la barra, los enlaces del menú volverán a parecer muertos.
+
 ## Local
 
 ```bash
