@@ -150,6 +150,10 @@ export const wedding = {
   countdown: {
     /** Texto sobre los números. Cadena vacía para no poner ninguno. */
     lead: '¡Empieza la cuenta atrás!',
+    /** Línea bajo los números. Cadena vacía para no ponerla. */
+    tagline: 'Lo que nos queda para veros a todos allí.',
+    /** `true` dibuja el relojito con la aguja en marcha sobre el título. */
+    clock: true,
     labels: {
       days: 'Días',
       hours: 'Horas',
@@ -174,8 +178,11 @@ export const wedding = {
   // CARRETE DE FOTOS
   // ---------------------------------------------------------------------------
   gallery: {
-    /** Pon `false` para ocultar el carrete entero. */
-    enabled: true,
+    /**
+     * Pon `false` para ocultar el carrete entero. Ahora mismo apagado hasta
+     * decidir si habrá fotos de los novios.
+     */
+    enabled: false,
     title: '',
     /** Ilustración sobre el carrete. Cadena vacía para no poner ninguna. */
     image: '',
@@ -483,6 +490,8 @@ export const backgrounds = {
   sections: {
     hero: { mobileTop: '', mobileBottom: '', desktop: '' },
     locations: { mobileTop: '', mobileBottom: '', desktop: '' },
+    /** La cuenta atrás va sobre la tela de rayas, como el pie. */
+    countdown: { mobileTop: RAYA, mobileBottom: '', desktop: RAYA },
     photos: { mobileTop: '', mobileBottom: '', desktop: '' },
     itinerary: { mobileTop: '', mobileBottom: '', desktop: '' },
     music: { mobileTop: '', mobileBottom: '', desktop: '' },

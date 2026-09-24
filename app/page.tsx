@@ -44,6 +44,45 @@ const photos = wedding.photos;
 const carrete = photos.length > 0 ? [...photos, ...photos] : [];
 const huecos = photos.length === 0 ? wedding.gallery.placeholders : 0;
 /**
+ * Relojito de la cuenta atrás. La aguja fina va de verdad: gira con los
+ * segundos que faltan, así que se mueve sola mientras se mira.
+ */
+function Reloj({ segundos, minutos }: { segundos: number; minutos: number }) {
+  return (
+    <svg
+      width={46}
+      height={46}
+      viewBox="0 0 48 48"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.4}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      className="mx-auto"
+    >
+      <circle cx="24" cy="24" r="19" />
+      <circle cx="24" cy="24" r="21.5" strokeWidth={0.7} opacity={0.5} />
+      {[0, 90, 180, 270].map((g) => (
+        <line key={g} x1="24" y1="7" x2="24" y2="10.5" transform={`rotate(${g} 24 24)`} />
+      ))}
+      <line x1="24" y1="24" x2="24" y2="15" transform="rotate(110 24 24)" />
+      <line x1="24" y1="24" x2="24" y2="12" transform={`rotate(${minutos * 6} 24 24)`} strokeWidth={1.1} />
+      <line
+        x1="24"
+        y1="26.5"
+        x2="24"
+        y2="11"
+        transform={`rotate(${segundos * 6} 24 24)`}
+        strokeWidth={0.8}
+        opacity={0.75}
+      />
+      <circle cx="24" cy="24" r="1.3" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+/**
  * Lucide no trae ningún lazo, así que va dibujado aquí con el mismo trazo que
  * los suyos: rejilla de 24, sin relleno y grosor 1.5.
  */
@@ -773,70 +812,89 @@ export default function Home() {
         </section>
 
         {/* ================= 3. CUENTA ATRÁS ================= */}
-        <section id="cuenta-atras" className="pt-16 pb-16 relative overflow-hidden">
-          <SectionBackground bg={backgrounds.sections.photos} />
+        <section id="cuenta-atras" className="py-14 relative overflow-hidden">
+          {/* La misma tela del pie, sin velo: el texto va oscuro encima. */}
+          <SectionBackground bg={backgrounds.sections.countdown} />
 
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.15 } } }}
-            className="max-w-4xl mx-auto px-6 relative z-10 flex flex-col items-center"
+            viewport={{ once: true, margin: '-60px' }}
+            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } }}
+            className="max-w-3xl mx-auto px-6 relative z-10 flex flex-col items-center"
           >
-            {wedding.countdown.lead && (
+            {wedding.countdown.clock && (
               <motion.div
                 variants={{
-                  hidden: { opacity: 0, y: 35 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+                  hidden: { opacity: 0, scale: 0.85 },
+                  visible: { opacity: 1, scale: 1, transition: { duration: 0.6 } },
                 }}
-                className="text-center mb-12"
+                className="text-ink/70 mb-4"
               >
-                <h2 className="font-display italic text-3xl md:text-4xl text-ink">
-                  {timeLeft.completed ? wedding.countdown.today : wedding.countdown.lead}
-                </h2>
-                <div className="h-px w-10 bg-primary/20 mx-auto mt-4" />
+                <Reloj segundos={timeLeft.seconds} minutos={timeLeft.minutes} />
               </motion.div>
             )}
 
-            <div className="text-center w-full">
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0 },
-                  visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
-                }}
-                className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 max-w-[240px] sm:max-w-[280px] md:max-w-[540px] mx-auto"
+            {wedding.countdown.lead && (
+              <motion.h2
+                variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
+                className="font-display italic text-3xl md:text-4xl text-ink text-center"
               >
-                {(
-                  [
-                    [timeLeft.days, wedding.countdown.labels.days],
-                    [timeLeft.hours, wedding.countdown.labels.hours],
-                    [timeLeft.minutes, wedding.countdown.labels.minutes],
-                    [timeLeft.seconds, wedding.countdown.labels.seconds],
-                  ] as const
-                ).map(([valor, etiqueta]) => (
-                  <motion.div
-                    key={etiqueta}
-                    variants={{
-                      hidden: { opacity: 0, scale: 0.5, y: 40 },
-                      visible: {
-                        opacity: 1,
-                        scale: 1,
-                        y: 0,
-                        transition: { type: 'spring', stiffness: 100, damping: 14 },
-                      },
-                    }}
-                    className="bg-moss aspect-square rounded-full shadow-md border border-primary/10 flex flex-col items-center justify-center p-2 sm:p-3"
+                {timeLeft.completed ? wedding.countdown.today : wedding.countdown.lead}
+              </motion.h2>
+            )}
+
+            <motion.div
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
+              }}
+              className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 w-full max-w-[19rem] sm:max-w-md"
+            >
+              {(
+                [
+                  [timeLeft.days, wedding.countdown.labels.days],
+                  [timeLeft.hours, wedding.countdown.labels.hours],
+                  [timeLeft.minutes, wedding.countdown.labels.minutes],
+                  [timeLeft.seconds, wedding.countdown.labels.seconds],
+                ] as const
+              ).map(([valor, etiqueta], i) => (
+                <motion.div
+                  key={etiqueta}
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 110, damping: 15 } },
+                  }}
+                  className="bg-cream/92 border border-ink/10 rounded-sm shadow-sm py-4 px-1 text-center"
+                >
+                  {/*
+                    La clave cambia con el número, así que React lo vuelve a
+                    montar y entra animado: los segundos laten solos.
+                  */}
+                  <motion.span
+                    key={valor}
+                    initial={{ opacity: 0, y: i === 3 ? -8 : 0 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.28, ease: 'easeOut' }}
+                    className="font-display text-[30px] sm:text-[38px] text-ink leading-none block tabular-nums"
                   >
-                    <span className="font-display text-3xl sm:text-4xl md:text-5xl text-white leading-none">
-                      {valor}
-                    </span>
-                    <span className="font-sans text-[14px] sm:text-[14px] md:text-[14px] uppercase tracking-widest text-white/90 mt-1.5">
-                      {etiqueta}
-                    </span>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
+                    {valor}
+                  </motion.span>
+                  <span className="font-sans text-[14px] uppercase tracking-[0.06em] sm:tracking-[0.12em] text-ink/80 mt-2 block">
+                    {etiqueta}
+                  </span>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {wedding.countdown.tagline && (
+              <motion.p
+                variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
+                className="mt-8 text-[18px] text-ink text-center"
+              >
+                {wedding.countdown.tagline}
+              </motion.p>
+            )}
           </motion.div>
         </section>
 
