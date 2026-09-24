@@ -23,6 +23,7 @@ import {
   Volume2,
   VolumeX,
   Shirt,
+  Camera,
   Menu,
 } from 'lucide-react';
 
@@ -34,10 +35,13 @@ interface SuggestedSong {
 }
 
 const photos = wedding.photos;
-/** La sección de fotos solo existe si hay fotos que enseñar. */
-const hasPhotos = photos.length > 0;
-/** Los iconos del itinerario son opcionales: sin ellos la línea se estrecha. */
-const hasItineraryIcons = wedding.itinerary.events.some((e) => e.image);
+/**
+ * El carrete repite la lista dos veces seguidas: al desplazarse medio ancho,
+ * el bucle encaja y no se ve el salto. Mientras no haya fotos se dibujan
+ * marcos vacíos, para que el hueco se vea durante el montaje.
+ */
+const carrete = photos.length > 0 ? [...photos, ...photos] : [];
+const huecos = photos.length === 0 ? wedding.gallery.placeholders : 0;
 /** Sin pista de fondo no se monta el reproductor ni los botones de sonido. */
 const hasAudio = Boolean(wedding.music.backgroundAudio);
 
@@ -667,8 +671,8 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* ================= 3. CUENTA ATRÁS (+ FOTOS) ================= */}
-        <section id="fotos" className="pt-16 pb-16 relative overflow-hidden bg-cream">
+        {/* ================= 3. CUENTA ATRÁS ================= */}
+        <section id="cuenta-atras" className="pt-16 pb-16 relative overflow-hidden bg-cream">
           <SectionBackground bg={backgrounds.sections.photos} />
 
           <motion.div
@@ -693,7 +697,7 @@ export default function Home() {
               </motion.div>
             )}
 
-            <div className={`text-center w-full ${hasPhotos ? 'mb-16' : ''}`}>
+            <div className="text-center w-full">
               <motion.div
                 variants={{
                   hidden: { opacity: 0 },
@@ -732,69 +736,74 @@ export default function Home() {
                 ))}
               </motion.div>
             </div>
-
-            {hasPhotos && (
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, y: 45 },
-                  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 60, damping: 14 } },
-                }}
-                className="relative w-full max-w-[440px] md:max-w-[720px] mx-auto h-[480px] md:h-[580px]"
-              >
-                <div
-                  className="absolute cursor-pointer top-[15px] md:top-0 bottom-[48px] left-[5%] right-[5%]"
-                  style={{
-                    WebkitMaskImage:
-                      'linear-gradient(to right, transparent, black 18%, black 82%, transparent), linear-gradient(to bottom, transparent, black 18%, black 82%, transparent)',
-                    WebkitMaskComposite: 'destination-in',
-                    maskImage:
-                      'linear-gradient(to right, transparent, black 18%, black 82%, transparent), linear-gradient(to bottom, transparent, black 18%, black 82%, transparent)',
-                    maskComposite: 'intersect',
-                  }}
-                  onClick={() => setActivePhoto(featuredPhoto)}
-                >
-                  <Image
-                    src={featuredPhoto}
-                    alt={wedding.couple.joinedNames}
-                    fill
-                    className="object-cover object-center"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-
-                {[
-                  { cls: 'w-[42%] md:w-[28%] -rotate-[8deg] hover:-rotate-[5deg]', style: { top: '6px', left: '4px' } },
-                  { cls: 'w-[42%] md:w-[28%] rotate-[7deg] hover:rotate-[4deg]', style: { top: '4px', right: '4px' } },
-                  { cls: 'w-[32%] md:w-[22%] rotate-[6deg] hover:rotate-[3deg]', style: { bottom: '-36px', left: '2px' } },
-                  {
-                    cls: 'w-[32%] md:w-[22%] left-[34%] md:left-[39%] -rotate-[2deg] hover:rotate-0',
-                    style: { bottom: '-40px' },
-                  },
-                  { cls: 'w-[32%] md:w-[22%] -rotate-[7deg] hover:-rotate-[4deg]', style: { bottom: '-32px', right: '2px' } },
-                ].map((slot, i) =>
-                  polaroids[i] ? (
-                    <div
-                      key={i}
-                      className={`absolute z-20 hover:z-40 bg-white p-2 pb-7 shadow-[0_6px_24px_rgba(0,0,0,0.25)] hover:scale-[1.05] transition-all duration-300 origin-center cursor-pointer ${slot.cls}`}
-                      style={slot.style}
-                      onClick={() => setActivePhoto(polaroids[i])}
-                    >
-                      <div className="relative w-full aspect-square overflow-hidden">
-                        <Image
-                          src={polaroids[i]}
-                          alt={wedding.couple.joinedNames}
-                          fill
-                          className="object-cover"
-                          referrerPolicy="no-referrer"
-                        />
-                      </div>
-                    </div>
-                  ) : null
-                )}
-              </motion.div>
-            )}
           </motion.div>
         </section>
+
+        {/* ================= 3b. CARRETE DE FOTOS ================= */}
+        {wedding.gallery.enabled && (
+          <section id="fotos" className="py-12 relative overflow-hidden bg-cream">
+            <SectionBackground bg={backgrounds.sections.photos} />
+
+            <div className="relative z-10">
+              {wedding.gallery.image && (
+                <div className="relative w-24 h-24 md:w-28 md:h-28 mx-auto mb-2">
+                  <Image src={wedding.gallery.image} alt="" fill className="object-contain" />
+                </div>
+              )}
+
+              {wedding.gallery.title && (
+                <h2 className="font-display italic text-3xl md:text-4xl text-primary text-center mb-8">
+                  {wedding.gallery.title}
+                </h2>
+              )}
+
+              {/*
+                El carrete va fuera del contenedor centrado para ocupar todo el
+                ancho. `overflow-hidden` lo mantiene dentro de la pantalla: nunca
+                desplaza la página en horizontal.
+              */}
+              <div className="relative w-full overflow-hidden group">
+                <div
+                  className="flex gap-3 md:gap-5 w-max motion-safe:animate-[carrete_var(--carrete)_linear_infinite] group-hover:[animation-play-state:paused]"
+                  style={{ '--carrete': `${wedding.gallery.speed}s` } as React.CSSProperties}
+                >
+                  {carrete.map((foto, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => setActivePhoto(foto)}
+                      aria-label="Ampliar foto"
+                      className="relative shrink-0 h-[220px] w-[160px] md:h-[300px] md:w-[220px] bg-cream p-2 shadow-[0_6px_20px_rgba(0,0,0,0.14)] transition-transform duration-300 hover:-translate-y-1"
+                    >
+                      <span className="relative block w-full h-full overflow-hidden">
+                        <Image
+                          src={foto}
+                          alt={wedding.couple.joinedNames}
+                          fill
+                          sizes="(max-width: 768px) 160px, 220px"
+                          className="object-cover"
+                        />
+                      </span>
+                    </button>
+                  ))}
+
+                  {/* Marcos vacíos mientras no haya fotos */}
+                  {Array.from({ length: huecos }).map((_, i) => (
+                    <div
+                      key={`hueco-${i}`}
+                      aria-hidden
+                      className="shrink-0 h-[220px] w-[160px] md:h-[300px] md:w-[220px] bg-cream/70 p-2 shadow-[0_6px_20px_rgba(0,0,0,0.10)]"
+                    >
+                      <span className="flex w-full h-full items-center justify-center border border-dashed border-primary/25">
+                        <Camera size={26} className="text-primary/25" strokeWidth={1.5} />
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* ================= 4. ITINERARIO ================= */}
         <section id="itinerario" className="pt-16 pb-16 text-primary relative bg-cream">
@@ -821,67 +830,53 @@ export default function Home() {
               />
             </motion.div>
 
-            <div className={`relative mt-12 ${hasItineraryIcons ? 'pl-8 md:pl-0' : ''}`}>
-              {/* Raíl de la línea de tiempo */}
-              <div
-                className={`absolute top-0 bottom-0 w-px bg-primary/20 md:left-1/2 md:-translate-x-1/2 ${
-                  hasItineraryIcons ? 'left-[60px]' : 'left-[7px]'
-                }`}
-              />
+            <div className="relative mt-12">
+              {/* Raíl central: el zigzag es el mismo en móvil y en escritorio */}
+              <div className="absolute left-1/2 top-0 bottom-0 w-px bg-primary/20 -translate-x-1/2" />
 
-              <div className={hasItineraryIcons ? 'space-y-16' : 'space-y-10'}>
+              <div className="space-y-10 md:space-y-16">
                 {wedding.itinerary.events.map((evento, i) => {
-                  const derecha = i % 2 === 1;
+                  const izquierda = i % 2 === 0;
                   return (
                     <motion.div
                       key={evento.title}
-                      initial={{ opacity: 0, y: 60, scale: 0.92 }}
+                      initial={{ opacity: 0, y: 40, scale: 0.94 }}
                       whileInView={{ opacity: 1, y: 0, scale: 1 }}
                       viewport={{ once: true, margin: '-60px' }}
                       transition={{ type: 'spring', stiffness: 90, damping: 13 }}
-                      className="relative flex flex-col md:flex-row items-start md:items-center min-h-[48px]"
+                      className="relative flex"
                     >
-                      {/* Marca sobre el raíl: la ilustración si la hay, si no un punto */}
+                      {/* Punto sobre el raíl */}
+                      <span
+                        aria-hidden
+                        className="absolute left-1/2 top-3 -translate-x-1/2 w-[9px] h-[9px] rounded-full bg-primary/50 ring-4 ring-cream"
+                      />
+
                       <div
-                        className={`absolute -translate-x-1/2 flex items-center justify-center z-10 md:left-1/2 ${
-                          hasItineraryIcons ? 'left-[60px]' : 'left-[7px] top-2'
+                        className={`w-1/2 flex flex-col ${
+                          izquierda
+                            ? 'pr-5 md:pr-12 items-end text-right'
+                            : 'ml-auto pl-5 md:pl-12 items-start text-left'
                         }`}
                       >
-                        {evento.image ? (
-                          <div className="relative w-28 h-28 md:w-36 md:h-36">
+                        {evento.image && (
+                          <div className="relative w-24 h-24 md:w-32 md:h-32 mb-1">
                             <Image
                               src={evento.image}
                               alt={evento.title}
                               fill
-                              className="object-contain"
-                              referrerPolicy="no-referrer"
+                              className={`object-contain ${izquierda ? 'object-right' : 'object-left'}`}
                             />
                           </div>
-                        ) : (
-                          <span className="block w-[11px] h-[11px] rounded-full bg-primary/70 ring-4 ring-cream" />
                         )}
-                      </div>
 
-                      {derecha && <div className="w-full md:w-1/2 hidden md:block" />}
-
-                      <div
-                        className={`w-full md:w-1/2 mt-1 ${
-                          hasItineraryIcons
-                            ? derecha
-                              ? 'md:pl-28 pl-[130px]'
-                              : 'md:pr-28 md:text-right pl-[130px] md:pl-0'
-                            : derecha
-                              ? 'md:pl-14 pl-8'
-                              : 'md:pr-14 md:text-right pl-8 md:pl-0'
-                        }`}
-                      >
                         <div className="inline-block px-3 py-1 bg-primary/5 border border-primary/15 rounded-full text-primary font-sans font-medium text-xs mb-2">
                           {evento.time}
                         </div>
-                        <h4 className="font-display text-xl text-primary">{evento.title}</h4>
+                        <h4 className="font-display text-lg sm:text-xl text-primary leading-tight">
+                          {evento.title}
+                        </h4>
                       </div>
-
-                      {!derecha && <div className="w-full md:w-1/2 hidden md:block" />}
                     </motion.div>
                   );
                 })}
@@ -1181,7 +1176,15 @@ export default function Home() {
               <SectionHeading eyebrow={wedding.info.eyebrow} title={wedding.info.title} />
             </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <div
+              className={`grid gap-6 ${
+                wedding.info.cards.length >= 3
+                  ? 'md:grid-cols-3'
+                  : wedding.info.cards.length === 2
+                    ? 'md:grid-cols-2 max-w-3xl mx-auto'
+                    : 'max-w-md mx-auto'
+              }`}
+            >
               {wedding.info.cards.map((card) => (
                 <motion.div
                   key={card.title}
@@ -1279,30 +1282,28 @@ export default function Home() {
               }}
             />
           )}
-          {/* Velo oliva: la tela es demasiado clara para leer encima. Al 75%
-              el texto crema queda en 4.9:1 y la raya se sigue viendo. */}
-          <div aria-hidden className="absolute inset-0 z-0 bg-primary/75" />
-
           <div className="max-w-2xl mx-auto px-6 relative z-10">
-            <span className="font-display text-4xl md:text-5xl block mb-6 text-cream">
+            {/* La tela va sin velo, así que el texto es oscuro: `ink` sobre la
+                raya da 5.36:1, y 6.34:1 sobre sus rayas blancas. */}
+            <span className="font-display text-4xl md:text-5xl block mb-6 text-ink">
               {wedding.footer.headline}
             </span>
-            <p className="font-sans text-[11px] md:text-xs uppercase tracking-[0.3em] text-cream mb-2 font-medium">
+            <p className="font-sans text-[11px] md:text-xs uppercase tracking-[0.3em] text-ink mb-2 font-semibold">
               {wedding.footer.signature}
             </p>
-            <p className="font-sans font-medium text-[10px] text-cream/85 tracking-widest uppercase">
+            <p className="font-sans font-semibold text-[10px] text-ink/85 tracking-widest uppercase">
               {wedding.footer.dateLine}
             </p>
           </div>
 
-          <div className="absolute bottom-0 left-0 right-0 py-3 bg-primary/30 border-t border-cream/10 z-10">
-            <p className="font-sans text-[10px] text-cream/80 tracking-widest">
+          <div className="absolute bottom-0 left-0 right-0 py-3 bg-cream/55 border-t border-ink/10 z-10">
+            <p className="font-sans text-[10px] text-ink/80 tracking-widest">
               By{' '}
               <a
                 href="https://wa.me/34660104026"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline underline-offset-2 hover:text-cream transition-colors"
+                className="underline underline-offset-2 hover:text-ink transition-colors"
               >
                 Jules
               </a>

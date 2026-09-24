@@ -127,7 +127,7 @@ export const wedding = {
         name: 'Finca de San Juan',
         address: 'Barrio de San Juan, s/n · 39660 Villabáñez, Cantabria',
         time: 'Ceremonia civil · 12:15 H',
-        image: '',
+        image: '/finca.webp',
         mapUrl: 'https://maps.app.goo.gl/NnuWki1xnYZcXoDs8',
       },
     ],
@@ -155,10 +155,33 @@ export const wedding = {
   // FOTOS
   // ---------------------------------------------------------------------------
   /**
-   * Collage de la portada. Con la lista vacía la sección solo muestra la
-   * cuenta atrás. Se dibuja con las que haya (1, 3, 6…).
+   * Fotos del carrete, en el orden en que pasan. Súbelas a `public/fotos/` y
+   * pon aquí sus rutas, p. ej. '/fotos/foto-1.webp'. Se dibuja con las que
+   * haya; cuantas más, más largo el bucle.
    */
   photos: [] as string[],
+
+  // ---------------------------------------------------------------------------
+  // CARRETE DE FOTOS
+  // ---------------------------------------------------------------------------
+  gallery: {
+    /** Pon `false` para ocultar el carrete entero. */
+    enabled: true,
+    title: 'Nuestro carrete',
+    /** Ilustración sobre el carrete. Cadena vacía para no poner ninguna. */
+    image: '',
+    /** Segundos que tarda el carrete en dar una vuelta completa. */
+    speed: 45,
+    /**
+     * Marcos vacíos que se dibujan MIENTRAS NO HAYA FOTOS, para dejar el hueco
+     * a la vista durante el montaje. En cuanto `photos` tenga alguna, dejan de
+     * salir solos.
+     *
+     * ⚠️ Antes de publicar: o hay fotos, o `enabled: false`. Si no, los
+     * invitados verían los marcos vacíos.
+     */
+    placeholders: 6,
+  },
 
   // ---------------------------------------------------------------------------
   // ITINERARIO
@@ -304,13 +327,9 @@ export const wedding = {
         ],
       },
       {
-        title: 'Todo en el mismo sitio',
-        body: 'La ceremonia es civil y se celebra en la propia finca, así que no hay que moverse en todo el día: ceremonia, cóctel, comida y fiesta suceden en el mismo lugar.',
-        bullets: [] as string[],
-      },
-      {
-        title: 'Acompañantes y niños',
-        body: 'Cada invitación incluye un acompañante, que podéis indicar en el formulario. Si venís con niños, decídnoslo al confirmar para que podamos organizarlo todo con cariño.',
+        title: 'Dónde alojarse',
+        // TODO: sustituir por los hoteles y condiciones cuando estén cerrados.
+        body: 'Estamos cerrando acuerdos con varios alojamientos de la zona. En cuanto lo tengamos os pasaremos los nombres, los precios y cómo reservar.',
         bullets: [] as string[],
       },
     ],

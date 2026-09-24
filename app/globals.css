@@ -43,6 +43,17 @@
    * los keyframes no estaban definidos en ningún sitio, así que la clase no
    * existía y el sobre se quedaba quieto.
    */
+  /* El carrete de fotos: dos pasadas seguidas de la misma lista, así que al
+     desplazarse medio ancho el bucle encaja sin salto. */
+  @keyframes carrete {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
   @keyframes flotar {
     0%, 100% {
       transform: translateY(0);
