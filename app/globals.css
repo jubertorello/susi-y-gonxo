@@ -4,19 +4,20 @@
   /* -------------------------------------------------------------------------
      PALETA. Cambiar una boda de color es cambiar estos valores: de aquí salen
      las clases text-primary, bg-sage, border-ink… que usa toda la invitación.
-     Los tonos están sacados del propio sobre: el verde del sello, el salvia
-     del papel, el crema de la tarjeta y el dorado del lacre.
+     Familia oliva, la de mariu-y-nacho. Los tonos de texto están ajustados
+     para que el cuerpo pase 4.5:1 sobre el papel: `secondary` sobre `cream`
+     da 4.69:1, y `primary` 6.72:1.
      ------------------------------------------------------------------------- */
-  --color-primary: #3f5d45;   /* verde del sello: títulos y botones */
-  --color-secondary: #6b7a67; /* el mismo, más claro, para el texto corrido */
-  --color-cream: #f5f1ee;     /* papel de la tarjeta */
-  --color-sage: #b4b9aa;      /* salvia del sobre: fondos claros de color */
-  --color-moss: #5f6b55;      /* salvia oscurecido: fondos con texto en blanco */
-  --color-ink: #2b3b2e;       /* el más oscuro: fechas y nombres */
-  --color-sand: #eae6de;      /* fondos suaves de tarjetas y campos */
-  --color-soft: #dcd9cf;      /* bordes y separadores */
+  --color-primary: #5a5a40;   /* oliva: títulos, botones y barra superior */
+  --color-secondary: #727255; /* el mismo, más claro, para el texto corrido */
+  --color-cream: #fbf9f4;     /* papel */
+  --color-sage: #afb5a6;      /* salvia del sobre: fondos claros de color */
+  --color-moss: #63634a;      /* oliva oscuro: fondos con texto en blanco */
+  --color-ink: #3a3a28;       /* el más oscuro: fechas y nombres */
+  --color-sand: #efeae0;      /* fondos suaves de tarjetas y campos */
+  --color-soft: #e8e4da;      /* bordes y separadores */
   --color-gold: #c9a77a;      /* lacre: acentos finos */
-  --color-overlay: #1c241d;   /* velos y sombras */
+  --color-overlay: #1e1e12;   /* velos y sombras */
 
   --font-serif: var(--font-serif);
   --font-sans: var(--font-sans);

@@ -367,6 +367,9 @@ const img = (nombre: string) => `${CLOUD}/image/upload/${nombre}`;
  */
 const PAPEL = img('texturapapel-limoncello-scaled_cgfzov.jpg');
 
+/** Tela de rayas del forro del sobre. Se reutiliza de fondo en el pie. */
+const RAYA = '/raya.webp';
+
 export const backgrounds = {
   /** Fondo del telón mientras se abre el sobre. */
   intro: PAPEL,
@@ -416,11 +419,11 @@ export const backgrounds = {
     rsvp: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
     info: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
     contact: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
-    footer: { mobileTop: '', mobileBottom: '', desktop: '' },
+    footer: { mobileTop: RAYA, mobileBottom: '', desktop: RAYA },
   },
 
-  /** Franja de tela de rayas, para los separadores. Vacío: no se dibuja. */
-  stripe: '/raya.webp',
+  /** Franja de tela de rayas. Vacío: no se dibuja. */
+  stripe: RAYA,
 };
 
 /** Enlace de WhatsApp de cada miembro de la pareja, ya codificado. */

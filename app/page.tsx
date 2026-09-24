@@ -1265,6 +1265,24 @@ export default function Home() {
 
         {/* ================= 11. PIE ================= */}
         <footer className="pt-24 pb-16 md:pt-28 md:pb-20 text-center relative overflow-hidden bg-moss">
+          {/* La tela de rayas del forro del sobre, repetida. Se escala al alto
+              del pie para que la raya conserve su grosor. */}
+          {backgrounds.sections.footer.mobileTop && (
+            <div
+              aria-hidden
+              className="absolute inset-0 z-0"
+              style={{
+                backgroundImage: `url("${backgrounds.sections.footer.mobileTop}")`,
+                backgroundSize: 'auto 100%',
+                backgroundRepeat: 'repeat',
+                backgroundPosition: 'center',
+              }}
+            />
+          )}
+          {/* Velo oliva: la tela es demasiado clara para leer encima. Al 75%
+              el texto crema queda en 4.9:1 y la raya se sigue viendo. */}
+          <div aria-hidden className="absolute inset-0 z-0 bg-primary/75" />
+
           <div className="max-w-2xl mx-auto px-6 relative z-10">
             <span className="font-display text-4xl md:text-5xl block mb-6 text-cream">
               {wedding.footer.headline}
