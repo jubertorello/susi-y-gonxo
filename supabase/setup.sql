@@ -103,57 +103,82 @@ select * from verify_client_password('susi', 'contrasena-que-no-es');
 
 
 -- =============================================================================
---  PASO 3 · QUITAR LA FUNCIÓN VIEJA
+--  PASO 3 · RETIRAR EL SISTEMA VIEJO (función + tabla `clients`)
 -- =============================================================================
---  Confirma antes el tipo del argumento con el PASO 0b (debería ser `text`)
---  y comprueba que el oid que borras es el de la versión de una sola entrada.
+--  ORDEN IMPORTANTE: primero la función, luego la tabla. Al revés dejarías una
+--  función que apunta a una tabla que ya no existe: plpgsql no lo comprueba al
+--  crearla, así que no daría error hasta que alguien la llamase.
+
+--  3a) ANTES DE NADA: ¿hay alguien que SOLO esté en la tabla vieja?
+--      Si esta consulta devuelve filas, esas parejas se quedarían sin acceso.
+--      Hay que darlas de alta en `client_credentials` (como el PASO 1) antes
+--      de seguir.
+
+select c.client_id, c.display_name, c.role
+from clients c
+where not exists (
+  select 1 from client_credentials cc where cc.client_id = c.client_id
+);
+
+--  3b) Borrar la función que no comprueba el usuario. Confirma antes con el
+--      PASO 0b que el argumento es `text`.
 
 drop function if exists public.verify_client_password(input_password text);
 
---  Repite el PASO 2 después: tiene que seguir funcionando igual, porque el
---  código llama a la de dos argumentos.
+--  3c) Repetir el PASO 2: tiene que seguir funcionando igual, porque el código
+--      llama a la de dos argumentos.
 --
---  Y esta comprobación, desde fuera, debe pasar a devolver 404 en vez de 200:
+--      Y esta comprobación, desde fuera, debe pasar de 200 a 404:
 --
---    curl -X POST "$SUPABASE_URL/rest/v1/rpc/verify_client_password" \
---      -H "apikey: $ANON_KEY" -H "Content-Type: application/json" \
---      -d '{"input_password":"lo-que-sea"}'
---
---  Cuando ya no la use nadie, la tabla vieja tampoco pinta nada. Mira antes
---  si queda alguna pareja que solo esté ahí:
---
--- select client_id, display_name, role from clients;
+--        curl -X POST "$SUPABASE_URL/rest/v1/rpc/verify_client_password" \
+--          -H "apikey: $ANON_KEY" -H "Content-Type: application/json" \
+--          -d '{"input_password":"lo-que-sea"}'
+
+--  3d) Y ya sí, la tabla. Solo si 3a no devolvió a nadie.
+
 -- drop table if exists public.clients;
 
 
 -- =============================================================================
---  PASO 4 · CERRAR LA LECTURA PÚBLICA DE `rsvps`
+--  PASO 4 · ARREGLAR LOS PERMISOS DE `rsvps`     ← ESTO ES LO URGENTE
 -- =============================================================================
---  La tabla `rsvps` se puede leer entera con la clave `anon`, que viaja dentro
---  del JavaScript de la invitación y por tanto la tiene cualquiera que abra la
---  página. Comprobado: devuelve nombres de invitados, alergias y mensajes
---  privados, de todas las bodas del proyecto.
+--  Comprobado contra el proyecto con la clave `anon`, la que viaja dentro del
+--  JavaScript de la invitación y tiene cualquiera que abra la página:
 --
---  La invitación NO necesita leer: solo inserta confirmaciones. Quien lee es
---  el panel /admin, y lo hace después de pasar por verify_client_password.
+--    · LEER   → devuelve todas las confirmaciones de todas las bodas, con
+--               nombre y apellidos, alergias y mensajes privados.
+--    · BORRAR → funciona. Un DELETE devolvió 204 y la fila desapareció.
+--
+--  Lo segundo es lo grave: cualquiera puede vaciar las confirmaciones de las
+--  cuatro bodas, y no hay papelera. La invitación solo necesita INSERTAR.
 --
 --  Mira primero qué políticas hay:
 
 select policyname, cmd, roles, qual, with_check
 from pg_policies
-where tablename in ('rsvps', 'songs', 'clients', 'client_credentials')
+where tablename in ('rsvps', 'songs')
 order by tablename, policyname;
 
---  Y luego deja solo la de insertar (ajusta el nombre de la política de
---  lectura al que te haya salido arriba):
+--  Y déjalo en «los invitados solo pueden añadir». Ajusta los nombres de las
+--  políticas a los que te hayan salido arriba:
 --
 -- alter table rsvps enable row level security;
--- drop policy if exists "Enable read access for all users" on rsvps;
+--
+-- drop policy if exists "Enable read access for all users"   on rsvps;
+-- drop policy if exists "Enable delete for all users"        on rsvps;
+-- drop policy if exists "Enable update for all users"        on rsvps;
 --
 -- create policy "invitados pueden confirmar"
 --   on rsvps for insert to anon
 --   with check (true);
 --
---  En `songs` la lectura pública sí hace falta: la invitación enseña la
---  playlist. `clients` y `client_credentials` ya están bien: comprobado que
---  con la clave `anon` devuelven 0 filas.
+--  Repasa `songs` igual, pero ahí la lectura pública SÍ hace falta (la
+--  invitación enseña la playlist) y el update también, porque se votan las
+--  canciones. Lo que no debería poderse es borrar.
+--
+--  Después de aplicarlo, comprobar desde fuera: el SELECT debe devolver 0
+--  filas y el DELETE debe fallar, pero una confirmación nueva desde la
+--  invitación tiene que seguir guardándose.
+--
+--  `clients` y `client_credentials` ya están bien: comprobado que con la
+--  clave `anon` devuelven 0 filas.
