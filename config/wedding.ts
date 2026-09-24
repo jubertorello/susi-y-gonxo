@@ -347,7 +347,7 @@ export const wedding = {
         icon: 'cama',
         title: 'Recomendación de Hoteles',
         // TODO: sustituir por los hoteles y condiciones cuando estén cerrados.
-        body: 'Estamos cerrando acuerdos con varios alojamientos de la zona. En cuanto lo tengamos os pasaremos los nombres, los precios y cómo reservar.',
+        body: 'PENDIENTE.',
         items: [] as { label: string; detail?: string; lines?: string[] }[],
         note: '',
       },
