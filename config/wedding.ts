@@ -452,6 +452,29 @@ export const backgrounds = {
 
   /** Franja de tela de rayas. Vacío: no se dibuja. */
   stripe: RAYA,
+
+  /**
+   * RAMAS DE EUCALIPTO
+   * Cenefas verticales a los lados de algunas secciones, como en
+   * mariu-y-nacho. Con las dos cadenas vacías no se dibuja nada.
+   *
+   * Hacen falta PNG con FONDO TRANSPARENTE, altos y estrechos (una tira de
+   * ramas), porque se repiten en vertical. Déjalos en `public/eucalipto/`.
+   */
+  eucalyptus: {
+    left: '',
+    right: '',
+    /** Ancho de cada cenefa y cuánto se transparenta. */
+    width: '20vw',
+    maxWidth: '190px',
+    opacity: 0.5,
+  },
+
+  /**
+   * Ramita suelta que separa bloques, en vez del filete de 1px.
+   * Cadena vacía: se queda el filete.
+   */
+  divider: '',
 };
 
 /** Enlace de WhatsApp de cada miembro de la pareja, ya codificado. */

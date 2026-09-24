@@ -39,6 +39,18 @@ Las proporciones son obligatorias o la animación se descuadra:
 tarjeta, así que el papel se ve por ahí mientras sale. Si se cambian las
 láminas hay que ajustar también `backgrounds.envelopeLayers`.
 
+### Adornos de eucalipto
+
+`backgrounds.eucalyptus.left` y `.right` dibujan cenefas verticales a los
+lados de la portada, el lugar, el itinerario y las dudas. `backgrounds.divider`
+sustituye el filete de 1px por una ramita. Con las cadenas vacías no se dibuja
+nada, que es como está ahora.
+
+Las cenefas se repiten en vertical, así que las láminas tienen que ser **tiras
+altas y estrechas con fondo transparente** (PNG o WebP), no una composición
+cuadrada. Van en `public/eucalipto/`. El ancho y la opacidad se ajustan desde
+la propia configuración, sin tocar código.
+
 ### Tipografía
 
 Hay **dos versiones**, y se cambia de una a otra con un número:

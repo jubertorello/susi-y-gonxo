@@ -95,6 +95,59 @@ function SectionBackground({ bg }: { bg: { mobileTop: string; mobileBottom: stri
   );
 }
 
+/**
+ * Cenefas de eucalipto a los lados de una sección. Entran y salen en
+ * degradado para que no se corten en seco, y se repiten en vertical: por eso
+ * las láminas tienen que ser tiras altas y estrechas con fondo transparente.
+ * Sin láminas en la configuración, no se dibuja nada.
+ */
+const desvanecido =
+  'linear-gradient(to bottom, transparent 0, #000 80px, #000 calc(100% - 80px), transparent 100%)';
+
+function Eucalipto() {
+  const e = backgrounds.eucalyptus;
+  if (!e.left && !e.right) return null;
+  return (
+    <>
+      {(['left', 'right'] as const).map((lado) =>
+        e[lado] ? (
+          <span
+            key={lado}
+            aria-hidden
+            className={`absolute inset-y-0 ${lado === 'left' ? 'left-0' : 'right-0'} z-0 pointer-events-none`}
+            style={{
+              width: e.width,
+              maxWidth: e.maxWidth,
+              opacity: e.opacity,
+              backgroundImage: `url("${e[lado]}")`,
+              backgroundSize: '100% auto',
+              backgroundRepeat: 'repeat-y',
+              backgroundPosition: `${lado} top`,
+              maskImage: desvanecido,
+              WebkitMaskImage: desvanecido,
+            }}
+          />
+        ) : null
+      )}
+    </>
+  );
+}
+
+/**
+ * Separador entre bloques: la ramita de eucalipto si la hay, y si no el
+ * filete de 1px de siempre.
+ */
+function Filete({ className = '', claro = false }: { className?: string; claro?: boolean }) {
+  if (!backgrounds.divider) {
+    return <div className={`h-px w-10 mx-auto ${claro ? 'bg-white/40' : 'bg-primary/20'} ${className}`} />;
+  }
+  return (
+    <div className={`relative h-6 w-28 mx-auto ${className}`}>
+      <Image src={backgrounds.divider} alt="" fill className="object-contain" />
+    </div>
+  );
+}
+
 /** Cabecera de sección: rótulo pequeño, título en cursiva grande y filete. */
 function SectionHeading({
   eyebrow,
@@ -128,7 +181,7 @@ function SectionHeading({
       {subtitle && (
         <p className={`mt-2 text-[16px] ${light ? 'text-white/85' : 'text-ink'}`}>{subtitle}</p>
       )}
-      <div className={`h-px w-10 mx-auto mt-4 ${light ? 'bg-white/40' : 'bg-primary/20'}`} />
+      <Filete className="mt-4" claro={light} />
     </>
   );
 }
@@ -450,6 +503,7 @@ export default function Home() {
           className="w-full relative pt-28 pb-16 md:py-32 flex flex-col items-center justify-center text-center overflow-hidden bg-cream"
         >
           <SectionBackground bg={backgrounds.sections.hero} />
+          <Eucalipto />
 
           <motion.div
             initial="hidden"
@@ -478,7 +532,7 @@ export default function Home() {
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: 'easeOut' } },
               }}
-              className="font-display tracking-[0.2em] uppercase text-[24px] leading-tight text-ink mt-5 mb-8 text-center"
+              className="font-display tracking-[0.12em] sm:tracking-[0.2em] uppercase text-[30px] leading-tight text-ink mt-5 mb-8 text-center"
             >
               {wedding.hero.announcement}
             </motion.h2>
@@ -515,7 +569,7 @@ export default function Home() {
                 <React.Fragment key={quien}>
                   {i === 1 && <div className="font-display text-2xl md:text-3xl my-4 text-ink">&</div>}
                   <div className="flex flex-col items-center">
-                    <h1 className="font-display tracking-[0.1em] text-[28px] sm:text-[32px] leading-tight text-ink uppercase">
+                    <h1 className="font-display tracking-[0.06em] sm:tracking-[0.1em] text-[30px] leading-tight text-ink uppercase">
                       {wedding.couple[quien].firstName}
                     </h1>
                     <span className="font-display tracking-[0.05em] text-[18px] sm:text-[20px] text-ink uppercase mt-1">
@@ -546,19 +600,19 @@ export default function Home() {
               }}
               className="flex flex-col items-center mt-4 select-none w-full"
             >
-              <div className="flex items-center justify-center gap-2 sm:gap-6 md:gap-8">
-                <div className="border-y border-ink/40 py-2 text-center w-[88px] sm:w-[140px] md:w-[150px] shrink-0">
-                  <span className="font-display tracking-[0.15em] sm:tracking-[0.2em] uppercase text-ink block text-[14px] leading-none">
+              <div className="flex items-center justify-center gap-1.5 sm:gap-6 md:gap-8">
+                <div className="border-y border-ink/40 py-2 text-center px-2 sm:px-6 shrink-0">
+                  <span className="font-display tracking-[0.04em] sm:tracking-[0.14em] uppercase text-ink block text-[30px] leading-none">
                     {wedding.date.month}
                   </span>
                 </div>
 
-                <div className="font-display text-[44px] sm:text-6xl md:text-7xl text-ink leading-none px-1 shrink-0">
+                <div className="font-display text-[40px] sm:text-6xl md:text-7xl text-ink leading-none px-0.5 sm:px-1 shrink-0">
                   {wedding.date.day}
                 </div>
 
-                <div className="border-y border-ink/40 py-2 text-center w-[88px] sm:w-[140px] md:w-[150px] shrink-0">
-                  <span className="font-display tracking-[0.15em] sm:tracking-[0.2em] text-ink block text-[16px] sm:text-[18px] leading-none">
+                <div className="border-y border-ink/40 py-2 text-center px-2 sm:px-6 shrink-0">
+                  <span className="font-display tracking-[0.04em] sm:tracking-[0.14em] text-ink block text-[30px] leading-none">
                     {wedding.date.year}
                   </span>
                 </div>
@@ -576,6 +630,7 @@ export default function Home() {
         {/* ================= 2. LUGAR ================= */}
         <section id="lugar" className="w-full pt-20 pb-20 md:py-32 relative bg-cream">
           <SectionBackground bg={backgrounds.sections.locations} />
+          <Eucalipto />
 
           <motion.div
             initial="hidden"
@@ -808,6 +863,7 @@ export default function Home() {
         {/* ================= 4. ITINERARIO ================= */}
         <section id="itinerario" className="pt-16 pb-16 text-ink relative bg-cream">
           <SectionBackground bg={backgrounds.sections.itinerary} />
+          <Eucalipto />
 
           <motion.div
             initial="hidden"
@@ -1218,6 +1274,7 @@ export default function Home() {
         {/* ================= 10. DUDAS ================= */}
         <section className="py-16 relative bg-cream">
           <SectionBackground bg={backgrounds.sections.contact} />
+          <Eucalipto />
 
           <motion.div
             initial="hidden"
