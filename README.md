@@ -105,9 +105,11 @@ la propia configuración, sin tocar código.
 | Título y texto de la vista previa | `wedding.seo.title` y `.description` |
 | Dominio | `wedding.seo.url`, o `NEXT_PUBLIC_SITE_URL` |
 
-La tarjeta la dibuja `scripts/tarjeta-compartir.py`, que reutiliza el papel y
-las ramas de olivo de `public/`. Para otra boda se cambian los textos y colores
-de la cabecera del script y se relanza:
+La tarjeta es la **misma portada que se ve al abrir la invitación** —el sobre
+sobre el papel, con las ramas de olivo asomando por los costados— recortada a
+1200 × 630. La dibuja `scripts/tarjeta-compartir.py` con las láminas que ya
+están en `public/`. Para otra boda se cambian los textos y colores de la
+cabecera del script y se relanza:
 
 ```bash
 python3 scripts/tarjeta-compartir.py
