@@ -1194,7 +1194,7 @@ export default function Home() {
         )}
 
         {/* ================= 7. CONFIRMACIÓN ================= */}
-        <section id="confirmacion" className="w-full pt-10 pb-24 md:pt-12 md:pb-28 relative overflow-hidden">
+        <section id="confirmacion" className="w-full py-16 md:py-20 relative overflow-hidden">
           <SectionBackground bg={backgrounds.sections.rsvp} />
           <Esquinas />
 
@@ -1247,42 +1247,7 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* ================= 8. MÚSICA ================= */}
-        {wedding.music.enabled && (
-          /*
-           * Una cinta, no una sección: ilustración, título y botón en una
-           * fila. Todo lo demás ya está en la ventana que abre el botón.
-           */
-          <section id="musica" className="w-full bg-cream border-y border-primary/10 text-ink py-6">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              className="max-w-4xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-center sm:text-left"
-            >
-              {wedding.music.image && (
-                <div className="relative w-32 h-[3.3rem] sm:w-40 sm:h-[4.1rem] shrink-0">
-                  <Image src={wedding.music.image} alt="" fill className="object-contain" />
-                </div>
-              )}
-
-              <h2 className="font-display text-[24px] md:text-[28px] text-ink leading-tight">
-                {wedding.music.title}
-              </h2>
-
-              <button
-                onClick={() => setShowMusicModal(true)}
-                className="shrink-0 inline-flex items-center gap-2 px-7 py-2.5 bg-primary hover:bg-primary/90 text-white font-sans text-[14px] uppercase tracking-[0.2em] rounded-full transition-all duration-300 shadow hover:scale-105 active:scale-95"
-              >
-                <Music size={14} />
-                <span>{wedding.music.ctaLabel}</span>
-              </button>
-            </motion.div>
-          </section>
-        )}
-
-        {/* ================= 9. DATOS DE INTERÉS ================= */}
+        {/* ================= 8. DATOS DE INTERÉS ================= */}
         <section id="informacion" className="py-16 md:py-20 relative">
           <SectionBackground bg={backgrounds.sections.info} />
           <Eucalipto />
@@ -1372,6 +1337,41 @@ export default function Home() {
             </div>
           </motion.div>
         </section>
+
+        {/* ================= 9. MÚSICA ================= */}
+        {wedding.music.enabled && (
+          /*
+           * Una cinta, no una sección: ilustración, título y botón en una
+           * fila. Todo lo demás ya está en la ventana que abre el botón.
+           */
+          <section id="musica" className="w-full bg-cream border-y border-primary/10 text-ink py-6">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+              className="max-w-4xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-center sm:text-left"
+            >
+              {wedding.music.image && (
+                <div className="relative w-32 h-[3.3rem] sm:w-40 sm:h-[4.1rem] shrink-0">
+                  <Image src={wedding.music.image} alt="" fill className="object-contain" />
+                </div>
+              )}
+
+              <h2 className="font-display text-[24px] md:text-[28px] text-ink leading-tight">
+                {wedding.music.title}
+              </h2>
+
+              <button
+                onClick={() => setShowMusicModal(true)}
+                className="shrink-0 inline-flex items-center gap-2 px-7 py-2.5 bg-primary hover:bg-primary/90 text-white font-sans text-[14px] uppercase tracking-[0.2em] rounded-full transition-all duration-300 shadow hover:scale-105 active:scale-95"
+              >
+                <Music size={14} />
+                <span>{wedding.music.ctaLabel}</span>
+              </button>
+            </motion.div>
+          </section>
+        )}
 
         {/* ================= 10. DUDAS ================= */}
         <section className="py-16 md:py-20 relative">

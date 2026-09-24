@@ -415,12 +415,12 @@ export const wedding = {
       { id: 'lugar', label: 'Lugar' },
       { id: 'itinerario', label: 'Itinerario' },
       { id: 'viaje', label: 'Luna de Miel · Regalo' },
-      { id: 'musica', label: 'Música', mobileOnly: true },
       /* Los tres de dentro de Datos de Interés: no son secciones, pero así
          se sabe que están. Sustituyen al enlace genérico de «Información». */
       { id: 'dress-code', label: 'Dress Code', mobileOnly: true },
       { id: 'hoteles', label: 'Hoteles', mobileOnly: true },
       { id: 'autobuses', label: 'Autobuses', mobileOnly: true },
+      { id: 'musica', label: 'Música', mobileOnly: true },
     ] as { id: string; label: string; mobileOnly?: boolean }[],
   },
 };

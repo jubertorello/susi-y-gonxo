@@ -23,7 +23,7 @@ wedding.rsvp.bus.enabled // campos de autobús del formulario
 ```
 
 El orden de la página es: portada, lugar, cuenta atrás, carrete, itinerario,
-luna de miel, confirmación, música, datos de interés, dudas y pie.
+luna de miel, confirmación, datos de interés, música, dudas y pie.
 
 **Datos de Interés** se arma desde `info.blocks`: dress code, hoteles y
 autobuses, en ese orden. Cada bloque tiene título, texto, una lista de
