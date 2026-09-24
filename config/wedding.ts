@@ -208,21 +208,6 @@ export const wedding = {
   },
 
   // ---------------------------------------------------------------------------
-  // DRESS CODE
-  // ---------------------------------------------------------------------------
-  dressCode: {
-    /** Pon `false` para ocultar la banda del dress code. */
-    enabled: true,
-    eyebrow: 'Dress Code',
-    title: 'Elegantes para celebrar',
-    items: [
-      { who: 'Ellos', what: 'Traje' },
-      { who: 'Ellas', what: 'Vestido o conjunto elegante' },
-    ],
-    closing: 'Poneos guapos, que nosotros ponemos la fiesta.',
-  },
-
-  // ---------------------------------------------------------------------------
   // MÚSICA
   // ---------------------------------------------------------------------------
   music: {
@@ -320,6 +305,44 @@ export const wedding = {
   },
 
   // ---------------------------------------------------------------------------
+  // AUTOBUSES
+  // ---------------------------------------------------------------------------
+  buses: {
+    /** Pon `false` para ocultar la sección entera. */
+    enabled: true,
+    eyebrow: 'Cómo llegar',
+    title: 'Autobuses',
+    description:
+      'Habrá autobuses de ida y de vuelta desde Santander y Torrelavega, para que nadie tenga que preocuparse por el coche.',
+    /** Una línea por trayecto. */
+    routes: [
+      { label: 'Ida', detail: 'Horarios por confirmar. Os avisaremos en cuanto los tengamos.' },
+      { label: 'Vuelta · 21:30', detail: 'Para los veteranos.' },
+      { label: 'Vuelta · 00:30', detail: 'Para los atrevidos. Fin de fiesta.' },
+    ],
+    /** Línea de cierre. Cadena vacía para no ponerla. */
+    note: 'En el formulario de confirmación podréis indicarnos si los necesitáis.',
+  },
+
+  // ---------------------------------------------------------------------------
+  // HOTELES
+  // ---------------------------------------------------------------------------
+  hotels: {
+    /** Pon `false` para ocultar la sección entera. */
+    enabled: true,
+    eyebrow: 'Dónde dormir',
+    title: 'Recomendación de Hoteles',
+    // TODO: sustituir por el texto definitivo cuando estén cerrados.
+    description:
+      'Estamos cerrando acuerdos con varios alojamientos de la zona. En cuanto lo tengamos os pasaremos los nombres, los precios y cómo reservar.',
+    /**
+     * Un alojamiento por entrada. Con la lista vacía solo se enseña el texto
+     * de arriba. `url` es opcional: si está, el nombre se vuelve enlace.
+     */
+    list: [] as { name: string; detail: string; url?: string }[],
+  },
+
+  // ---------------------------------------------------------------------------
   // DATOS DE INTERÉS
   // ---------------------------------------------------------------------------
   info: {
@@ -327,21 +350,12 @@ export const wedding = {
     title: 'Datos de Interés',
     cards: [
       {
-        title: 'Servicio de Autobuses',
-        body: 'Habrá autobuses de ida y de vuelta desde Santander y Torrelavega:',
-        bullets: [
-          '• Ida: horarios por confirmar, os avisaremos.',
-          '• Vuelta: 21:30 para los veteranos.',
-          '• Vuelta: 00:30 para los atrevidos, fin de fiesta.',
-        ],
+        title: 'Dress Code',
+        body: 'Elegantes para celebrar.',
+        bullets: ['Ellos · Traje', 'Ellas · Vestido o conjunto elegante'],
+        note: 'Poneos guapos, que nosotros ponemos la fiesta.',
       },
-      {
-        title: 'Recomendación de Hoteles',
-        // TODO: sustituir por los hoteles y condiciones cuando estén cerrados.
-        body: 'Estamos cerrando acuerdos con varios alojamientos de la zona. En cuanto lo tengamos os pasaremos los nombres, los precios y cómo reservar.',
-        bullets: [] as string[],
-      },
-    ],
+    ] as { title: string; body: string; bullets: string[]; note?: string }[],
   },
 
   // ---------------------------------------------------------------------------
@@ -372,8 +386,10 @@ export const wedding = {
     links: [
       { id: 'lugar', label: 'Lugar' },
       { id: 'itinerario', label: 'Itinerario' },
-      { id: 'musica', label: 'Música', mobileOnly: true },
       { id: 'viaje', label: 'Viaje · Regalo' },
+      { id: 'musica', label: 'Música', mobileOnly: true },
+      { id: 'autobuses', label: 'Autobuses', mobileOnly: true },
+      { id: 'hoteles', label: 'Hoteles', mobileOnly: true },
       { id: 'informacion', label: 'Información' },
     ] as { id: string; label: string; mobileOnly?: boolean }[],
   },

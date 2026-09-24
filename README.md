@@ -15,11 +15,16 @@ Los componentes no llevan contenido: todo sale de `config/wedding.ts`.
 ### Encender y apagar secciones
 
 ```ts
-wedding.music.enabled     // sugerencias de canciones
-wedding.gift.enabled      // luna de miel / regalo
-wedding.dressCode.enabled // banda del dress code
-wedding.rsvp.bus.enabled  // campos de autobús del formulario
+wedding.music.enabled    // sugerencias de canciones
+wedding.gift.enabled     // luna de miel / regalo
+wedding.buses.enabled    // sección de autobuses
+wedding.hotels.enabled   // sección de hoteles
+wedding.rsvp.bus.enabled // campos de autobús del formulario
 ```
+
+El orden de la página es: portada, lugar, cuenta atrás, carrete, itinerario,
+luna de miel, confirmación, música, autobuses, hoteles, datos de interés,
+dudas y pie. El dress code es una tarjeta más dentro de datos de interés.
 
 Las **ilustraciones** se quitan poniendo la cadena vacía en su `image`
 (`locations.places[].image`, `itinerary.events[].image`, `gift.image`,

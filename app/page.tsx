@@ -22,7 +22,8 @@ import {
   Info,
   Volume2,
   VolumeX,
-  Shirt,
+  Bus,
+  BedDouble,
   Camera,
   Menu,
 } from 'lucide-react';
@@ -52,6 +53,8 @@ const hasAudio = Boolean(wedding.music.backgroundAudio);
 const sectionEnabled: Record<string, boolean> = {
   musica: wedding.music.enabled,
   viaje: wedding.gift.enabled,
+  autobuses: wedding.buses.enabled,
+  hoteles: wedding.hotels.enabled,
 };
 const navLinks = wedding.nav.links.filter((l) => sectionEnabled[l.id] !== false);
 
@@ -797,7 +800,7 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* ================= 3b. CARRETE DE FOTOS ================= */}
+        {/* ================= 4. CARRETE DE FOTOS ================= */}
         {wedding.gallery.enabled && (
           <section id="fotos" className="py-12 relative overflow-hidden bg-cream">
             <SectionBackground bg={backgrounds.sections.photos} />
@@ -863,7 +866,7 @@ export default function Home() {
           </section>
         )}
 
-        {/* ================= 4. ITINERARIO ================= */}
+        {/* ================= 5. ITINERARIO ================= */}
         <section id="itinerario" className="pt-16 pb-16 text-ink relative bg-cream">
           <SectionBackground bg={backgrounds.sections.itinerary} />
           <Eucalipto />
@@ -947,127 +950,7 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* ================= 5. DRESS CODE ================= */}
-        {wedding.dressCode.enabled && (
-          <section id="dresscode" className="py-14 md:py-16 bg-moss text-white relative">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-80px' }}
-              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.12 } } }}
-              className="max-w-2xl mx-auto px-6 text-center"
-            >
-              <motion.div
-                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
-              >
-                <Shirt size={26} className="mx-auto mb-4 text-white/80" strokeWidth={1.5} />
-                <SectionHeading eyebrow={wedding.dressCode.eyebrow} title={wedding.dressCode.title} light />
-              </motion.div>
-
-              <motion.ul
-                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
-                className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-10"
-              >
-                {wedding.dressCode.items.map((item) => (
-                  <li key={item.who} className="flex flex-col items-center">
-                    <span className="font-sans text-[14px] uppercase tracking-[0.3em] text-white/70">
-                      {item.who}
-                    </span>
-                    <span className="font-display text-[20px] text-white mt-1">{item.what}</span>
-                  </li>
-                ))}
-              </motion.ul>
-
-              {wedding.dressCode.closing && (
-                <motion.p
-                  variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
-                  className="mt-8 text-[18px] text-white/90 leading-relaxed"
-                >
-                  {wedding.dressCode.closing}
-                </motion.p>
-              )}
-            </motion.div>
-          </section>
-        )}
-
-        {/* ================= 6. MÚSICA ================= */}
-        {wedding.music.enabled && (
-          <section id="musica" className="w-full py-14 md:py-16 relative bg-cream">
-            <SectionBackground bg={backgrounds.sections.music} />
-
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-80px' }}
-              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.12 } } }}
-              className={`mx-auto px-6 text-center relative z-10 ${
-                wedding.music.compact ? 'max-w-xl' : 'max-w-4xl'
-              }`}
-            >
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, y: 30 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
-                }}
-                className={
-                  wedding.music.compact
-                    ? 'border-y border-primary/15 py-8'
-                    : 'bg-cream border border-primary/10 rounded-sm p-10 md:p-14 shadow-sm'
-                }
-              >
-                {wedding.music.image && (
-                  <div className="flex justify-center mb-6">
-                    <div className="relative w-28 h-28 md:w-36 md:h-36">
-                      <Image
-                        src={wedding.music.image}
-                        alt="Música"
-                        fill
-                        className="object-contain"
-                        referrerPolicy="no-referrer"
-                      />
-                    </div>
-                  </div>
-                )}
-
-                <Music size={18} className="mx-auto mb-3 text-ink" strokeWidth={1.5} />
-
-                {/* En compacto el título baja de 28px, así que va redondo. */}
-                <h2
-                  className={
-                    wedding.music.compact
-                      ? 'font-display text-[20px] text-ink'
-                      : 'font-display italic text-3xl md:text-4xl text-ink'
-                  }
-                >
-                  {wedding.music.title}
-                </h2>
-
-                <p className="text-ink text-[16px] leading-relaxed max-w-md mx-auto mt-2 mb-6">
-                  {wedding.music.description}
-                </p>
-
-                <button
-                  onClick={() => setShowMusicModal(true)}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 border border-primary/30 text-ink hover:bg-primary hover:text-white font-sans text-[14px] uppercase tracking-[0.2em] rounded-full transition-all duration-300"
-                >
-                  <Music size={12} />
-                  <span>{wedding.music.ctaLabel}</span>
-                </button>
-
-                {musicList.length > 0 && (
-                  <button
-                    onClick={() => setShowAllSongsModal(true)}
-                    className="mt-4 block mx-auto font-sans text-[14px] uppercase tracking-[0.18em] text-ink hover:text-ink transition-colors underline underline-offset-4"
-                  >
-                    {wedding.music.allLabel} ({musicList.length})
-                  </button>
-                )}
-              </motion.div>
-            </motion.div>
-          </section>
-        )}
-
-        {/* ================= 7. LUNA DE MIEL / REGALO ================= */}
+        {/* ================= 6. LUNA DE MIEL / REGALO ================= */}
         {wedding.gift.enabled && (
           <section id="viaje" className="py-16 md:py-24 bg-moss relative text-white">
             <motion.div
@@ -1155,7 +1038,7 @@ export default function Home() {
           </section>
         )}
 
-        {/* ================= 8. CONFIRMACIÓN ================= */}
+        {/* ================= 7. CONFIRMACIÓN ================= */}
         <section id="confirmacion" className="w-full py-16 relative bg-cream">
           <SectionBackground bg={backgrounds.sections.rsvp} />
 
@@ -1220,7 +1103,190 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* ================= 9. DATOS DE INTERÉS ================= */}
+        {/* ================= 8. MÚSICA ================= */}
+        {wedding.music.enabled && (
+          <section id="musica" className="w-full py-14 md:py-16 relative bg-cream">
+            <SectionBackground bg={backgrounds.sections.music} />
+
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-80px' }}
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.12 } } }}
+              className={`mx-auto px-6 text-center relative z-10 ${
+                wedding.music.compact ? 'max-w-xl' : 'max-w-4xl'
+              }`}
+            >
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+                }}
+                className={
+                  wedding.music.compact
+                    ? 'border-y border-primary/15 py-8'
+                    : 'bg-cream border border-primary/10 rounded-sm p-10 md:p-14 shadow-sm'
+                }
+              >
+                {wedding.music.image && (
+                  <div className="flex justify-center mb-6">
+                    <div className="relative w-28 h-28 md:w-36 md:h-36">
+                      <Image
+                        src={wedding.music.image}
+                        alt="Música"
+                        fill
+                        className="object-contain"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <Music size={18} className="mx-auto mb-3 text-ink" strokeWidth={1.5} />
+
+                {/* En compacto el título baja de 28px, así que va redondo. */}
+                <h2
+                  className={
+                    wedding.music.compact
+                      ? 'font-display text-[20px] text-ink'
+                      : 'font-display italic text-3xl md:text-4xl text-ink'
+                  }
+                >
+                  {wedding.music.title}
+                </h2>
+
+                <p className="text-ink text-[16px] leading-relaxed max-w-md mx-auto mt-2 mb-6">
+                  {wedding.music.description}
+                </p>
+
+                <button
+                  onClick={() => setShowMusicModal(true)}
+                  className="inline-flex items-center gap-2 px-6 py-2.5 border border-primary/30 text-ink hover:bg-primary hover:text-white font-sans text-[14px] uppercase tracking-[0.2em] rounded-full transition-all duration-300"
+                >
+                  <Music size={12} />
+                  <span>{wedding.music.ctaLabel}</span>
+                </button>
+
+                {musicList.length > 0 && (
+                  <button
+                    onClick={() => setShowAllSongsModal(true)}
+                    className="mt-4 block mx-auto font-sans text-[14px] uppercase tracking-[0.18em] text-ink hover:text-ink transition-colors underline underline-offset-4"
+                  >
+                    {wedding.music.allLabel} ({musicList.length})
+                  </button>
+                )}
+              </motion.div>
+            </motion.div>
+          </section>
+        )}
+
+
+        {/* ================= 9. AUTOBUSES ================= */}
+        {wedding.buses.enabled && (
+          <section id="autobuses" className="py-16 bg-moss text-white relative">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-80px' }}
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.12 } } }}
+              className="max-w-2xl mx-auto px-6 text-center"
+            >
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
+              >
+                <Bus size={26} className="mx-auto mb-4 text-white/80" strokeWidth={1.5} />
+                <SectionHeading eyebrow={wedding.buses.eyebrow} title={wedding.buses.title} light />
+              </motion.div>
+
+              <motion.p
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
+                className="mt-6 text-[18px] text-white/90 leading-relaxed"
+              >
+                {wedding.buses.description}
+              </motion.p>
+
+              <motion.ul
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
+                className="mt-8 space-y-4 text-left max-w-md mx-auto"
+              >
+                {wedding.buses.routes.map((ruta) => (
+                  <li key={ruta.label} className="border-t border-white/20 pt-4">
+                    <span className="font-sans text-[14px] uppercase tracking-[0.2em] text-white block">
+                      {ruta.label}
+                    </span>
+                    <span className="text-[18px] text-white/85 leading-relaxed block mt-1">{ruta.detail}</span>
+                  </li>
+                ))}
+              </motion.ul>
+
+              {wedding.buses.note && (
+                <motion.p
+                  variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
+                  className="mt-8 text-[18px] text-white/80 leading-relaxed"
+                >
+                  {wedding.buses.note}
+                </motion.p>
+              )}
+            </motion.div>
+          </section>
+        )}
+
+        {/* ================= 10. HOTELES ================= */}
+        {wedding.hotels.enabled && (
+          <section id="hoteles" className="py-16 relative bg-cream">
+            <SectionBackground bg={backgrounds.sections.info} />
+            <Eucalipto />
+
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-80px' }}
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.12 } } }}
+              className="max-w-2xl mx-auto px-6 text-center relative z-10"
+            >
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
+              >
+                <BedDouble size={26} className="mx-auto mb-4 text-secondary" strokeWidth={1.5} />
+                <SectionHeading eyebrow={wedding.hotels.eyebrow} title={wedding.hotels.title} />
+              </motion.div>
+
+              <motion.p
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
+                className="mt-6 text-[18px] text-ink leading-relaxed"
+              >
+                {wedding.hotels.description}
+              </motion.p>
+
+              {wedding.hotels.list.length > 0 && (
+                <motion.ul
+                  variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
+                  className="mt-8 space-y-4 text-left max-w-md mx-auto"
+                >
+                  {wedding.hotels.list.map((hotel) => (
+                    <li key={hotel.name} className="border-t border-primary/20 pt-4">
+                      {hotel.url ? (
+                        <a
+                          href={hotel.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-display text-[20px] text-ink underline underline-offset-4 hover:text-primary transition-colors"
+                        >
+                          {hotel.name}
+                        </a>
+                      ) : (
+                        <span className="font-display text-[20px] text-ink">{hotel.name}</span>
+                      )}
+                      <span className="text-[18px] text-secondary leading-relaxed block mt-1">{hotel.detail}</span>
+                    </li>
+                  ))}
+                </motion.ul>
+              )}
+            </motion.div>
+          </section>
+        )}
+
+        {/* ================= 11. DATOS DE INTERÉS ================= */}
         <section id="informacion" className="py-16 relative bg-cream">
           <SectionBackground bg={backgrounds.sections.info} />
 
@@ -1265,11 +1331,16 @@ export default function Home() {
                   {card.bullets.length > 0 && (
                     <ul className="mt-3 space-y-1.5">
                       {card.bullets.map((linea) => (
-                        <li key={linea} className="font-sans text-[14px] text-white font-medium leading-relaxed">
+                        <li key={linea} className="font-sans text-[14px] text-white leading-relaxed">
                           {linea}
                         </li>
                       ))}
                     </ul>
+                  )}
+                  {card.note && (
+                    <p className="font-sans text-[14px] text-white/80 leading-relaxed mt-4 pt-3 border-t border-white/15">
+                      {card.note}
+                    </p>
                   )}
                 </motion.div>
               ))}
@@ -1277,7 +1348,7 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* ================= 10. DUDAS ================= */}
+        {/* ================= 12. DUDAS ================= */}
         <section className="py-16 relative bg-cream">
           <SectionBackground bg={backgrounds.sections.contact} />
           <Eucalipto />
@@ -1332,7 +1403,7 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* ================= 11. PIE ================= */}
+        {/* ================= 13. PIE ================= */}
         <footer className="pt-24 pb-16 md:pt-28 md:pb-20 text-center relative overflow-hidden bg-moss">
           {/* La tela de rayas del forro del sobre, repetida. Se escala al alto
               del pie para que la raya conserve su grosor. */}
