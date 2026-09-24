@@ -348,8 +348,8 @@ export default function EnvelopeIntro({ onComplete, onStartExit }: EnvelopeIntro
             className="relative mb-8 w-[180px] md:w-[220px] aspect-[4/3] motion-safe:animate-[flotar_3s_ease-in-out_infinite]"
             style={{ backgroundImage: `url("${assets.front}")`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }}
           />
-          <p className="font-script text-3xl md:text-4xl text-primary mb-2 leading-[1.35]">{wedding.envelope.preTitle}</p>
-          <p className="font-sans text-secondary text-[10px] md:text-[11px] uppercase tracking-[0.35em] mb-10 font-medium">
+          <p className="font-script text-3xl md:text-4xl text-ink mb-2 leading-[1.35]">{wedding.envelope.preTitle}</p>
+          <p className="font-sans text-ink text-[10px] md:text-[11px] uppercase tracking-[0.35em] mb-10 font-medium">
             {wedding.envelope.preSubtitle}
           </p>
           <button
@@ -412,10 +412,10 @@ export default function EnvelopeIntro({ onComplete, onStartExit }: EnvelopeIntro
               zIndex: delante ? 35 : 20,
             }}
           >
-            <p className="text-secondary mb-2 text-[16px] md:text-[17px]">
+            <p className="text-ink mb-2 text-[16px] md:text-[17px]">
               {wedding.envelope.cardIntro}
             </p>
-            <h2 className="font-display text-primary mb-5 text-[24px] md:text-[28px] leading-tight">
+            <h2 className="font-display text-ink mb-5 text-[24px] md:text-[28px] leading-tight">
               {wedding.envelope.cardNames}
             </h2>
             <div className="h-px w-10 bg-primary/20 mb-5" />

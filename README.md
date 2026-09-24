@@ -47,13 +47,14 @@ Hay **dos versiones**, y se cambia de una a otra con un número:
 wedding.fontVersion = 1   // o 2
 ```
 
-| | Títulos | Momentos grandes | Texto corrido |
-| --- | --- | --- | --- |
-| **1** | Cormorant Garamond semibold | Cormorant cursiva | Cormorant Garamond |
-| **2** | Instrument Serif | Pinyon Script | Cormorant Garamond |
+| | Títulos y rótulos | Texto corrido |
+| --- | --- | --- |
+| **1** | Cormorant Garamond semibold · rótulos en Inter | Cormorant Garamond |
+| **2** | Instrument Serif en todo | Cormorant Garamond |
 
-En las dos, los rótulos pequeños en mayúsculas van en Inter: un serif a 10px
-con mucho tracking no se lee. El reparto de papeles está en `app/layout.tsx`.
+El reparto de papeles está en `app/layout.tsx`: `--font-display`,
+`--font-script`, `--font-ui` y `--font-body`. Los componentes no saben qué
+versión está activa.
 
 Dos reglas, comprobables en el DOM con estilos calculados:
 
@@ -61,7 +62,11 @@ Dos reglas, comprobables en el DOM con estilos calculados:
   redondo.
 - `.font-display` nunca baja de 14px, y va en semibold **salvo en la versión
   2**: Instrument Serif solo tiene un grosor y forzarlo saldría en negrita
-  falsa, así que ahí el peso esperado es 400.
+  falsa, así que ahí el peso esperado es 400. Por lo mismo, en la versión 2
+  una regla de `globals.css` anula el `font-medium` de los rótulos.
+
+Casi todo el texto sobre fondo claro va en `ink` (#39402f): 10.24:1 sobre el
+papel. El oliva `primary` se reserva para fondos, botones y bordes.
 
 ## Local
 

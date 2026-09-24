@@ -19,22 +19,33 @@
   --color-gold: #c9a77a;      /* lacre: acentos finos */
   --color-overlay: #1e1e12;   /* velos y sombras */
 
-  --font-serif: var(--font-serif);
-  --font-sans: var(--font-sans);
-  --font-handwritten: var(--font-handwritten);
+  /* Las utilidades apuntan a los PAPELES, no a las familias: quién hace de
+     qué lo decide `app/layout.tsx` según la versión tipográfica. */
+  --font-serif: var(--font-body);
+  --font-sans: var(--font-ui);
 }
 
 @layer base {
   body {
     @apply antialiased bg-sage;
     /* Cormorant es una fuente de ojo pequeño: pide un cuerpo algo mayor. */
-    font-family: var(--font-serif);
+    font-family: var(--font-body);
     font-size: 17px;
     line-height: 1.6;
   }
   section[id] {
     scroll-margin-top: 80px;
   }
+}
+
+/*
+ * En la versión 2 los rótulos van en Instrument Serif, que solo tiene un
+ * grosor. Sin esto, cada `font-medium` y cada `font-semibold` le pediría al
+ * navegador una negrita que no existe y la engordaría por software, que a
+ * 10px es un borrón.
+ */
+[data-fuentes='2'] .font-sans {
+  font-weight: 400;
 }
 
 @layer base {
@@ -78,12 +89,12 @@
     font-weight: var(--peso-display);
   }
 
-  /* La voz caligráfica: solo para los dos momentos grandes, y nunca por
-     debajo de 28px, porque siempre va en cursiva o en script. */
+  /* Los dos momentos grandes: el sobre y la firma del pie. Siempre en
+     cursiva, así que nunca por debajo de 28px. */
   .font-script {
     font-family: var(--font-script);
     font-weight: var(--peso-script);
-    font-style: var(--estilo-script);
+    font-style: italic;
   }
 
   .preserve-3d {
