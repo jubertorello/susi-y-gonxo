@@ -125,7 +125,7 @@ const ICONOS_INFO: Record<string, React.ComponentType<PropsIcono> | undefined> =
 };
 
 /** Todos los párrafos de la luna de miel comparten cuerpo, color y ancho. */
-const PARRAFO_REGALO = 'text-[18px] text-white leading-relaxed max-w-xl mx-auto';
+const PARRAFO_REGALO = 'text-[18px] text-white/90 leading-relaxed max-w-xl mx-auto';
 
 /** Sin pista de fondo no se monta el reproductor ni los botones de sonido. */
 const hasAudio = Boolean(wedding.music.backgroundAudio);
@@ -250,7 +250,7 @@ function SectionHeading({
       {eyebrow && (
         <span
           className={`font-sans text-[14px] uppercase tracking-[0.3em] mb-2 block font-medium ${
-            light ? 'text-white' : 'text-ink'
+            light ? 'text-white/85' : 'text-ink'
           }`}
         >
           {eyebrow}
@@ -264,7 +264,7 @@ function SectionHeading({
         {title}
       </h2>
       {subtitle && (
-        <p className={`mt-2 text-[16px] ${light ? 'text-white' : 'text-ink'}`}>{subtitle}</p>
+        <p className={`mt-2 text-[16px] ${light ? 'text-white/90' : 'text-ink'}`}>{subtitle}</p>
       )}
       <Filete className="mt-4" claro={light} />
     </>
@@ -787,7 +787,7 @@ export default function Home() {
                       href={place.mapUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 w-[220px] max-w-full py-3 bg-moss hover:bg-moss/90 text-white rounded-full font-sans text-[14px] uppercase tracking-[0.2em] transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.02]"
+                      className="inline-flex items-center justify-center gap-2 w-[220px] max-w-full py-3 bg-primary hover:bg-primary/90 text-white rounded-full font-sans text-[14px] uppercase tracking-[0.2em] transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.02]"
                     >
                       <span>{wedding.locations.ctaLabel}</span>
                       <ChevronRight size={12} />
@@ -1045,159 +1045,9 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* ================= 4. CARRETE DE FOTOS ================= */}
-        {wedding.gallery.enabled && (
-          <section id="fotos" className="py-12 relative overflow-hidden">
-            <SectionBackground bg={backgrounds.sections.photos} />
-
-            <div className="relative z-10">
-              {wedding.gallery.image && (
-                <div className="relative w-24 h-24 md:w-28 md:h-28 mx-auto mb-2">
-                  <Image src={wedding.gallery.image} alt="" fill className="object-contain" />
-                </div>
-              )}
-
-              {wedding.gallery.title && (
-                <h2 className="font-display italic text-3xl md:text-4xl text-ink text-center mb-8">
-                  {wedding.gallery.title}
-                </h2>
-              )}
-
-              {/*
-                El carrete va fuera del contenedor centrado para ocupar todo el
-                ancho. `overflow-hidden` lo mantiene dentro de la pantalla: nunca
-                desplaza la página en horizontal.
-              */}
-              <div className="relative w-full overflow-hidden group">
-                <div
-                  className="flex gap-3 md:gap-5 w-max motion-safe:animate-[carrete_var(--carrete)_linear_infinite] group-hover:[animation-play-state:paused]"
-                  style={{ '--carrete': `${wedding.gallery.speed}s` } as React.CSSProperties}
-                >
-                  {carrete.map((foto, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => setActivePhoto(foto)}
-                      aria-label="Ampliar foto"
-                      className="relative shrink-0 h-[220px] w-[160px] md:h-[300px] md:w-[220px] bg-cream p-2 shadow-[0_6px_20px_rgba(0,0,0,0.14)] transition-transform duration-300 hover:-translate-y-1"
-                    >
-                      <span className="relative block w-full h-full overflow-hidden">
-                        <Image
-                          src={foto}
-                          alt={wedding.couple.joinedNames}
-                          fill
-                          sizes="(max-width: 768px) 160px, 220px"
-                          className="object-cover"
-                        />
-                      </span>
-                    </button>
-                  ))}
-
-                  {/* Marcos vacíos mientras no haya fotos */}
-                  {Array.from({ length: huecos }).map((_, i) => (
-                    <div
-                      key={`hueco-${i}`}
-                      aria-hidden
-                      className="shrink-0 h-[220px] w-[160px] md:h-[300px] md:w-[220px] bg-cream/70 p-2 shadow-[0_6px_20px_rgba(0,0,0,0.10)]"
-                    >
-                      <span className="flex w-full h-full items-center justify-center border border-dashed border-primary/25">
-                        <Camera size={26} className="text-ink/25" strokeWidth={1.5} />
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* ================= 5. ITINERARIO ================= */}
-        <section id="itinerario" className="py-16 md:py-20 text-ink relative">
-          <SectionBackground bg={backgrounds.sections.itinerary} />
-          <Eucalipto />
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-60px' }}
-            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } }}
-            className="max-w-4xl mx-auto px-6 relative z-10"
-          >
-            <motion.div
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
-              }}
-              className="text-center mb-8"
-            >
-              <SectionHeading
-                eyebrow={wedding.itinerary.eyebrow}
-                title={wedding.itinerary.title}
-                subtitle={wedding.itinerary.subtitle}
-              />
-            </motion.div>
-
-            <div className="relative">
-              {/* Raíl central: el zigzag es el mismo en móvil y en escritorio */}
-              <div className="absolute left-1/2 top-0 bottom-0 w-px bg-primary/20 -translate-x-1/2" />
-
-              <div className="space-y-7 md:space-y-10">
-                {wedding.itinerary.events.map((evento, i) => {
-                  const izquierda = i % 2 === 0;
-                  return (
-                    <motion.div
-                      key={evento.title}
-                      initial={{ opacity: 0, y: 24, scale: 0.96 }}
-                      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                      viewport={{ once: true, margin: '-40px' }}
-                      transition={{ type: 'spring', stiffness: 90, damping: 14 }}
-                      className="relative flex"
-                    >
-                      {/* Punto sobre el raíl */}
-                      <span
-                        aria-hidden
-                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[9px] h-[9px] rounded-full bg-primary/50"
-                      />
-
-                      {/*
-                        A partir de 640px la ilustración va AL LADO del texto:
-                        apiladas, las cuatro no cabían en una pantalla. Por
-                        debajo se apilan igualmente, porque media columna son
-                        unos 130px y al lado no queda sitio para el título.
-                      */}
-                      <div
-                        className={`w-1/2 flex flex-col sm:flex-row items-center gap-1 sm:gap-4 ${
-                          izquierda
-                            ? 'sm:flex-row sm:justify-end items-end pr-3 sm:pr-8 text-right'
-                            : 'ml-auto sm:flex-row-reverse sm:justify-end items-start pl-3 sm:pl-8 text-left'
-                        }`}
-                      >
-                        {evento.image && (
-                          <div className="relative shrink-0 w-24 h-[5.4rem] sm:w-36 sm:h-32 md:w-48 md:h-44">
-                            <Image src={evento.image} alt={evento.title} fill className="object-contain" />
-                          </div>
-                        )}
-
-                        <div className="min-w-0">
-                          <div className="inline-block whitespace-nowrap px-2.5 py-0.5 bg-primary/5 border border-primary/15 rounded-full text-primary font-sans font-medium text-[14px] mb-1">
-                            {evento.time}
-                          </div>
-                          <h4 className="font-display text-[18px] sm:text-[20px] text-ink leading-tight">
-                            {evento.title}
-                          </h4>
-                        </div>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
-          </motion.div>
-        </section>
-
         {/* ================= 6. LUNA DE MIEL / REGALO ================= */}
         {wedding.gift.enabled && (
-          <section id="viaje" className="py-16 md:py-20 bg-primary relative text-white">
+          <section id="viaje" className="py-16 md:py-20 bg-moss relative text-white">
             <motion.div
               initial="hidden"
               whileInView="visible"
@@ -1354,7 +1204,7 @@ export default function Home() {
            * Una cinta, no una sección: ilustración, título y botón en una
            * fila. Todo lo demás ya está en la ventana que abre el botón.
            */
-          <section id="musica" className="w-full bg-primary text-white py-6">
+          <section id="musica" className="w-full bg-cream border-y border-primary/10 text-ink py-6">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1368,13 +1218,13 @@ export default function Home() {
                 </div>
               )}
 
-              <h2 className="font-display text-[24px] md:text-[28px] text-white leading-tight">
+              <h2 className="font-display text-[24px] md:text-[28px] text-ink leading-tight">
                 {wedding.music.title}
               </h2>
 
               <button
                 onClick={() => setShowMusicModal(true)}
-                className="shrink-0 inline-flex items-center gap-2 px-7 py-2.5 bg-white text-ink hover:bg-white/90 font-sans text-[14px] uppercase tracking-[0.2em] rounded-full transition-all duration-300 shadow hover:scale-105 active:scale-95 font-semibold"
+                className="shrink-0 inline-flex items-center gap-2 px-7 py-2.5 bg-primary hover:bg-primary/90 text-white font-sans text-[14px] uppercase tracking-[0.2em] rounded-full transition-all duration-300 shadow hover:scale-105 active:scale-95"
               >
                 <Music size={14} />
                 <span>{wedding.music.ctaLabel}</span>
@@ -1419,7 +1269,7 @@ export default function Home() {
                     }}
                     whileHover={{ y: -4 }}
                     id={bloque.id}
-                    className="bg-primary text-white border border-white/10 rounded shadow-sm px-6 py-10 sm:px-10 text-center scroll-mt-24"
+                    className="bg-moss text-white border border-white/10 rounded shadow-sm px-6 py-10 sm:px-10 text-center scroll-mt-24"
                   >
                     {Icono && <Icono size={28} className="mx-auto mb-4 text-white/80" strokeWidth={1.4} />}
 
@@ -1427,7 +1277,7 @@ export default function Home() {
                       {bloque.title}
                     </h3>
 
-                    <p className="mt-4 text-[18px] text-white leading-relaxed">{bloque.body}</p>
+                    <p className="mt-4 text-[18px] text-white/90 leading-relaxed">{bloque.body}</p>
 
                     {bloque.items.length > 0 &&
                       (bloque.layout === 'parejas' ? (
@@ -1454,7 +1304,7 @@ export default function Home() {
                               {(item.lines ?? (item.detail ? [item.detail] : [])).map((linea) => (
                                 <span
                                   key={linea}
-                                  className="text-[18px] text-white leading-relaxed block mt-1"
+                                  className="text-[18px] text-white/90 leading-relaxed block mt-1"
                                 >
                                   {linea}
                                 </span>
@@ -1465,7 +1315,7 @@ export default function Home() {
                       ))}
 
                     {bloque.note && (
-                      <p className="mt-8 text-[18px] text-white leading-relaxed">{bloque.note}</p>
+                      <p className="mt-8 text-[18px] text-white/85 leading-relaxed">{bloque.note}</p>
                     )}
                   </motion.div>
                 );
@@ -1519,7 +1369,7 @@ export default function Home() {
                   href={whatsappUrl(quien)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-6 py-3 bg-moss hover:bg-moss/90 text-white rounded-full font-sans text-[14px] uppercase tracking-[0.2em] transition-all duration-300 shadow-md hover:scale-105 active:scale-95"
+                  className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-full font-sans text-[14px] uppercase tracking-[0.2em] transition-all duration-300 shadow-md hover:scale-105 active:scale-95"
                 >
                   <PhoneCall size={12} />
                   <span>{wedding.couple[quien].whatsappLabel}</span>
@@ -1530,7 +1380,7 @@ export default function Home() {
         </section>
 
         {/* ================= 11. PIE ================= */}
-        <footer className="pt-24 pb-16 md:pt-28 md:pb-20 text-center relative overflow-hidden bg-primary">
+        <footer className="pt-24 pb-16 md:pt-28 md:pb-20 text-center relative overflow-hidden bg-moss">
           {/* La tela de rayas del forro del sobre, repetida. Se escala al alto
               del pie para que la raya conserve su grosor. */}
           {backgrounds.sections.footer.mobileTop && (
@@ -1751,7 +1601,7 @@ export default function Home() {
 
                   <button
                     type="submit"
-                    className="w-full py-3 bg-moss hover:bg-moss/90 text-white tracking-[0.2em] font-sans text-[14px] uppercase rounded-full transition-all duration-300 shadow hover:shadow-md"
+                    className="w-full py-3 bg-primary hover:bg-primary/90 text-white tracking-[0.2em] font-sans text-[14px] uppercase rounded-full transition-all duration-300 shadow hover:shadow-md"
                   >
                     {wedding.music.modal.submitLabel}
                   </button>
