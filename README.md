@@ -41,7 +41,7 @@ el texto, que es como está hoy hoteles.
 
 Las **ilustraciones** se quitan poniendo la cadena vacía en su `image`
 (`locations.places[].image`, `itinerary.events[].image`, `gift.image`,
-`music.image`). El hueco no se dibuja y el bloque se recoloca solo.
+`music.image`, `contact.image`). El hueco no se dibuja y el bloque se recoloca solo.
 `wedding.photos: []` deja la sección con solo la cuenta atrás.
 
 ### El sobre
@@ -77,6 +77,14 @@ esquinas: `topLeft` arriba a la izquierda y `bottomRight` abajo a la derecha.
 Van detrás del contenido y no se pueden pulsar. `width` y `widthDesktop`
 controlan cuánto ocupan; en móvil van más pequeñas para no rozar el título.
 
+
+`backgrounds.envelopeSprigs` son las cuatro ramas de la pantalla del sobre,
+dos por lado. Cada una asoma medio cortada por el borde, y la gracia está en
+que **el tallo nazca del costado** y las hojas miren hacia dentro: por eso la
+lámina se elige por dónde tiene la raíz (`guirnalda` y `racimo` a la
+izquierda, `hojas` a la derecha) y `flip` la refleja cuando hay que llevar esa
+raíz al otro lado. `aspect` lleva la proporción nativa de la lámina para que
+`contain` no la achate.
 
 `backgrounds.eucalyptus.left` y `.right` dibujan cenefas verticales a los
 lados de la portada, el lugar, el itinerario y las dudas. `backgrounds.divider`

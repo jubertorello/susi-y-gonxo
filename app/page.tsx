@@ -620,7 +620,7 @@ export default function Home() {
         {/* ================= 1. CABECERA ================= */}
         <section
           id="inicio"
-          className="w-full relative pt-28 pb-16 md:pt-32 md:pb-20 flex flex-col items-center justify-center text-center overflow-hidden"
+          className="w-full relative pt-28 pb-10 md:pt-32 md:pb-12 flex flex-col items-center justify-center text-center overflow-hidden"
         >
           <SectionBackground bg={backgrounds.sections.hero} />
           <Eucalipto />
@@ -1169,7 +1169,7 @@ export default function Home() {
         )}
 
         {/* ================= 7. CONFIRMACIÓN ================= */}
-        <section id="confirmacion" className="w-full py-16 md:py-20 relative overflow-hidden">
+        <section id="confirmacion" className="w-full pt-10 pb-24 md:pt-12 md:pb-28 relative overflow-hidden">
           <SectionBackground bg={backgrounds.sections.rsvp} />
           <Esquinas />
 
@@ -1180,7 +1180,7 @@ export default function Home() {
             variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.15 } } }}
             className="max-w-4xl mx-auto px-6 relative z-10"
           >
-            <div className="text-center mb-12">
+            <div className="text-center mb-6">
               <motion.div
                 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8 } } }}
               >
@@ -1367,6 +1367,13 @@ export default function Home() {
               }}
               className="mb-6"
             >
+              {wedding.contact.image && (
+                <span
+                  aria-hidden
+                  className="block mx-auto mb-4 w-28 md:w-36 aspect-[282/258] bg-contain bg-no-repeat bg-center"
+                  style={{ backgroundImage: `url("${wedding.contact.image}")` }}
+                />
+              )}
               <SectionHeading title={wedding.contact.title} />
             </motion.div>
 

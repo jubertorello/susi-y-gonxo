@@ -389,6 +389,8 @@ export const wedding = {
   // ---------------------------------------------------------------------------
   contact: {
     title: '¿Dudas?',
+    /** Lámina sobre el título. Cadena vacía: no se dibuja. */
+    image: '/olivo/hojas.webp',
     description:
       'Si tenéis alguna duda, pregunta o necesitáis consultarnos algo, no dudéis en llamarnos o escribirnos por WhatsApp:',
   },
@@ -503,6 +505,34 @@ export const backgrounds = {
 
   /** Franja de tela de rayas. Vacío: no se dibuja. */
   stripe: RAYA,
+
+  /**
+   * RAMAS DE LA PANTALLA DEL SOBRE
+   * Cuatro, dos por lado, asomando desde los costados. `top` es dónde
+   * empiezan (en % de la altura) y `width` cuánto ocupan.
+   *
+   * La gracia está en que el tallo nazca del borde y las hojas miren hacia
+   * dentro, así que cada lámina se elige por dónde tiene la raíz: `guirnalda`
+   * y `racimo` la tienen a la izquierda, `hojas` a la derecha. `flip` refleja
+   * la lámina cuando hace falta llevar la raíz al otro costado.
+   * Lista vacía: no se dibuja ninguna.
+   */
+  envelopeSprigs: [
+    { src: '/olivo/guirnalda.webp', side: 'left', top: '6%', width: '34vw', maxWidth: '300px', aspect: '665 / 202', rotate: -10, flip: false },
+    { src: '/olivo/racimo.webp', side: 'left', top: '58%', width: '26vw', maxWidth: '240px', aspect: '369 / 318', rotate: 8, flip: false },
+    { src: '/olivo/guirnalda.webp', side: 'right', top: '10%', width: '32vw', maxWidth: '280px', aspect: '665 / 202', rotate: 10, flip: true },
+    { src: '/olivo/hojas.webp', side: 'right', top: '62%', width: '24vw', maxWidth: '220px', aspect: '282 / 258', rotate: -8, flip: false },
+  ] as {
+    src: string;
+    side: 'left' | 'right';
+    top: string;
+    width: string;
+    maxWidth: string;
+    /** Proporción nativa de la lámina, para que no se achate al encajarla. */
+    aspect: string;
+    rotate: number;
+    flip: boolean;
+  }[],
 
   /**
    * ESQUINAS DE EUCALIPTO

@@ -338,6 +338,34 @@ export default function EnvelopeIntro({ onComplete, onStartExit }: EnvelopeIntro
         }}
       />
 
+      {/*
+        Ramas asomando por los costados. Van detrás del sobre y no se pueden
+        pulsar, así que no estorban al botón. Cada una sale medio cortada por
+        el borde a propósito, y con la raíz hacia el costado: parece que la
+        rama entra desde fuera y no que flote suelta. La caja lleva la
+        proporción nativa de su lámina para que `contain` no la achate.
+      */}
+      {backgrounds.envelopeSprigs.map((rama, i) => (
+        <span
+          key={i}
+          aria-hidden
+          className={`pointer-events-none absolute z-0 ${rama.side === 'left' ? 'left-0' : 'right-0'}`}
+          style={{
+            top: rama.top,
+            width: rama.width,
+            maxWidth: rama.maxWidth,
+            aspectRatio: rama.aspect,
+            backgroundImage: `url("${rama.src}")`,
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: rama.side === 'left' ? 'left center' : 'right center',
+            transform: `translateX(${rama.side === 'left' ? '-22%' : '22%'}) rotate(${rama.rotate}deg)${
+              rama.flip ? ' scaleX(-1)' : ''
+            }`,
+          }}
+        />
+      ))}
+
       {/* Lo que va contando la animación, para lectores de pantalla */}
       <p ref={liveRef} aria-live="polite" className="sr-only" />
 
