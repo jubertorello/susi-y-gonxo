@@ -546,7 +546,7 @@ export default function Home() {
         {/* ================= 1. CABECERA ================= */}
         <section
           id="inicio"
-          className="w-full relative pt-28 pb-16 md:py-32 flex flex-col items-center justify-center text-center overflow-hidden bg-cream"
+          className="w-full relative pt-28 pb-16 md:py-32 flex flex-col items-center justify-center text-center overflow-hidden"
         >
           <SectionBackground bg={backgrounds.sections.hero} />
           <Eucalipto />
@@ -674,7 +674,7 @@ export default function Home() {
         </section>
 
         {/* ================= 2. LUGAR ================= */}
-        <section id="lugar" className="w-full pt-20 pb-20 md:py-32 relative bg-cream">
+        <section id="lugar" className="w-full pt-20 pb-20 md:py-32 relative">
           <SectionBackground bg={backgrounds.sections.locations} />
           <Eucalipto />
 
@@ -773,7 +773,7 @@ export default function Home() {
         </section>
 
         {/* ================= 3. CUENTA ATRÁS ================= */}
-        <section id="cuenta-atras" className="pt-16 pb-16 relative overflow-hidden bg-cream">
+        <section id="cuenta-atras" className="pt-16 pb-16 relative overflow-hidden">
           <SectionBackground bg={backgrounds.sections.photos} />
 
           <motion.div
@@ -842,7 +842,7 @@ export default function Home() {
 
         {/* ================= 4. CARRETE DE FOTOS ================= */}
         {wedding.gallery.enabled && (
-          <section id="fotos" className="py-12 relative overflow-hidden bg-cream">
+          <section id="fotos" className="py-12 relative overflow-hidden">
             <SectionBackground bg={backgrounds.sections.photos} />
 
             <div className="relative z-10">
@@ -907,7 +907,7 @@ export default function Home() {
         )}
 
         {/* ================= 5. ITINERARIO ================= */}
-        <section id="itinerario" className="pt-16 pb-16 text-ink relative bg-cream">
+        <section id="itinerario" className="pt-16 pb-16 text-ink relative">
           <SectionBackground bg={backgrounds.sections.itinerary} />
           <Eucalipto />
 
@@ -951,7 +951,7 @@ export default function Home() {
                       {/* Punto sobre el raíl */}
                       <span
                         aria-hidden
-                        className="absolute left-1/2 top-3 -translate-x-1/2 w-[9px] h-[9px] rounded-full bg-primary/50 ring-4 ring-cream"
+                        className="absolute left-1/2 top-3 -translate-x-1/2 w-[9px] h-[9px] rounded-full bg-primary/50"
                       />
 
                       <div
@@ -1082,7 +1082,7 @@ export default function Home() {
         )}
 
         {/* ================= 7. CONFIRMACIÓN ================= */}
-        <section id="confirmacion" className="w-full py-16 relative bg-cream">
+        <section id="confirmacion" className="w-full py-16 relative">
           <SectionBackground bg={backgrounds.sections.rsvp} />
 
           <motion.div
@@ -1148,7 +1148,7 @@ export default function Home() {
 
         {/* ================= 8. MÚSICA ================= */}
         {wedding.music.enabled && (
-          <section id="musica" className="w-full py-14 md:py-16 relative bg-cream">
+          <section id="musica" className="w-full py-14 md:py-16 relative">
             <SectionBackground bg={backgrounds.sections.music} />
 
             <motion.div
@@ -1225,7 +1225,7 @@ export default function Home() {
 
 
         {/* ================= 9. DATOS DE INTERÉS ================= */}
-        <section id="informacion" className="py-16 relative bg-cream">
+        <section id="informacion" className="py-16 relative">
           <SectionBackground bg={backgrounds.sections.info} />
           <Eucalipto />
 
@@ -1290,9 +1290,15 @@ export default function Home() {
                               <span className="font-sans text-[14px] uppercase tracking-[0.2em] text-white block">
                                 {item.label}
                               </span>
-                              <span className="text-[18px] text-white/85 leading-relaxed block mt-1">
-                                {item.detail}
-                              </span>
+                              {/* Una línea con `detail`, o varias con `lines`. */}
+                              {(item.lines ?? (item.detail ? [item.detail] : [])).map((linea) => (
+                                <span
+                                  key={linea}
+                                  className="text-[18px] text-white/85 leading-relaxed block mt-1"
+                                >
+                                  {linea}
+                                </span>
+                              ))}
                             </li>
                           ))}
                         </ul>
@@ -1309,7 +1315,7 @@ export default function Home() {
         </section>
 
         {/* ================= 10. DUDAS ================= */}
-        <section className="py-16 relative bg-cream">
+        <section className="py-16 relative">
           <SectionBackground bg={backgrounds.sections.contact} />
           <Eucalipto />
 

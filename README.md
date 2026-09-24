@@ -57,6 +57,19 @@ Las proporciones son obligatorias o la animación se descuadra:
 tarjeta, así que el papel se ve por ahí mientras sale. Si se cambian las
 láminas hay que ajustar también `backgrounds.envelopeLayers`.
 
+### El papel del fondo
+
+El papel NO se pone por sección. Lo pinta una sola capa fija en
+`app/layout.tsx`, del tamaño de la pantalla, y las secciones van
+transparentes por encima.
+
+Es a propósito: con una capa por sección, `cover` escalaba la textura al alto
+de cada una, así que en las cortas salía al 53% (trama fina) y en las largas
+al 111% (trama gruesa y sucia). Con la capa fija va siempre al 56%.
+
+Si una sección necesita OTRA lámina, se pone en `backgrounds.sections`; con
+las cadenas vacías se ve el papel global.
+
 ### Adornos de eucalipto
 
 `backgrounds.eucalyptus.left` y `.right` dibujan cenefas verticales a los

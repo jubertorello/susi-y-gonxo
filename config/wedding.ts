@@ -314,7 +314,8 @@ export const wedding = {
      * Un bloque por tema, en el orden en que aparecen.
      *
      *  · `layout: 'lista'`    → lista con filetes: cada entrada con su rótulo
-     *                           corto arriba y la explicación debajo.
+     *                           corto arriba y, debajo, su `detail` de una
+     *                           línea o varias con `lines`.
      *  · `layout: 'parejas'`  → dos columnas compactas, sin filetes.
      *  · `icon`: 'lazo', 'cama' o 'bus'. Cadena vacía para no poner ninguno.
      */
@@ -336,23 +337,27 @@ export const wedding = {
         title: 'Recomendación de Hoteles',
         // TODO: sustituir por los hoteles y condiciones cuando estén cerrados.
         body: 'Estamos cerrando acuerdos con varios alojamientos de la zona. En cuanto lo tengamos os pasaremos los nombres, los precios y cómo reservar.',
-        items: [] as { icon?: string; label: string; detail: string }[],
+        items: [] as { label: string; detail?: string; lines?: string[] }[],
         note: '',
       },
       {
         layout: 'lista',
         icon: 'bus',
         title: 'Autobuses',
-        body: 'Habrá autobuses de ida y de vuelta desde Santander y Torrelavega, para que nadie tenga que preocuparse por el coche.',
+        body: 'Habrá autobuses de ida y de vuelta desde Santander y Torrelavega.',
         items: [
           {
-            label: 'Ida · 11:00',
+            label: 'Ida',
             // TODO: horario y paradas de ejemplo, a falta de los definitivos.
-            detail:
-              'Santander, Jardines de Pereda. A las 11:20 pasa por Torrelavega, en el Bulevar Demetrio Herrero.',
+            lines: [
+              'Santander, Jardines de Pereda · 11:00',
+              'Torrelavega, Bulevar Demetrio Herrero · 11:20',
+            ],
           },
-          { label: 'Vuelta · 21:30', detail: 'Para los veteranos.' },
-          { label: 'Vuelta · 00:30', detail: 'Para los atrevidos. Fin de fiesta.' },
+          {
+            label: 'Vuelta',
+            lines: ['Para los veteranos · 21:30', 'Para los atrevidos · 00:30, fin de fiesta'],
+          },
         ],
         note: 'En el formulario de confirmación podréis indicarnos si los necesitáis.',
       },
@@ -361,7 +366,7 @@ export const wedding = {
       icon: string;
       title: string;
       body: string;
-      items: { icon?: string; label: string; detail: string }[];
+      items: { label: string; detail?: string; lines?: string[] }[];
       note: string;
     }[],
   },
@@ -456,19 +461,24 @@ export const backgrounds = {
   },
 
   /**
-   * Fondos por sección. `mobileTop` y `mobileBottom` se reparten la pantalla
-   * en móvil; `desktop` sustituye a los dos a partir de 768px. Cadena vacía:
-   * la sección se queda con su color de fondo.
+   * Fondos por sección, para poner una lámina distinta en alguna.
+   * `mobileTop` y `mobileBottom` se reparten la pantalla en móvil; `desktop`
+   * sustituye a los dos a partir de 768px.
+   *
+   * Con las tres cadenas vacías la sección es transparente y se ve el papel
+   * del fondo global, que va siempre al tamaño de la pantalla. Es lo que
+   * queremos casi siempre: poniendo el papel por sección, cada una lo
+   * escalaba a su propio alto y en las largas la trama salía gruesa.
    */
   sections: {
-    hero: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
+    hero: { mobileTop: '', mobileBottom: '', desktop: '' },
     locations: { mobileTop: '', mobileBottom: '', desktop: '' },
-    photos: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
-    itinerary: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
-    music: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
-    rsvp: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
-    info: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
-    contact: { mobileTop: PAPEL, mobileBottom: '', desktop: PAPEL },
+    photos: { mobileTop: '', mobileBottom: '', desktop: '' },
+    itinerary: { mobileTop: '', mobileBottom: '', desktop: '' },
+    music: { mobileTop: '', mobileBottom: '', desktop: '' },
+    rsvp: { mobileTop: '', mobileBottom: '', desktop: '' },
+    info: { mobileTop: '', mobileBottom: '', desktop: '' },
+    contact: { mobileTop: '', mobileBottom: '', desktop: '' },
     footer: { mobileTop: RAYA, mobileBottom: '', desktop: RAYA },
   },
 
