@@ -15,8 +15,6 @@ export interface CompanionData {
   intolerance: string;
   busIda: boolean;
   busVuelta: boolean;
-  /** Parada de salida elegida. Vacío si no coge autobús. */
-  busStop: string;
 }
 
 export interface RSVPState {
@@ -26,7 +24,6 @@ export interface RSVPState {
   dietaryRestrictions: string;
   busIda: boolean;
   busVuelta: boolean;
-  busStop: string;
   companions: CompanionData[];
   message: string;
   submittedAt: string;
@@ -45,7 +42,6 @@ const nuevoAcompanante = (): CompanionData => ({
   intolerance: '',
   busIda: false,
   busVuelta: false,
-  busStop: '',
 });
 
 function YesNoToggle({ value, onChange }: { value: boolean; onChange: (v: boolean) => void }) {
@@ -93,8 +89,6 @@ function GuestFields({
   onBusIda,
   busVuelta,
   onBusVuelta,
-  busStop,
-  onBusStop,
 }: {
   nameLabel: string;
   name: string;
@@ -107,12 +101,7 @@ function GuestFields({
   onBusIda: (v: boolean) => void;
   busVuelta: boolean;
   onBusVuelta: (v: boolean) => void;
-  busStop: string;
-  onBusStop: (v: string) => void;
 }) {
-  /** La parada solo se pregunta si va a usar algún autobús. */
-  const necesitaParada = busIda || busVuelta;
-
   return (
     <div className="space-y-5">
       <label className="block">
@@ -163,54 +152,17 @@ function GuestFields({
             <p className="font-sans text-[11px] text-secondary mb-2 leading-snug">{BUS.vueltaHint}</p>
             <YesNoToggle value={busVuelta} onChange={onBusVuelta} />
           </div>
-
-          <AnimatePresence>
-            {necesitaParada && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.2 }}
-                className="overflow-hidden"
-              >
-                <FieldLabel>{BUS.stopsLabel} *</FieldLabel>
-                <div className="flex gap-2">
-                  {BUS.stops.map((parada) => (
-                    <button
-                      key={parada}
-                      type="button"
-                      aria-pressed={busStop === parada}
-                      onClick={() => onBusStop(parada)}
-                      className={`flex-1 py-2.5 rounded font-sans text-xs uppercase tracking-[0.12em] transition-all duration-200 border ${
-                        busStop === parada
-                          ? 'bg-primary text-white border-primary'
-                          : 'bg-white text-secondary border-primary/20 hover:border-primary/50'
-                      }`}
-                    >
-                      {parada}
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </>
       )}
     </div>
   );
 }
 
-/** Falta la parada elegida en alguien que sí usa autobús. */
-const paradaPendiente = (g: { busIda: boolean; busVuelta: boolean; busStop: string }) =>
-  BUS.enabled && (g.busIda || g.busVuelta) && !g.busStop;
-
 /** Resumen de autobús de una persona, para las pantallas de repaso. */
-const resumenBus = (g: { busIda: boolean; busVuelta: boolean; busStop: string }) => {
+const resumenBus = (g: { busIda: boolean; busVuelta: boolean }) => {
   if (!BUS.enabled) return '';
   if (!g.busIda && !g.busVuelta) return 'No necesita autobús';
-  return `Ida: ${g.busIda ? 'Sí' : 'No'} · Vuelta: ${g.busVuelta ? 'Sí' : 'No'}${
-    g.busStop ? ` · Desde ${g.busStop}` : ''
-  }`;
+  return `Ida: ${g.busIda ? 'Sí' : 'No'} · Vuelta: ${g.busVuelta ? 'Sí' : 'No'}`;
 };
 
 export default function RSVPForm({ onSubmitted, onEdit, rsvpData, formSubmitted }: RSVPFormProps) {
@@ -224,7 +176,6 @@ export default function RSVPForm({ onSubmitted, onEdit, rsvpData, formSubmitted 
   const [intolerance, setIntolerance] = useState('');
   const [busIda, setBusIda] = useState(false);
   const [busVuelta, setBusVuelta] = useState(false);
-  const [busStop, setBusStop] = useState('');
 
   const [companionCount, setCompanionCount] = useState(0);
   const [companions, setCompanions] = useState<CompanionData[]>([]);
@@ -273,85 +224,48 @@ export default function RSVPForm({ onSubmitted, onEdit, rsvpData, formSubmitted 
   const handleSubmit = async () => {
     setSubmitting(true);
     try {
-      const filas = [
-        {
-          client_id: wedding.clientId,
-          attending: attending ?? true,
-          guest_name: guestName.trim() || null,
-          dietary_restrictions: attending && hasIntolerance ? intolerance.trim() : '',
-          bus_ida: attending ? busIda : false,
-          bus_vuelta: attending ? busVuelta : false,
-          bus_parada: attending && (busIda || busVuelta) ? busStop : '',
-          message: message.trim(),
-        },
-      ];
-
-      /**
-       * `bus_parada` es una columna nueva. Si la base de datos todavía no la
-       * tiene, el insert entero fallaría y se perdería la confirmación: mejor
-       * reintentar sin ella y guardar la parada dentro del mensaje, que
-       * perder el dato del invitado.
-       */
-      let data: { id: string; [k: string]: unknown } | null = null;
-      let error: unknown = null;
-
-      {
-        const res = await supabase.from('rsvps').insert(filas).select().single();
-        data = res.data;
-        error = res.error;
-
-        if (res.error?.message?.includes('bus_parada')) {
-          const parada = filas[0].bus_parada;
-          const conNota = {
-            ...filas[0],
-            bus_parada: undefined,
-            message: [filas[0].message, parada && `[Autobús desde ${parada}]`]
-              .filter(Boolean)
-              .join(' '),
-          };
-          delete (conNota as { bus_parada?: string }).bus_parada;
-          const retry = await supabase.from('rsvps').insert([conNota]).select().single();
-          data = retry.data;
-          error = retry.error;
-        }
-      }
+      const { data, error } = await supabase
+        .from('rsvps')
+        .insert([
+          {
+            client_id: wedding.clientId,
+            attending: attending ?? true,
+            guest_name: guestName.trim() || null,
+            dietary_restrictions: attending && hasIntolerance ? intolerance.trim() : '',
+            bus_ida: attending ? busIda : false,
+            bus_vuelta: attending ? busVuelta : false,
+            message: message.trim(),
+          },
+        ])
+        .select()
+        .single();
 
       if (!error && data) {
         if (attending && companions.length > 0) {
-          const filasAcomp = companions.map((c) => ({
-            client_id: wedding.clientId,
-            parent_rsvp_id: data!.id,
-            attending: true,
-            guest_name: c.name.trim(),
-            dietary_restrictions: c.hasIntolerance ? c.intolerance.trim() : '',
-            bus_ida: c.busIda,
-            bus_vuelta: c.busVuelta,
-            bus_parada: c.busIda || c.busVuelta ? c.busStop : '',
-            message: '',
-          }));
-
-          const res = await supabase.from('rsvps').insert(filasAcomp);
-          if (res.error?.message?.includes('bus_parada')) {
-            await supabase.from('rsvps').insert(
-              filasAcomp.map(({ bus_parada, ...resto }) => ({
-                ...resto,
-                message: bus_parada ? `[Autobús desde ${bus_parada}]` : '',
-              }))
-            );
-          }
+          await supabase.from('rsvps').insert(
+            companions.map((c) => ({
+              client_id: wedding.clientId,
+              parent_rsvp_id: data.id,
+              attending: true,
+              guest_name: c.name.trim(),
+              dietary_restrictions: c.hasIntolerance ? c.intolerance.trim() : '',
+              bus_ida: c.busIda,
+              bus_vuelta: c.busVuelta,
+              message: '',
+            }))
+          );
         }
 
         const savedState: RSVPState = {
-          attending: (data.attending as boolean) ?? true,
-          guestName: (data.guest_name as string) || '',
+          attending: data.attending ?? true,
+          guestName: data.guest_name || '',
           hasIntolerance,
-          dietaryRestrictions: (data.dietary_restrictions as string) || '',
+          dietaryRestrictions: data.dietary_restrictions || '',
           busIda: data.bus_ida === true,
           busVuelta: data.bus_vuelta === true,
-          busStop,
           companions,
-          message: (data.message as string) || '',
-          submittedAt: data.created_at as string,
+          message: data.message || '',
+          submittedAt: data.created_at,
         };
         localStorage.setItem('wedding_rsvp_status', JSON.stringify(savedState));
         onSubmitted(savedState);
@@ -592,12 +506,10 @@ export default function RSVPForm({ onSubmitted, onEdit, rsvpData, formSubmitted 
               onBusIda={setBusIda}
               busVuelta={busVuelta}
               onBusVuelta={setBusVuelta}
-              busStop={busStop}
-              onBusStop={setBusStop}
             />
             <button
               type="button"
-              disabled={!guestName.trim() || paradaPendiente({ busIda, busVuelta, busStop })}
+              disabled={!guestName.trim()}
               onClick={() => setStep(3)}
               className={`${botonPrimario} flex items-center justify-center gap-2`}
             >
@@ -691,8 +603,6 @@ export default function RSVPForm({ onSubmitted, onEdit, rsvpData, formSubmitted 
                     onBusIda={(v) => updateCompanion(i, 'busIda', v)}
                     busVuelta={c.busVuelta}
                     onBusVuelta={(v) => updateCompanion(i, 'busVuelta', v)}
-                    busStop={c.busStop}
-                    onBusStop={(v) => updateCompanion(i, 'busStop', v)}
                   />
                 </motion.div>
               ))}
@@ -700,7 +610,7 @@ export default function RSVPForm({ onSubmitted, onEdit, rsvpData, formSubmitted 
 
             <button
               type="button"
-              disabled={companions.some((c) => !c.name.trim() || paradaPendiente(c))}
+              disabled={companions.some((c) => !c.name.trim())}
               onClick={() => setStep(4)}
               className={`${botonPrimario} flex items-center justify-center gap-2`}
             >
@@ -735,7 +645,7 @@ export default function RSVPForm({ onSubmitted, onEdit, rsvpData, formSubmitted 
                 {BUS.enabled && (
                   <div>
                     <span className="text-[10px] uppercase tracking-wider text-secondary">Autobús</span>
-                    <p className="mt-0.5">{resumenBus({ busIda, busVuelta, busStop })}</p>
+                    <p className="mt-0.5">{resumenBus({ busIda, busVuelta })}</p>
                   </div>
                 )}
                 {companions.length > 0 && (

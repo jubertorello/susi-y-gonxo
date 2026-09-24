@@ -270,9 +270,6 @@ export const wedding = {
     bus: {
       /** Pon `false` si no hay servicio de autobuses (oculta los campos). */
       enabled: true,
-      /** Paradas de salida entre las que elige el invitado. */
-      stopsLabel: '¿Desde dónde cogerás el autobús?',
-      stops: ['Santander', 'Torrelavega'],
       idaHint: 'Santander o Torrelavega → Finca de San Juan · horarios por confirmar',
       vueltaHint: 'Finca de San Juan → Torrelavega y Santander · 21:30 y 00:30',
     },

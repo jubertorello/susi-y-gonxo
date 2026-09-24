@@ -1,14 +1,14 @@
 -- =============================================================================
 --  ALTA DE LA BODA «susi-y-gonxo» EN SUPABASE
 -- =============================================================================
---  Se ejecuta en el SQL Editor del proyecto. Va por pasos: los dos primeros
---  solo MIRAN, para no escribir a ciegas sobre un esquema que no conocemos.
+--  Se ejecuta en el SQL Editor del proyecto. El paso 0 solo MIRA: sirve para
+--  no escribir a ciegas sobre un esquema que no conocemos desde el repo.
 -- -----------------------------------------------------------------------------
 
 
 -- PASO 0 · Ver cómo es la tabla de clientes y cómo valida la contraseña ------
 --  Ejecuta esto primero y mira el resultado: los nombres de columna del
---  PASO 2 tienen que coincidir con los que salgan aquí.
+--  PASO 1 tienen que coincidir con los que salgan aquí.
 
 select column_name, data_type, is_nullable
 from information_schema.columns
@@ -23,19 +23,10 @@ from pg_proc
 where proname = 'verify_client_password';
 
 
--- PASO 1 · Columna nueva para la parada del autobús -------------------------
---  Solo hace falta si dejamos la pregunta de «¿desde Santander o
---  Torrelavega?» en el formulario. Es idempotente: se puede ejecutar varias
---  veces sin romper nada.
-
-alter table rsvps
-  add column if not exists bus_parada text not null default '';
-
-
--- PASO 2 · Dar de alta a Susi y Gonxo ---------------------------------------
+-- PASO 1 · Dar de alta a Susi y Gonxo ---------------------------------------
 --  ⚠️ Elige UNA de las dos versiones según lo que hayas visto en el PASO 0.
 
---  2a) Si `verify_client_password` usa crypt() → contraseña cifrada (lo suyo):
+--  1a) Si `verify_client_password` usa crypt() → contraseña cifrada (lo suyo):
 insert into clients (client_id, display_name, username, password_hash, role)
 values (
   'novia-y-novio',
@@ -50,7 +41,7 @@ on conflict (client_id) do update
       password_hash = excluded.password_hash,
       role          = excluded.role;
 
---  2b) Si la función compara la contraseña tal cual → guardada en claro.
+--  1b) Si la función compara la contraseña tal cual → guardada en claro.
 --      Descomenta esta y comenta la de arriba.
 --
 -- insert into clients (client_id, display_name, username, password, role)
@@ -65,14 +56,14 @@ on conflict (client_id) do update
 --      create extension if not exists pgcrypto;
 
 
--- PASO 3 · Comprobar que el login funciona ----------------------------------
+-- PASO 2 · Comprobar que el login funciona ----------------------------------
 --  Tiene que devolver una fila con role / client_id / display_name.
 
 select * from verify_client_password('susi', 'TU-CONTRASENA');
 
 
 -- =============================================================================
---  PASO 4 · CERRAR LA LECTURA PÚBLICA DE `rsvps`   ← IMPORTANTE
+--  PASO 3 · CERRAR LA LECTURA PÚBLICA DE `rsvps`   ← IMPORTANTE
 -- =============================================================================
 --  Hoy la tabla `rsvps` se puede leer entera con la clave `anon`, que viaja
 --  dentro del JavaScript de la invitación y por tanto la tiene cualquiera que

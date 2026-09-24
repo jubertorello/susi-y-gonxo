@@ -203,7 +203,6 @@ export default function Home() {
             dietaryRestrictions: parsed.dietaryRestrictions || '',
             busIda: parsed.busIda === true,
             busVuelta: parsed.busVuelta === true,
-            busStop: parsed.busStop || '',
             companions: Array.isArray(parsed.companions) ? parsed.companions : [],
             message: parsed.message || '',
             submittedAt: parsed.submittedAt,

@@ -487,7 +487,6 @@ export default function AdminDashboard() {
       'Intolerancia / Dieta',
       'Autobús Ida',
       'Autobús Vuelta',
-      'Parada',
       'Mensaje',
       'Fecha'
     ];
@@ -508,7 +507,6 @@ export default function AdminDashboard() {
         r.dietary_restrictions || '-',
         isAttending && r.bus_ida ? 'SI' : 'NO',
         isAttending && r.bus_vuelta ? 'SI' : 'NO',
-        (isAttending && r.bus_parada) || '-',
         r.message || '-',
         dateStr
       ]);
@@ -523,7 +521,6 @@ export default function AdminDashboard() {
           c.dietary_restrictions || '-',
           c.bus_ida ? 'SI' : 'NO',
           c.bus_vuelta ? 'SI' : 'NO',
-          c.bus_parada || '-',
           '-',
           dateStr
         ]);
@@ -1114,7 +1111,6 @@ export default function AdminDashboard() {
                         <p className="text-[10px] uppercase tracking-wider text-secondary mb-1">Autobús</p>
                         <p className="text-primary">
                           {[selectedRsvp.rsvp.bus_ida && 'Ida', selectedRsvp.rsvp.bus_vuelta && 'Vuelta'].filter(Boolean).join(' + ') || 'No'}
-                          {selectedRsvp.rsvp.bus_parada ? ` · desde ${selectedRsvp.rsvp.bus_parada}` : ''}
                         </p>
                       </div>
                     </div>
@@ -1127,7 +1123,7 @@ export default function AdminDashboard() {
                             <div key={c.id} className="bg-cream rounded-lg p-3 border-l-2 border-primary/20">
                               <p className="font-medium text-primary">{c.guest_name || '-'}</p>
                               <p className="text-[11px] text-secondary mt-0.5">
-                                Intol.: {c.dietary_restrictions || 'Ninguna'} · Bus: {[c.bus_ida && 'Ida', c.bus_vuelta && 'Vuelta'].filter(Boolean).join(' + ') || 'No'}{c.bus_parada ? ` (${c.bus_parada})` : ''}
+                                Intol.: {c.dietary_restrictions || 'Ninguna'} · Bus: {[c.bus_ida && 'Ida', c.bus_vuelta && 'Vuelta'].filter(Boolean).join(' + ') || 'No'}
                               </p>
                             </div>
                           ))}
