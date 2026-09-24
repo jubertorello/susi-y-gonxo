@@ -126,7 +126,7 @@ function SectionHeading({
         {title}
       </h2>
       {subtitle && (
-        <p className={`mt-2 text-[15px] ${light ? 'text-white/85' : 'text-ink'}`}>{subtitle}</p>
+        <p className={`mt-2 text-[16px] ${light ? 'text-white/85' : 'text-ink'}`}>{subtitle}</p>
       )}
       <div className={`h-px w-10 mx-auto mt-4 ${light ? 'bg-white/40' : 'bg-primary/20'}`} />
     </>
@@ -467,7 +467,7 @@ export default function Home() {
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: 'easeOut' } },
                 }}
-                className="text-ink text-[17px] md:text-[19px] leading-relaxed max-w-sm mx-auto mb-5 text-center"
+                className="text-ink text-[18px] md:text-[20px] leading-relaxed max-w-sm mx-auto mb-5 text-center"
               >
                 {parrafo}
               </motion.p>
@@ -478,7 +478,7 @@ export default function Home() {
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: 'easeOut' } },
               }}
-              className="font-display tracking-[0.2em] uppercase text-[22px] sm:text-[24px] leading-tight text-ink mt-5 mb-8 text-center"
+              className="font-display tracking-[0.2em] uppercase text-[24px] leading-tight text-ink mt-5 mb-8 text-center"
             >
               {wedding.hero.announcement}
             </motion.h2>
@@ -488,7 +488,7 @@ export default function Home() {
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: 'easeOut' } },
               }}
-              className="text-ink text-[17px] md:text-[19px] leading-relaxed max-w-sm mx-auto mb-10 text-center"
+              className="text-ink text-[18px] md:text-[20px] leading-relaxed max-w-sm mx-auto mb-10 text-center"
             >
               {wedding.hero.subtitle}
             </motion.p>
@@ -518,7 +518,7 @@ export default function Home() {
                     <h1 className="font-display tracking-[0.1em] text-[28px] sm:text-[32px] leading-tight text-ink uppercase">
                       {wedding.couple[quien].firstName}
                     </h1>
-                    <span className="font-display tracking-[0.05em] text-[17px] sm:text-[20px] text-ink uppercase mt-1">
+                    <span className="font-display tracking-[0.05em] text-[18px] sm:text-[20px] text-ink uppercase mt-1">
                       {wedding.couple[quien].lastName}
                     </span>
                   </div>
@@ -532,7 +532,7 @@ export default function Home() {
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: 'easeOut' } },
                 }}
-                className="text-ink text-[17px] md:text-[19px] leading-relaxed max-w-sm mx-auto mb-5 text-center"
+                className="text-ink text-[18px] md:text-[20px] leading-relaxed max-w-sm mx-auto mb-5 text-center"
               >
                 {wedding.hero.namesCaption}
               </motion.p>
@@ -565,7 +565,7 @@ export default function Home() {
               </div>
 
               <div className="mt-6 text-center">
-                <span className="font-display tracking-[0.25em] text-ink uppercase text-[15px] sm:text-[16px] leading-none">
+                <span className="font-display tracking-[0.25em] text-ink uppercase text-[16px] sm:text-[16px] leading-none">
                   {wedding.date.weekdayTime}
                 </span>
               </div>
@@ -914,7 +914,7 @@ export default function Home() {
                     <span className="font-sans text-[14px] uppercase tracking-[0.3em] text-white/70">
                       {item.who}
                     </span>
-                    <span className="font-display text-[19px] text-white mt-1">{item.what}</span>
+                    <span className="font-display text-[20px] text-white mt-1">{item.what}</span>
                   </li>
                 ))}
               </motion.ul>
@@ -922,7 +922,7 @@ export default function Home() {
               {wedding.dressCode.closing && (
                 <motion.p
                   variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
-                  className="mt-8 text-[17px] text-white/90 leading-relaxed"
+                  className="mt-8 text-[18px] text-white/90 leading-relaxed"
                 >
                   {wedding.dressCode.closing}
                 </motion.p>
@@ -1027,14 +1027,14 @@ export default function Home() {
 
               <motion.p
                 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8 } } }}
-                className="text-[17px] text-white/90 leading-relaxed max-w-xl mx-auto mb-5"
+                className="text-[18px] text-white/90 leading-relaxed max-w-xl mx-auto mb-5"
               >
                 {wedding.gift.description}
               </motion.p>
 
               <motion.p
                 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8 } } }}
-                className="text-[17px] text-white leading-relaxed max-w-lg mx-auto mb-8"
+                className="text-[18px] text-white leading-relaxed max-w-lg mx-auto mb-8"
               >
                 {wedding.gift.invitation}
               </motion.p>
@@ -1291,16 +1291,16 @@ export default function Home() {
             <span className="font-script text-4xl md:text-5xl block mb-6 text-ink leading-[1.3]">
               {wedding.footer.headline}
             </span>
-            <p className="font-sans text-[14px] md:text-[14px] uppercase tracking-[0.3em] text-ink mb-2 font-semibold">
+            <p className="font-sans font-bold text-[14px] uppercase tracking-[0.3em] text-ink mb-2">
               {wedding.footer.signature}
             </p>
-            <p className="font-sans font-semibold text-[14px] text-ink/85 tracking-widest uppercase">
+            <p className="font-sans font-bold text-[14px] text-ink tracking-widest uppercase">
               {wedding.footer.dateLine}
             </p>
           </div>
 
           <div className="absolute bottom-0 left-0 right-0 py-3 bg-cream/55 border-t border-ink/10 z-10">
-            <p className="font-sans text-[14px] text-ink/80 tracking-widest">
+            <p className="font-sans font-bold text-[14px] text-ink/80 tracking-widest">
               By{' '}
               <a
                 href="https://wa.me/34660104026"

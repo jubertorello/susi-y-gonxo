@@ -30,7 +30,7 @@
     @apply antialiased bg-sage;
     /* Cormorant es una fuente de ojo pequeño: pide un cuerpo algo mayor. */
     font-family: var(--font-body);
-    font-size: 17px;
+    font-size: 18px;
     line-height: 1.6;
   }
   section[id] {
@@ -41,10 +41,12 @@
 /*
  * En la versión 2 los rótulos van en Instrument Serif, que solo tiene un
  * grosor. Sin esto, cada `font-medium` y cada `font-semibold` le pediría al
- * navegador una negrita que no existe y la engordaría por software, que a
- * 10px es un borrón.
+ * navegador una negrita que no existe y la engordaría por software.
+ *
+ * `font-bold` sí pasa: es la negrita que se pide a propósito en el pie, donde
+ * el texto va sobre la tela de rayas y el engorde ayuda a despegarlo.
  */
-[data-fuentes='2'] .font-sans {
+[data-fuentes='2'] .font-sans:not(.font-bold) {
   font-weight: 400;
 }
 

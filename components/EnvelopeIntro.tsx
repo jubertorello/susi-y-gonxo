@@ -412,7 +412,7 @@ export default function EnvelopeIntro({ onComplete, onStartExit }: EnvelopeIntro
               zIndex: delante ? 35 : 20,
             }}
           >
-            <p className="text-ink mb-2 text-[16px] md:text-[17px]">
+            <p className="text-ink mb-2 text-[16px] md:text-[18px]">
               {wedding.envelope.cardIntro}
             </p>
             <h2 className="font-display text-ink mb-5 text-[24px] md:text-[28px] leading-tight">

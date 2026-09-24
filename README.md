@@ -59,6 +59,8 @@ versión está activa.
 Tres reglas, comprobables en el DOM con estilos calculados:
 
 - **Ningún texto baja de 14px**, en ninguna versión ni en ninguna anchura.
+- **Todos los cuerpos son pares**: 14, 16, 18, 20, 24, 28, 30, 32, 36, 44, 48
+  y 72px.
 
 - La **cursiva** y la **script** nunca bajan de 28px. El texto corrido va
   redondo.
