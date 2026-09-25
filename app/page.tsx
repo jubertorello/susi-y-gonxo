@@ -1697,7 +1697,7 @@ export default function Home() {
               {wedding.contact.image && (
                 <span
                   aria-hidden
-                  className="block mx-auto mb-4 w-28 md:w-36 aspect-[282/258] bg-contain bg-no-repeat bg-center"
+                  className="block mx-auto mb-4 w-20 md:w-24 aspect-[282/258] bg-contain bg-no-repeat bg-center"
                   style={{ backgroundImage: `url("${wedding.contact.image}")` }}
                 />
               )}
