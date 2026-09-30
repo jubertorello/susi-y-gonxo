@@ -37,7 +37,12 @@ autobuses, en ese orden. Cada bloque tiene título, texto, una lista de
 Los iconos se piden por nombre — `bus`, `cama`, `traje`, `vestido` — en el
 bloque o en cada entrada. El traje y el vestido están dibujados a mano en
 `app/page.tsx` porque lucide no los trae. Con `items` vacío solo se enseña
-el texto, que es como está hoy hoteles.
+el texto.
+
+Si un bloque tiene mucha información, se le pone `modal`: la tarjeta enseña
+el resumen y un botón abre una ventana con el detalle completo, por apartados
+(párrafos, un dato destacado, un código de descuento que se copia con un
+toque y listas). Así está hoy hoteles.
 
 Las **ilustraciones** se quitan poniendo la cadena vacía en su `image`
 (`locations.places[].image`, `itinerary.events[].image`, `gift.image`,

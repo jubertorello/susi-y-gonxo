@@ -26,6 +26,11 @@ import {
   BedDouble,
   Camera,
   Menu,
+  ExternalLink,
+  House,
+  Sparkles,
+  Waves,
+  Banknote,
 } from "lucide-react";
 
 interface SuggestedSong {
@@ -34,6 +39,41 @@ interface SuggestedSong {
   artist: string;
   votes: number;
 }
+
+/** Escribe en negrita lo que en el texto de la config va entre `**`. */
+function ConNegritas({ texto }: { texto: string }) {
+  return (
+    <>
+      {texto.split(/\*\*(.+?)\*\*/).map((trozo, i) =>
+        i % 2 ? <strong key={i} className="font-semibold">{trozo}</strong> : trozo,
+      )}
+    </>
+  );
+}
+
+/** Enlace a la web de un alojamiento: se abre en una pestaña nueva. */
+function EnlaceExterno({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline decoration-ink/30 underline-offset-4 hover:decoration-ink transition-colors"
+    >
+      {children}
+      <ExternalLink size={13} className="inline-block ml-1.5 -mt-0.5 text-ink/60" aria-hidden />
+    </a>
+  );
+}
+
+/** Iconos de los apartados de la ventana de hoteles, pedidos por nombre. */
+const ICONOS_APARTADO: Record<string, React.ComponentType<{ size?: number; strokeWidth?: number; className?: string }>> = {
+  cama: BedDouble,
+  destellos: Sparkles,
+  casa: House,
+  olas: Waves,
+  billete: Banknote,
+};
 
 const photos = wedding.photos;
 /**
@@ -396,6 +436,9 @@ export default function Home() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showMusicModal, setShowMusicModal] = useState(false);
   const [showAllSongsModal, setShowAllSongsModal] = useState(false);
+  /** Bloque de Datos de Interés cuya ventana de detalle está abierta. */
+  const [infoModalId, setInfoModalId] = useState<string | null>(null);
+  const [copiedCode, setCopiedCode] = useState(false);
   const [activePhoto, setActivePhoto] = useState<string | null>(null);
   const [musicList, setMusicList] = useState<SuggestedSong[]>([]);
   const [newSongTitle, setNewSongTitle] = useState("");
@@ -1567,7 +1610,7 @@ export default function Home() {
                     </h3>
 
                     <p className="mt-4 text-[18px] text-white/90 leading-relaxed">
-                      {bloque.body}
+                      <ConNegritas texto={bloque.body} />
                     </p>
 
                     {bloque.items.length > 0 &&
@@ -1617,6 +1660,16 @@ export default function Home() {
                       <p className="mt-8 text-[18px] text-white/85 leading-relaxed">
                         {bloque.note}
                       </p>
+                    )}
+
+                    {bloque.modal && (
+                      <button
+                        onClick={() => setInfoModalId(bloque.id)}
+                        className="mt-8 inline-flex items-center gap-2 px-8 py-3.5 bg-white text-ink hover:bg-white/90 font-sans text-[14px] uppercase tracking-[0.22em] rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 font-semibold"
+                      >
+                        <span>{bloque.modal.cta}</span>
+                        <ChevronRight size={14} />
+                      </button>
                     )}
                   </motion.div>
                 );
@@ -1792,6 +1845,132 @@ export default function Home() {
         </footer>
 
         {/* ========================= MODALES ========================= */}
+
+        {/* DETALLE DE UN BLOQUE DE DATOS DE INTERÉS (hoteles) */}
+        <AnimatePresence>
+          {(() => {
+            const modal = wedding.info.blocks.find((b) => b.id === infoModalId)?.modal;
+            if (!modal) return null;
+            const cerrar = () => setInfoModalId(null);
+            return (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 select-text">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={cerrar}
+                  className="absolute inset-0 bg-primary/45 backdrop-blur-xs"
+                />
+
+                <motion.div
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label={modal.title}
+                  initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: 15 }}
+                  className="bg-cream border border-primary/20 rounded-md shadow-2xl p-6 sm:p-10 relative z-50 max-w-xl w-full max-h-[85vh] overflow-y-auto overscroll-contain"
+                >
+                  <button
+                    onClick={cerrar}
+                    aria-label="Cerrar"
+                    className="absolute top-4 right-4 p-1.5 text-ink/60 hover:text-ink hover:bg-primary/5 rounded-full transition-colors"
+                  >
+                    <X size={18} />
+                  </button>
+
+                  <div className="text-center">
+                    <div className="flex justify-center mb-4 text-ink">
+                      <BedDouble size={32} strokeWidth={1.4} />
+                    </div>
+                    <h3 className="font-display text-2xl sm:text-3xl text-ink">
+                      {modal.title}
+                    </h3>
+                  </div>
+
+                  <div className="mt-6 space-y-7 text-left">
+                    {modal.sections.map((s) => {
+                      const IconoApartado = s.icon ? ICONOS_APARTADO[s.icon] : undefined;
+                      return (
+                      <section key={s.title} className="border-t border-primary/15 pt-6">
+                        <h4 className="font-display text-xl sm:text-[22px] text-ink leading-tight mb-3 flex items-start gap-2.5">
+                          {IconoApartado && (
+                            <IconoApartado size={20} strokeWidth={1.5} className="mt-1 shrink-0 text-ink/80" />
+                          )}
+                          <span>{s.url ? <EnlaceExterno href={s.url}>{s.title}</EnlaceExterno> : s.title}</span>
+                        </h4>
+
+                        {s.paragraphs.map((p) => (
+                          <p key={p} className="font-sans text-[15px] text-ink leading-relaxed mb-2 last:mb-0">
+                            <ConNegritas texto={p} />
+                          </p>
+                        ))}
+
+                        {s.highlight && (
+                          <p className="mt-4 bg-sand/60 border border-primary/10 rounded-md px-4 py-3 font-sans text-[14px] uppercase tracking-[0.15em] text-ink font-bold text-center">
+                            {s.highlight}
+                          </p>
+                        )}
+
+                        {s.code && (
+                          <div className="mt-4 bg-sand/60 border border-primary/10 rounded-md px-4 py-3 flex items-center justify-between gap-3">
+                            <span className="flex flex-col">
+                              <span className="font-sans text-[12px] uppercase tracking-[0.2em] text-ink/70">
+                                Código
+                              </span>
+                              <span className="font-sans text-[18px] text-ink font-bold tracking-[0.2em] select-all">
+                                {s.code}
+                              </span>
+                            </span>
+                            <button
+                              onClick={() => copyToClipboard(s.code!, setCopiedCode)}
+                              className="p-2 bg-primary/5 hover:bg-primary/10 text-ink rounded transition-all active:scale-95 shrink-0"
+                              title="Copiar código"
+                            >
+                              {copiedCode ? (
+                                <span className="text-[14px] font-sans uppercase tracking-wider font-semibold">
+                                  {wedding.gift.modal.copiedLabel}
+                                </span>
+                              ) : (
+                                <Copy size={14} />
+                              )}
+                            </button>
+                          </div>
+                        )}
+
+                        {s.groups?.map((g) => (
+                          <div key={g.label ?? g.items[0].text} className="mt-4">
+                            {g.label && (
+                              <span className="block font-sans text-[13px] uppercase tracking-[0.2em] text-ink font-bold mb-2">
+                                {g.label}
+                              </span>
+                            )}
+                            <ul className="space-y-1.5">
+                              {g.items.map((it) => (
+                                <li key={it.text} className="flex gap-2.5 font-sans text-[15px] text-ink leading-relaxed">
+                                  <span className="mt-[0.6em] h-1 w-1 rounded-full bg-ink/60 shrink-0" />
+                                  <span>
+                                    {it.url ? (
+                                      <EnlaceExterno href={it.url}><ConNegritas texto={it.text} /></EnlaceExterno>
+                                    ) : (
+                                      <ConNegritas texto={it.text} />
+                                    )}
+                                    {it.extra && <span className="text-ink/70"> · {it.extra}</span>}
+                                  </span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </section>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              </div>
+            );
+          })()}
+        </AnimatePresence>
 
         {/* IBAN / REGALO */}
         <AnimatePresence>

@@ -359,11 +359,102 @@ export const wedding = {
         id: 'hoteles',
         layout: 'lista',
         icon: 'cama',
-        title: 'Recomendación de Hoteles',
-        // TODO: sustituir por los hoteles y condiciones cuando estén cerrados.
-        body: 'PENDIENTE.',
-        items: [] as { label: string; detail?: string; lines?: string[] }[],
+        title: '¿Dónde alojarse?',
+        body: 'Si vais a aprovechar para pasar unos días en Cantabria, nuestra recomendación es alojaros en **Santander**, especialmente en **El Sardinero o en el centro**. Además, el día de la boda habrá **autobús de ida y vuelta desde Santander**.',
+        // Sin resumen en la tarjeta: todos los alojamientos van en la ventana
+        // de `modal`, para que haya que abrirla.
+        items: [],
         note: '',
+        modal: {
+          cta: 'Ver todos los alojamientos',
+          title: '¿Dónde alojarse?',
+          /**
+           * Cada apartado: icono (`cama`, `destellos`, `casa`, `olas` o
+           * `billete`), título (con `url` si enlaza a la web del
+           * alojamiento), párrafos y, si hace falta,
+           *  · `highlight` → dato destacado en un recuadro (precio…).
+           *  · `code`      → código de descuento con botón para copiarlo.
+           *  · `groups`    → listas de hoteles, con un rótulo opcional cada una.
+           *    Cada hotel puede llevar `url`.
+           * Los enlaces se abren en una pestaña nueva. Lo que va entre `**`
+           * se escribe en negrita, aquí y en el texto de la tarjeta.
+           */
+          sections: [
+            {
+              icon: 'casa',
+              title: 'Apartamentos',
+              paragraphs: [
+                'Una de las opciones más cómodas y económicas es reservar un apartamento a través de **Airbnb o Booking**, especialmente si os juntáis varias parejas, familiares o amigos y compartís uno de varios dormitorios.',
+                'Si tenéis dudas sobre alguna zona o alojamiento, ¡preguntadnos!',
+              ],
+            },
+            {
+              icon: 'cama',
+              title: 'Suite Home Sardinero',
+              url: 'https://shsardinero.com/index.php/es/',
+              paragraphs: [
+                'Una opción que os recomendamos especialmente por **ubicación y precio**.',
+                'Nos han bloqueado un número limitado de habitaciones para nuestros invitados por **135 € la noche**, con una estancia mínima de **2 noches**.',
+                'Para reservar es necesario **llamar directamente al alojamiento** e indicar que venís a la **boda de Gonxo y Susi**.',
+              ],
+            },
+            {
+              icon: 'destellos',
+              title: 'Grupo Eurostars · 15 % de descuento',
+              paragraphs: ['Nuestros invitados disponéis de un **15 % de descuento con el código BODASYG** en estos tres hoteles:'],
+              code: 'BODASYG',
+              groups: [
+                {
+                  items: [
+                    { text: '**Eurostars Hotel Real 5★**', extra: 'El Sardinero', url: 'https://www.eurostarshotels.com/eurostars-hotel-real.html' },
+                    { text: '**Dorma Sardinero 4★**', extra: 'El Sardinero', url: 'https://www.eurostarshotels.com/dorma-sardinero.html' },
+                    { text: '**Dorma Coliseum 4★**', extra: 'Centro de Santander', url: 'https://www.eurostarshotels.com/dorma-coliseum.html' },
+                  ],
+                },
+              ],
+            },
+            {
+              icon: 'olas',
+              title: 'Otras opciones en Santander',
+              paragraphs: [],
+              groups: [
+                {
+                  label: 'El Sardinero',
+                  items: [
+                    { text: 'Hotel Chiqui 3★', url: 'https://www.hotelchiqui.com/es/' },
+                    { text: 'Gran Hotel Victoria', url: 'https://www.granhotelvictoria.com/' },
+                    { text: 'Hotel Santemar 4★', url: 'https://www.hotelsantemar.com/es/' },
+                  ],
+                },
+                {
+                  label: 'Centro de Santander',
+                  items: [
+                    { text: 'NH Ciudad de Santander 3★', url: 'https://www.nh-hotels.com/es/hotel/nh-ciudad-de-santander' },
+                    { text: 'Hotel Bahía 4★', url: 'https://www.hotelbahiasantander.com/' },
+                  ],
+                },
+              ],
+            },
+            {
+              icon: 'billete',
+              title: 'Opción económica en Torrelavega',
+              paragraphs: [
+                'Si venís únicamente para la boda y preferís una opción más económica, podéis alojaros en el **Hotel Marqués de Santillana**, en Torrelavega.',
+                'Reservando directamente a través de su web tenéis un **5 % de descuento**. Si entre nuestros invitados se reservan **5 o más habitaciones**, se aplicará un **5 % adicional**.',
+                'Para identificar las reservas de nuestra boda, indicad en **Observaciones** que asistís a la **boda de Gonxo y Susi**.',
+                'Además, reservando a través de su web:',
+              ],
+              groups: [
+                {
+                  items: [
+                    { text: '**Late check-out hasta las 14:00**, sujeto a disponibilidad.' },
+                    { text: 'Si os alojáis también la noche del domingo, **desayuno del lunes incluido**.' },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
       },
       {
         id: 'autobuses',
@@ -395,6 +486,22 @@ export const wedding = {
       body: string;
       items: { label: string; detail?: string; lines?: string[] }[];
       note: string;
+      /** Ventana con el detalle completo, abierta desde un botón de la tarjeta. */
+      modal?: {
+        cta: string;
+        title: string;
+        sections: {
+          /** 'cama', 'destellos', 'casa', 'olas' o 'billete'. */
+          icon?: string;
+          title: string;
+          url?: string;
+          paragraphs: string[];
+          highlight?: string;
+          code?: string;
+          /** `extra`: dato que va detrás del nombre, fuera del enlace. */
+          groups?: { label?: string; items: { text: string; extra?: string; url?: string }[] }[];
+        }[];
+      };
     }[],
   },
 
