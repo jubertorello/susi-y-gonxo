@@ -65,13 +65,13 @@ export const wedding = {
      * El 27/03/2027 España sigue en horario de invierno (+01:00): el cambio
      * de hora es el domingo 28.
      */
-    iso: '2027-03-27T12:15:00+01:00',
+    iso: '2027-03-27T12:00:00+01:00',
     /** Cómo se escribe en la cabecera, en tres piezas. */
     month: 'Marzo',
     day: '27',
     year: '2027',
     /** Línea bajo la fecha. */
-    weekdayTime: 'Sábado • 12:15 H',
+    weekdayTime: 'Sábado • 12:00 H',
   },
 
   seo: {
@@ -149,7 +149,7 @@ export const wedding = {
         title: 'Ceremonia y Celebración',
         name: 'Finca de San Juan',
         address: 'Barrio de San Juan, s/n · 39660 Villabáñez, Cantabria',
-        time: 'Ceremonia civil · 12:15 H',
+        time: 'Ceremonia civil · 12:00 H',
         image: '/finca.webp',
         mapUrl: 'https://maps.app.goo.gl/NnuWki1xnYZcXoDs8',
       },
@@ -221,7 +221,7 @@ export const wedding = {
     title: 'Itinerario',
     subtitle: 'Hemos preparado todo para un día inolvidable',
     events: [
-      { time: '12:15 H', title: 'La Ceremonia', image: '/itinerario/ceremonia-v4.webp' },
+      { time: '12:00 H', title: 'La Ceremonia', image: '/itinerario/ceremonia-v4.webp' },
       { time: '13:45 H', title: 'El Cóctel', image: '/itinerario/coctel-v3.webp' },
       { time: '16:00 H', title: 'El Banquete', image: '/itinerario/banquete-v2.webp' },
       { time: '18:00 H', title: 'El Baile & Fiesta', image: '/itinerario/baile-v2.webp' },
@@ -243,10 +243,16 @@ export const wedding = {
     topLabel: 'Top canciones sugeridas:',
     allLabel: 'Playlist de los invitados',
     image: '/dj.webp',
-    /** `true` arranca la canción de fondo en cuanto el invitado toca la pantalla. */
-    autoplay: false,
-    /** Cadena vacía: no hay música de fondo y el botón de sonido no aparece. */
-    backgroundAudio: '',
+    /**
+     * `true` arranca la canción de fondo en cuanto el invitado toca la
+     * pantalla (al pulsar «Abrir» en el sobre).
+     */
+    autoplay: true,
+    /**
+     * Canción de fondo, en `public/`. Cadena vacía: no hay música y el botón
+     * de sonido no aparece. Va en AAC (.m4a) a 128 kbps para que pese poco.
+     */
+    backgroundAudio: '/cancion.m4a', // Elvis Presley · Can't Help Falling In Love
     modal: {
       title: 'Sugerir Canción',
       subtitle: 'Queremos que la pista de baile no pare de sonar',
@@ -283,11 +289,10 @@ export const wedding = {
       description:
         'Teneros con nosotros ya es el mejor regalo. Si además queréis ayudarnos a sumar recuerdos en nuestra luna de miel por África, ponemos a vuestra disposición nuestra cuenta bancaria:',
       ibanLabel: 'Número de cuenta (IBAN):',
-      // TODO: sustituir por el IBAN real.
-      iban: 'ESXX XXXX XXXX XXXX XXXX XXXX',
+      iban: 'ES79 1583 0001 1291 0476 3881',
       swiftLabel: 'Código Swift/BIC:',
-      // TODO: sustituir por el Swift/BIC real.
-      swift: 'XXXXXXXX',
+      // Sin Swift/BIC por ahora: vacío, la ventana no lo enseña.
+      swift: '',
       swiftHint: 'Con este código podrás recibir transferencias internacionales',
       holders: 'Susana A. D. y Gonzalo D. T. P.',
       copiedLabel: '¡Copiado!',

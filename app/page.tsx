@@ -620,7 +620,10 @@ export default function Home() {
     >
       {hasAudio && (
         <audio ref={audioRef} loop preload="auto">
-          <source src={wedding.music.backgroundAudio} type="audio/mpeg" />
+          <source
+            src={wedding.music.backgroundAudio}
+            type={wedding.music.backgroundAudio.endsWith(".mp3") ? "audio/mpeg" : "audio/mp4"}
+          />
         </audio>
       )}
 
@@ -2035,37 +2038,42 @@ export default function Home() {
                     </button>
                   </div>
 
-                  <span className="block text-[14px] font-sans uppercase tracking-[0.2em] text-ink mb-2 font-bold">
-                    {wedding.gift.modal.swiftLabel}
-                  </span>
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="font-sans text-[14px] sm:text-[14px] text-ink select-all font-bold tracking-wider break-all">
-                      {wedding.gift.modal.swift}
-                    </span>
-                    <button
-                      onClick={() =>
-                        copyToClipboard(
-                          wedding.gift.modal.swift,
-                          setCopiedSwift,
-                        )
-                      }
-                      className="p-2 bg-primary/5 hover:bg-primary/10 text-ink rounded transition-all active:scale-95 shrink-0"
-                      title="Copiar Swift/BIC"
-                    >
-                      {copiedSwift ? (
-                        <span className="text-[14px] font-sans uppercase tracking-wider font-semibold">
-                          {wedding.gift.modal.copiedLabel}
+                  {/* Sin Swift/BIC en la config, el apartado no se enseña. */}
+                  {wedding.gift.modal.swift && (
+                    <>
+                      <span className="block text-[14px] font-sans uppercase tracking-[0.2em] text-ink mb-2 font-bold">
+                        {wedding.gift.modal.swiftLabel}
+                      </span>
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-sans text-[14px] sm:text-[14px] text-ink select-all font-bold tracking-wider break-all">
+                          {wedding.gift.modal.swift}
                         </span>
-                      ) : (
-                        <Copy size={14} />
-                      )}
-                    </button>
-                  </div>
+                        <button
+                          onClick={() =>
+                            copyToClipboard(
+                              wedding.gift.modal.swift,
+                              setCopiedSwift,
+                            )
+                          }
+                          className="p-2 bg-primary/5 hover:bg-primary/10 text-ink rounded transition-all active:scale-95 shrink-0"
+                          title="Copiar Swift/BIC"
+                        >
+                          {copiedSwift ? (
+                            <span className="text-[14px] font-sans uppercase tracking-wider font-semibold">
+                              {wedding.gift.modal.copiedLabel}
+                            </span>
+                          ) : (
+                            <Copy size={14} />
+                          )}
+                        </button>
+                      </div>
 
-                  <div className="flex items-start gap-1.5 mt-3 font-sans text-[14px] text-ink leading-snug">
-                    <Info size={11} className="mt-0.5 shrink-0" />
-                    <span>{wedding.gift.modal.swiftHint}</span>
-                  </div>
+                      <div className="flex items-start gap-1.5 mt-3 font-sans text-[14px] text-ink leading-snug">
+                        <Info size={11} className="mt-0.5 shrink-0" />
+                        <span>{wedding.gift.modal.swiftHint}</span>
+                      </div>
+                    </>
+                  )}
 
                   <span className="block font-sans text-[14px] text-ink mt-3 pt-2 border-t border-primary/5">
                     Titulares: {wedding.gift.modal.holders}
