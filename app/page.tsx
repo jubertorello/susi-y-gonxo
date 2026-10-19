@@ -83,6 +83,8 @@ const photos = wedding.photos;
  */
 const carrete = photos.length > 0 ? [...photos, ...photos] : [];
 const huecos = photos.length === 0 ? wedding.gallery.placeholders : 0;
+/** Inclinación de cada polaroid, en grados, para que no queden en fila recta. */
+const INCLINACIONES = [-3, 2, -1.5, 3, -2.5, 1.5, -1];
 /**
  * Relojito de la cuenta atrás. La aguja fina va de verdad: gira con los
  * segundos que faltan, así que se mueve sola mientras se mira.
@@ -873,6 +875,12 @@ export default function Home() {
                   </div>
                 </React.Fragment>
               ))}
+
+              {wedding.hero.namesTagline && (
+                <p className="font-display italic text-[22px] md:text-[24px] text-ink/80 mt-6">
+                  {wedding.hero.namesTagline}
+                </p>
+              )}
             </motion.div>
 
             {wedding.hero.namesCaption && (
@@ -1165,14 +1173,10 @@ export default function Home() {
               </motion.p>
             )}
           </motion.div>
-        </section>
 
-        {/* ================= 4. CARRETE DE FOTOS ================= */}
-        {wedding.gallery.enabled && (
-          <section id="fotos" className="py-12 relative overflow-hidden">
-            <SectionBackground bg={backgrounds.sections.photos} />
-
-            <div className="relative z-10">
+          {/* Fotos: dentro de la cuenta atrás, sobre la misma tela. */}
+          {wedding.gallery.enabled && (
+            <div id="fotos" className="relative z-10 mt-12 md:mt-16 scroll-mt-24">
               {wedding.gallery.image && (
                 <div className="relative w-24 h-24 md:w-28 md:h-28 mx-auto mb-2">
                   <Image
@@ -1204,15 +1208,18 @@ export default function Home() {
                     } as React.CSSProperties
                   }
                 >
+                  {/* Polaroids: marco blanco con el borde de abajo más ancho
+                      y cada una un poco torcida, como sueltas sobre la mesa. */}
                   {carrete.map((foto, i) => (
                     <button
                       key={i}
                       type="button"
                       onClick={() => setActivePhoto(foto)}
                       aria-label="Ampliar foto"
-                      className="relative shrink-0 h-[220px] w-[160px] md:h-[300px] md:w-[220px] bg-cream p-2 shadow-[0_6px_20px_rgba(0,0,0,0.14)] transition-transform duration-300 hover:-translate-y-1"
+                      style={{ rotate: `${INCLINACIONES[i % INCLINACIONES.length]}deg` }}
+                      className="relative shrink-0 my-4 w-[160px] md:w-[220px] bg-white p-2.5 pb-10 md:p-3 md:pb-14 shadow-[0_8px_22px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:-translate-y-1 hover:scale-[1.03]"
                     >
-                      <span className="relative block w-full h-full overflow-hidden">
+                      <span className="relative block w-full aspect-[4/5] overflow-hidden bg-sand">
                         <Image
                           src={foto}
                           alt={wedding.couple.joinedNames}
@@ -1243,8 +1250,8 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </section>
-        )}
+          )}
+        </section>
 
         {/* ================= 5. ITINERARIO ================= */}
         <section id="itinerario" className="py-16 md:py-20 text-ink relative">
@@ -1600,12 +1607,24 @@ export default function Home() {
                     id={bloque.id}
                     className="bg-moss text-white border border-white/10 rounded shadow-sm px-6 py-10 sm:px-10 text-center scroll-mt-24"
                   >
-                    {Icono && (
-                      <Icono
-                        size={28}
-                        className="mx-auto mb-4 text-white/80"
-                        strokeWidth={1.4}
+                    {/* Con ilustración, va ella en lugar del icono. */}
+                    {bloque.image ? (
+                      <Image
+                        src={bloque.image}
+                        alt={bloque.imageAlt ?? ""}
+                        width={800}
+                        height={769}
+                        sizes="150px"
+                        className="mx-auto mb-4 h-32 md:h-36 w-auto"
                       />
+                    ) : (
+                      Icono && (
+                        <Icono
+                          size={28}
+                          className="mx-auto mb-4 text-white/80"
+                          strokeWidth={1.4}
+                        />
+                      )
                     )}
 
                     <h3 className="font-display text-[24px] md:text-[28px] text-white leading-tight">

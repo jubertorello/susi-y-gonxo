@@ -65,13 +65,13 @@ export const wedding = {
      * El 27/03/2027 España sigue en horario de invierno (+01:00): el cambio
      * de hora es el domingo 28.
      */
-    iso: '2027-03-27T12:00:00+01:00',
+    iso: '2027-03-27T12:30:00+01:00',
     /** Cómo se escribe en la cabecera, en tres piezas. */
     month: 'Marzo',
     day: '27',
     year: '2027',
     /** Línea bajo la fecha. */
-    weekdayTime: 'Sábado • 12:00 H',
+    weekdayTime: 'Sábado • 12:30 H',
   },
 
   seo: {
@@ -84,7 +84,7 @@ export const wedding = {
      * texto de la vista previa son los de arriba.
      */
     image: '/compartir.jpg',
-    imageAlt: 'Susi & Gonxo · 27 de marzo de 2027 · Finca de San Juan',
+    imageAlt: 'Acuarela de un vestido largo verde con sandalias, bolso y pendientes dorados, y un traje azul marino con corbata y mocasines marrones',
     /**
      * Dominio de producción, para que las redes puedan pedir la imagen: la
      * quieren con la dirección entera, no con `/compartir.webp` a secas. En
@@ -130,7 +130,9 @@ export const wedding = {
       'Después de todo este tiempo, sabemos que lo mejor todavía está por venir y hemos decidido dar un paso más en nuestra historia…',
     ],
     announcement: '¡Nos casamos!',
-    subtitle: 'Y nos hace inmensamente felices poder celebrarlo con vosotros.',
+    subtitle: 'Y nos hace inmensamente felices poder celebrarlo contigo.',
+    /** Coletilla justo debajo de los nombres. Cadena vacía para no ponerla. */
+    namesTagline: 'junto a nuestras familias',
     /** Línea bajo los nombres de la pareja. */
     namesCaption:
       'Queremos celebrar este “sí” rodeados de quienes habéis formado parte de nuestra historia.',
@@ -149,7 +151,7 @@ export const wedding = {
         title: 'Ceremonia y Celebración',
         name: 'Finca de San Juan',
         address: 'Barrio de San Juan, s/n · 39660 Villabáñez, Cantabria',
-        time: 'Ceremonia civil · 12:00 H',
+        time: 'Ceremonia civil · 12:30 H',
         image: '/finca.webp',
         mapUrl: 'https://maps.app.goo.gl/NnuWki1xnYZcXoDs8',
       },
@@ -186,17 +188,24 @@ export const wedding = {
    * pon aquí sus rutas, p. ej. '/fotos/foto-1.webp'. Se dibuja con las que
    * haya; cuantas más, más largo el bucle.
    */
-  photos: [] as string[],
+  photos: [
+    // De pequeños…
+    '/fotos/foto-1.webp',
+    '/fotos/foto-2.webp',
+    '/fotos/foto-3.webp',
+    '/fotos/foto-4.webp',
+    // …y juntos
+    '/fotos/foto-5.webp',
+    '/fotos/foto-6.webp',
+    '/fotos/foto-7.webp',
+  ] as string[],
 
   // ---------------------------------------------------------------------------
   // CARRETE DE FOTOS
   // ---------------------------------------------------------------------------
   gallery: {
-    /**
-     * Pon `false` para ocultar el carrete entero. Ahora mismo apagado hasta
-     * decidir si habrá fotos de los novios.
-     */
-    enabled: false,
+    /** Pon `false` para ocultar el carrete entero. */
+    enabled: true,
     title: '',
     /** Ilustración sobre el carrete. Cadena vacía para no poner ninguna. */
     image: '',
@@ -221,10 +230,10 @@ export const wedding = {
     title: 'Itinerario',
     subtitle: 'Hemos preparado todo para un día inolvidable',
     events: [
-      { time: '12:00 H', title: 'La Ceremonia', image: '/itinerario/ceremonia-v4.webp' },
-      { time: '13:45 H', title: 'El Cóctel', image: '/itinerario/coctel-v3.webp' },
-      { time: '16:00 H', title: 'El Banquete', image: '/itinerario/banquete-v2.webp' },
-      { time: '18:00 H', title: 'El Baile & Fiesta', image: '/itinerario/baile-v2.webp' },
+      { time: '12:30 H', title: 'Ceremonia', image: '/itinerario/ceremonia-v4.webp' },
+      { time: '13:45 H', title: 'Cóctel', image: '/itinerario/coctel-v3.webp' },
+      { time: '16:00 H', title: 'Banquete', image: '/itinerario/banquete-v2.webp' },
+      { time: '18:00 H', title: 'Baile & Fiesta', image: '/itinerario/baile-v2.webp' },
     ],
   },
 
@@ -314,8 +323,8 @@ export const wedding = {
     bus: {
       /** Pon `false` si no hay servicio de autobuses (oculta los campos). */
       enabled: true,
-      idaHint: 'Santander o Torrelavega → Finca de San Juan · horarios por confirmar',
-      vueltaHint: 'Finca de San Juan → Torrelavega y Santander · 21:30 y 00:30',
+      idaHint: 'Desde los Campos de Sport del Sardinero (Santander) o la estación de FEVE (Torrelavega) · horarios por confirmar',
+      vueltaHint: 'A la estación de FEVE (Torrelavega) y al Club Marítimo (Santander) · 21:30 y 00:30',
     },
     companions: {
       /** Máximo de acompañantes que puede indicar cada invitado. */
@@ -354,6 +363,8 @@ export const wedding = {
         icon: 'lazo',
         title: 'Dress Code',
         body: 'Elegantes para celebrar.',
+        image: '/dress-code.webp',
+        imageAlt: 'Acuarela de un vestido largo azul de un hombro con sandalias doradas y un traje azul marino con corbata',
         items: [
           { label: 'Ellos', detail: 'Traje' },
           { label: 'Ellas', detail: 'Vestido o conjunto elegante' },
@@ -469,15 +480,22 @@ export const wedding = {
         body: 'Habrá autobuses de ida y de vuelta desde Santander y Torrelavega.',
         items: [
           {
-            label: 'Ida',
-            // TODO: horario y paradas de ejemplo, a falta de los definitivos.
+            label: 'Ida · salidas',
+            // TODO: falta la hora de salida de cada parada.
             lines: [
-              'Santander, Jardines de Pereda · 11:00',
-              'Torrelavega, Bulevar Demetrio Herrero · 11:20',
+              'Santander · Campos de Sport del Sardinero',
+              'Torrelavega · Estación de tren FEVE',
             ],
           },
           {
-            label: 'Vuelta',
+            label: 'Vuelta · llegadas',
+            lines: [
+              'Torrelavega · Estación de tren FEVE',
+              'Santander · Club Marítimo de Santander',
+            ],
+          },
+          {
+            label: 'Horarios de vuelta',
             lines: ['Para los veteranos · 21:30', 'Para los atrevidos · 00:30, fin de fiesta'],
           },
         ],
@@ -491,6 +509,9 @@ export const wedding = {
       body: string;
       items: { label: string; detail?: string; lines?: string[] }[];
       note: string;
+      /** Ilustración que va en lugar del icono, con fondo transparente. */
+      image?: string;
+      imageAlt?: string;
       /** Ventana con el detalle completo, abierta desde un botón de la tarjeta. */
       modal?: {
         cta: string;
