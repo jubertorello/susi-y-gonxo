@@ -184,17 +184,20 @@ export const wedding = {
   // FOTOS
   // ---------------------------------------------------------------------------
   /**
-   * Fotos del carrete, en el orden en que pasan. Súbelas a `public/fotos/` y
+   * Fotos del carrete (entre «celebrarlo contigo» y los nombres), en el orden
+   * en que pasan. Súbelas a `public/fotos/` y
    * pon aquí sus rutas, p. ej. '/fotos/foto-1.webp'. Se dibuja con las que
    * haya; cuantas más, más largo el bucle.
    */
   photos: [
-    // De pequeños…
-    '/fotos/foto-1.webp',
-    '/fotos/foto-2.webp',
-    '/fotos/foto-3.webp',
-    '/fotos/foto-4.webp',
-    // …y juntos
+    // Ella de pequeña
+    '/fotos/foto-2.webp', // en la bañera
+    '/fotos/foto-3.webp', // con el lazo
+    // Él de pequeño
+    '/fotos/foto-1.webp', // de bebé
+    '/fotos/foto-4.webp', // con el uniforme del colegio
+    '/fotos/foto-8.webp', // en la playa con el cubo (recortada por la cintura)
+    // Los dos juntos
     '/fotos/foto-5.webp',
     '/fotos/foto-6.webp',
     '/fotos/foto-7.webp',
@@ -290,6 +293,11 @@ export const wedding = {
     closing:
       'Gracias por acompañarnos, de una forma u otra, en todo lo que está por venir.',
     image: '/safari-jeep.webp',
+    /**
+     * `true` enseña el número de cuenta y los titulares directamente en la
+     * sección; `false` pone el botón «Ver datos regalo» que abre la ventana.
+     */
+    inline: true,
     /** Línea sobre el botón. Cadena vacía: no se pone ninguna. */
     ctaHint: '',
     ctaLabel: 'Ver datos regalo',

@@ -834,6 +834,84 @@ export default function Home() {
             </motion.p>
           </motion.div>
 
+          {/* Fotos: entre «celebrarlo contigo» y los nombres, a todo el ancho. */}
+          {wedding.gallery.enabled && (
+            <div id="fotos" className="relative z-10 w-full scroll-mt-24">
+              {wedding.gallery.image && (
+                <div className="relative w-24 h-24 md:w-28 md:h-28 mx-auto mb-2">
+                  <Image
+                    src={wedding.gallery.image}
+                    alt=""
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              )}
+
+              {wedding.gallery.title && (
+                <h2 className="font-display italic text-3xl md:text-4xl text-ink text-center mb-8">
+                  {wedding.gallery.title}
+                </h2>
+              )}
+
+              {/*
+                El carrete va fuera del contenedor centrado para ocupar todo el
+                ancho. `overflow-hidden` lo mantiene dentro de la pantalla: nunca
+                desplaza la página en horizontal.
+              */}
+              <div className="relative w-full overflow-hidden group">
+                <div
+                  className="flex gap-3 md:gap-5 w-max motion-safe:animate-[carrete_var(--carrete)_linear_infinite] group-hover:[animation-play-state:paused]"
+                  style={
+                    {
+                      "--carrete": `${wedding.gallery.speed}s`,
+                    } as React.CSSProperties
+                  }
+                >
+                  {/* Polaroids: marco blanco con el borde de abajo más ancho
+                      y cada una un poco torcida, como sueltas sobre la mesa. */}
+                  {carrete.map((foto, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => setActivePhoto(foto)}
+                      aria-label="Ampliar foto"
+                      style={{ rotate: `${INCLINACIONES[i % INCLINACIONES.length]}deg` }}
+                      className="relative shrink-0 my-4 w-[160px] md:w-[220px] bg-white p-2.5 pb-10 md:p-3 md:pb-14 shadow-[0_8px_22px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:-translate-y-1 hover:scale-[1.03]"
+                    >
+                      <span className="relative block w-full aspect-[4/5] overflow-hidden bg-sand">
+                        <Image
+                          src={foto}
+                          alt={wedding.couple.joinedNames}
+                          fill
+                          sizes="(max-width: 768px) 160px, 220px"
+                          className="object-cover"
+                        />
+                      </span>
+                    </button>
+                  ))}
+
+                  {/* Marcos vacíos mientras no haya fotos */}
+                  {Array.from({ length: huecos }).map((_, i) => (
+                    <div
+                      key={`hueco-${i}`}
+                      aria-hidden
+                      className="shrink-0 h-[220px] w-[160px] md:h-[300px] md:w-[220px] bg-cream/70 p-2 shadow-[0_6px_20px_rgba(0,0,0,0.10)]"
+                    >
+                      <span className="flex w-full h-full items-center justify-center border border-dashed border-primary/25">
+                        <Camera
+                          size={26}
+                          className="text-ink/25"
+                          strokeWidth={1.5}
+                        />
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
           <motion.div
             initial="hidden"
             animate={showMain ? "visible" : "hidden"}
@@ -1174,83 +1252,6 @@ export default function Home() {
             )}
           </motion.div>
 
-          {/* Fotos: dentro de la cuenta atrás, sobre la misma tela. */}
-          {wedding.gallery.enabled && (
-            <div id="fotos" className="relative z-10 mt-12 md:mt-16 scroll-mt-24">
-              {wedding.gallery.image && (
-                <div className="relative w-24 h-24 md:w-28 md:h-28 mx-auto mb-2">
-                  <Image
-                    src={wedding.gallery.image}
-                    alt=""
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              )}
-
-              {wedding.gallery.title && (
-                <h2 className="font-display italic text-3xl md:text-4xl text-ink text-center mb-8">
-                  {wedding.gallery.title}
-                </h2>
-              )}
-
-              {/*
-                El carrete va fuera del contenedor centrado para ocupar todo el
-                ancho. `overflow-hidden` lo mantiene dentro de la pantalla: nunca
-                desplaza la página en horizontal.
-              */}
-              <div className="relative w-full overflow-hidden group">
-                <div
-                  className="flex gap-3 md:gap-5 w-max motion-safe:animate-[carrete_var(--carrete)_linear_infinite] group-hover:[animation-play-state:paused]"
-                  style={
-                    {
-                      "--carrete": `${wedding.gallery.speed}s`,
-                    } as React.CSSProperties
-                  }
-                >
-                  {/* Polaroids: marco blanco con el borde de abajo más ancho
-                      y cada una un poco torcida, como sueltas sobre la mesa. */}
-                  {carrete.map((foto, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => setActivePhoto(foto)}
-                      aria-label="Ampliar foto"
-                      style={{ rotate: `${INCLINACIONES[i % INCLINACIONES.length]}deg` }}
-                      className="relative shrink-0 my-4 w-[160px] md:w-[220px] bg-white p-2.5 pb-10 md:p-3 md:pb-14 shadow-[0_8px_22px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:-translate-y-1 hover:scale-[1.03]"
-                    >
-                      <span className="relative block w-full aspect-[4/5] overflow-hidden bg-sand">
-                        <Image
-                          src={foto}
-                          alt={wedding.couple.joinedNames}
-                          fill
-                          sizes="(max-width: 768px) 160px, 220px"
-                          className="object-cover"
-                        />
-                      </span>
-                    </button>
-                  ))}
-
-                  {/* Marcos vacíos mientras no haya fotos */}
-                  {Array.from({ length: huecos }).map((_, i) => (
-                    <div
-                      key={`hueco-${i}`}
-                      aria-hidden
-                      className="shrink-0 h-[220px] w-[160px] md:h-[300px] md:w-[220px] bg-cream/70 p-2 shadow-[0_6px_20px_rgba(0,0,0,0.10)]"
-                    >
-                      <span className="flex w-full h-full items-center justify-center border border-dashed border-primary/25">
-                        <Camera
-                          size={26}
-                          className="text-ink/25"
-                          strokeWidth={1.5}
-                        />
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
         </section>
 
         {/* ================= 5. ITINERARIO ================= */}
@@ -1448,13 +1449,44 @@ export default function Home() {
                 {wedding.gift.ctaHint && (
                   <p className={PARRAFO_REGALO}>{wedding.gift.ctaHint}</p>
                 )}
-                <button
-                  onClick={() => setShowIbanModal(true)}
-                  className="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-ink hover:bg-white/90 font-sans text-[14px] uppercase tracking-[0.22em] rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 font-semibold"
-                >
-                  <Gift size={13} />
-                  <span>{wedding.gift.ctaLabel}</span>
-                </button>
+                {wedding.gift.inline ? (
+                  /* Los datos a la vista, sin botón ni ventana. */
+                  <div className="w-full max-w-sm bg-cream text-ink rounded-md shadow-lg px-5 py-5 sm:px-6 text-left select-text">
+                    <span className="block text-[13px] font-sans uppercase tracking-[0.2em] font-bold mb-2">
+                      {wedding.gift.modal.ibanLabel}
+                    </span>
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="font-sans text-[15px] font-bold tracking-wider break-all select-all">
+                        {wedding.gift.modal.iban}
+                      </span>
+                      <button
+                        onClick={() => copyToClipboard(wedding.gift.modal.iban, setCopied)}
+                        className="p-2 bg-primary/5 hover:bg-primary/10 rounded transition-all active:scale-95 shrink-0"
+                        title="Copiar IBAN"
+                        aria-label="Copiar IBAN"
+                      >
+                        {copied ? (
+                          <span className="text-[13px] font-sans uppercase tracking-wider font-semibold">
+                            {wedding.gift.modal.copiedLabel}
+                          </span>
+                        ) : (
+                          <Copy size={15} />
+                        )}
+                      </button>
+                    </div>
+                    <span className="block font-sans text-[14px] mt-3 pt-3 border-t border-primary/10">
+                      Titulares: {wedding.gift.modal.holders}
+                    </span>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setShowIbanModal(true)}
+                    className="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-ink hover:bg-white/90 font-sans text-[14px] uppercase tracking-[0.22em] rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 font-semibold"
+                  >
+                    <Gift size={13} />
+                    <span>{wedding.gift.ctaLabel}</span>
+                  </button>
+                )}
               </motion.div>
 
               {wedding.gift.closing && (
