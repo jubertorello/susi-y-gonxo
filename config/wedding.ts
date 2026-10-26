@@ -331,7 +331,7 @@ export const wedding = {
     bus: {
       /** Pon `false` si no hay servicio de autobuses (oculta los campos). */
       enabled: true,
-      idaHint: 'Desde los Campos de Sport del Sardinero (Santander) o la estación de FEVE (Torrelavega) · horarios por confirmar',
+      idaHint: 'Campos de Sport del Sardinero (Santander) · 11:15 · Estación de FEVE (Torrelavega) · 11:45',
       vueltaHint: 'A la estación de FEVE (Torrelavega) y al Club Marítimo (Santander) · 21:30 y 00:30',
     },
     companions: {
@@ -489,10 +489,9 @@ export const wedding = {
         items: [
           {
             label: 'Ida · salidas',
-            // TODO: falta la hora de salida de cada parada.
             lines: [
-              'Santander · Campos de Sport del Sardinero',
-              'Torrelavega · Estación de tren FEVE',
+              'Santander · Campos de Sport del Sardinero · 11:15',
+              'Torrelavega · Estación de tren FEVE · 11:45',
             ],
           },
           {
