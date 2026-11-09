@@ -41,16 +41,14 @@ export const wedding = {
       firstName: 'Susana',
       lastName: 'Abascal Deusto',
       /** Teléfono con prefijo internacional y sin signos (para wa.me). */
-      // TODO: sustituir por el teléfono real de Susi.
-      phone: '34600000001',
+      phone: '34679051268',
       whatsappLabel: 'WhatsApp Susi',
       whatsappMessage: '¡Hola Susi! Tengo una duda sobre la boda...',
     },
     partnerB: {
       firstName: 'Gonzalo',
       lastName: 'Díaz-Terán Pañeda',
-      // TODO: sustituir por el teléfono real de Gonxo.
-      phone: '34600000002',
+      phone: '34663832779',
       whatsappLabel: 'WhatsApp Gonxo',
       whatsappMessage: '¡Hola Gonxo! Tengo una duda sobre la boda...',
     },
@@ -414,8 +412,18 @@ export const wedding = {
             },
             {
               icon: 'cama',
-              title: 'Suite Home Sardinero',
+              title: 'Home Suite Sardinero',
               url: 'https://shsardinero.com/index.php/es/',
+              paragraphs: [
+                'Una opción que os recomendamos especialmente por **ubicación y precio**.',
+                'Nos han bloqueado un número limitado de habitaciones para nuestros invitados por **110 € la noche**, con una estancia mínima de **2 noches**.',
+                'Para reservar es necesario **llamar directamente al alojamiento** e indicar que venís a la **boda de Gonxo y Susi**.',
+              ],
+            },
+            {
+              icon: 'cama',
+              title: 'SH Pinares',
+              url: 'https://www.shpinares.com/index.php/es/',
               paragraphs: [
                 'Una opción que os recomendamos especialmente por **ubicación y precio**.',
                 'Nos han bloqueado un número limitado de habitaciones para nuestros invitados por **135 € la noche**, con una estancia mínima de **2 noches**.',
